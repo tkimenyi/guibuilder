@@ -1,0 +1,112 @@
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+
+@SuppressWarnings("serial")
+public class CompPanel extends JPanel{
+
+                private final int LABELHEIGHT = 20;
+                private String containerNames[] = {"JPanel", "JScrollPane", "JSplitPane", "JTabbedPane", "JToolbar",
+                        "JDesktoPane", "JInternalFrame"};
+        private String[] layoutNames = {"Default",  "BorderLayout", "BoxLayout","FlowLayout", "CardLayout","GridLayout", 
+                        "GridBagLayout"};
+        
+        private String[] controlNames = {"JButton", "JCheckBox", "JComboBox","JEditorPane","JLabel", "JList", "JPasswordField",
+                        "JProgressBar", "JRadioButton", "JScrollBar" ,"JSeparator", "JSlider", "JSpinner", "JTable", "JTextArea", "JTextPane",
+                        "JToggleButton"};
+        private String[] menuNames = {"JCheckBoxMenuItem", "JMenu", "JMenuBar","JMenuItem","JPopupMenu", "JRadioButtonMenuItem"};
+        private JPanel containers, layouts, controls, menus;
+        public CompPanel(){
+                this.containers = new JPanel();
+                this.layouts = new JPanel();
+                this.controls = new JPanel();
+                this.menus = new JPanel();
+                layComponents();
+        }
+        
+        public void layComponents(){
+                this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+                TitledBorder border = BorderFactory.createTitledBorder("Available Components");
+                border.setTitleJustification(TitledBorder.CENTER);
+                this.setBorder(border);
+                
+                containers.setLayout(new BoxLayout(containers, BoxLayout.Y_AXIS));
+                TitledBorder contBorder = BorderFactory.createTitledBorder("Containers");
+                contBorder.setTitleJustification(TitledBorder.RIGHT);
+                containers.setBorder(contBorder);
+                
+                JScrollPane containerScroller = new JScrollPane(containers);
+                
+                menus.setLayout(new BoxLayout(menus, BoxLayout.Y_AXIS));
+                TitledBorder menuBorder = BorderFactory.createTitledBorder("Menus");
+                menuBorder.setTitleJustification(TitledBorder.RIGHT);
+                menus.setBorder(menuBorder);
+                JScrollPane menuScroller = new JScrollPane(menus);
+                
+                layouts.setLayout(new BoxLayout(layouts, BoxLayout.Y_AXIS));
+                TitledBorder layBorder = BorderFactory.createTitledBorder("Layout Managers");
+                layBorder.setTitleJustification(TitledBorder.RIGHT);
+                layouts.setBorder(layBorder);
+                
+                JScrollPane layoutScroller = new JScrollPane(layouts);
+                controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
+                TitledBorder controlBorder = BorderFactory.createTitledBorder("Control Components");
+                controlBorder.setTitleJustification(TitledBorder.RIGHT);
+                controls.setBorder(controlBorder);
+                
+                JScrollPane controlScroller = new JScrollPane(controls);
+                
+                for(int i = 0; i < containerNames.length; i++){
+                        JLabel curLabel = new JLabel(containerNames[i]);
+                        curLabel.setFocusable(true);
+                        //curLabel.setPreferredSize(new Dimension(LABELHEIGHT, LABELHEIGHT));
+                        curLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        curLabel.setBorder(BorderFactory.createRaisedBevelBorder());
+                        curLabel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+                        containers.add(curLabel);
+                }
+                for(int i = 0; i < layoutNames.length; i++){
+                        JLabel curLabel = new JLabel(layoutNames[i]);
+                        curLabel.setFocusable(true);
+                        //curLabel.setPreferredSize(new Dimension(LABELHEIGHT, LABELHEIGHT));
+                        curLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        curLabel.setBorder(BorderFactory.createRaisedBevelBorder());
+                        layouts.add(curLabel);
+                }
+                for(int i = 0; i < controlNames.length; i++){
+                        JLabel curLabel = new JLabel(controlNames[i]);
+                        curLabel.setFocusable(true);
+                        curLabel.setPreferredSize(new Dimension(LABELHEIGHT, LABELHEIGHT));
+                        curLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        curLabel.setBorder(BorderFactory.createRaisedBevelBorder());
+                        controls.add(curLabel);
+                }
+                for(int i = 0; i < menuNames.length; i++){
+                        JLabel curLabel = new JLabel(menuNames[i]);
+                        curLabel.setFocusable(true);
+                        //curLabel.setPreferredSize(new Dimension(LABELHEIGHT, LABELHEIGHT));
+                        curLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                        curLabel.setBorder(BorderFactory.createRaisedBevelBorder());
+                        menus.add(curLabel);
+                }
+                this.add(containerScroller);
+                this.add(menuScroller);
+                this.add(layoutScroller);
+                this.add(controlScroller);
+        }
+
+        /*public static void main(String[] args){
+                JFrame frame = new JFrame("DEMO1");
+                frame.setSize(200, 700);
+                CompPanel comp = new CompPanel();
+                comp.layComponents();
+                JScrollPane compScroller = new JScrollPane(comp);
+                frame.getContentPane().add(compScroller);
+                frame.setVisible(true);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }*/
+
+}
