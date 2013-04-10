@@ -72,20 +72,13 @@ public class GeneratorTest {
 		}
 	}
 	
-	@Ignore
-	@Test
-	public void testCompilable(){
-		assertTrue(isCompilableJava(gen.getCode(), "BuiltGui"));
-	}
-
-	
 	@Test
 	public void testConnection(){
 		ComponentManager mng= new ComponentManager();
-		ContainerItem root = new ContainerItem(new JPanel(), "JPanel",new Dimension(40,40));
+		ContainerItem root = new ContainerItem(new JPanel(), "JPanel",new Dimension(400,400));
 		ControlItem button = new ControlItem(new JButton(), "JButton",new Dimension(40,40));
-		ControlItem textarea = new ControlItem(new JTextArea(), "JTextArea",new Dimension(40,40));
-		ControlItem textfield = new ControlItem(new JTextArea(), "JTextField",new Dimension(40,40));
+		ControlItem textarea = new ControlItem(new JTextArea(), "JTextArea",new Dimension(130,40));
+		ControlItem textfield = new ControlItem(new JTextArea(), "JTextField",new Dimension(140,30));
 		mng.setRoot(root);
 		mng.addChild(root, button, button.getType(), null);
 		mng.addChild(root,textarea,textarea.getType(),null);	
@@ -96,7 +89,7 @@ public class GeneratorTest {
 		gen1.addCode();
 		String generatedCode1 = gen1.getCode();
 		gen1.generateFile(generatedCode1);
-		//assertTrue(isCompilableJava(generatedCode1, "BuiltGui"));
+		assertTrue(isCompilableJava(generatedCode1, "BuiltGui"));
 		System.out.println(generatedCode1);
 	}
 

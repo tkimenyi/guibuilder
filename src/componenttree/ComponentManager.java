@@ -31,7 +31,7 @@ public class ComponentManager {
 			root = parent;
 			this.size++;
 		}
-		parent.addChildComponent(child);
+		root.addChildComponent(child);
 		child.setType(type);
 		child.setPreferredSize(size);
 		child.setParent(parent);

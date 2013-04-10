@@ -202,7 +202,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	
 	private void generateUserGUI(){
 		gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
-		gen.addToFrame(curFrame.getTreeStruct().getRoot());
+		gen.addToFrame(curFrame.getTreeStruct().getRoot());		
 		gen.addCode();
 		String code = gen.getCode();
 		gen.generateFile(code);

@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -104,6 +105,7 @@ public class Generator {
 	public void setTreeGenerated(ComponentItem item){	
 		codeToAdd.append(getComponentCode(item));
 	}
+	
 	public String getSizeStmt(ComponentItem item){
 		Dimension dim = item.getPreferredSize();
 		int width = dim.width;
@@ -114,10 +116,28 @@ public class Generator {
 		}
 		return "";
 	}
+	
+	public String getBoundStmt(ComponentItem item){
+		Rectangle dim = item.getBounds();
+		int width = dim.width;
+		int height = dim.height;
+		int x = dim.x;
+		int y = dim.y;
+		if(height!=0 && width!=0){
+			String setBoundsCode = item.getName().toLowerCase() + ".setBounds(" + x + "," + y + "," + width + "," + height + ");\n"; 
+			return setBoundsCode;
+		}
+		return "";
+	}
 
 	public String getDeclaration(ComponentItem item){
 		return item.getType() + " "+ item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "();\n";
 	}
+	
+	public String getDeclarationPanel(ComponentItem item){
+		return item.getType() + " "+ item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "(null);\n";
+	}
+	
 	//handles containers
 	public StringBuilder getContainerCode(ContainerItem item){
 		LayoutManager layout= ((ContainerItem)item).getLayout();
@@ -125,7 +145,7 @@ public class Generator {
 		String parentName = item.getName().toLowerCase();
 		String layoutType = "";
 		if(layout instanceof BorderLayout){
-			res.append(parentName + "." + "setLayout(new BorderLayout())");
+			res.append(parentName + "." + "setLayout(new BorderLayout());\n");
 			layoutType = "border";
 		}else if(layout instanceof GridLayout){
 			int rows = ((GridLayout) layout).getRows();
@@ -133,9 +153,10 @@ public class Generator {
 			res.append(parentName + "." + "setLayout(new GridLayout( " + rows + ", " + cols +"));\n");
 			layoutType = "grid";
 		}
-		Iterator<ComponentItem> children = ((ContainerItem)item).iterator();
+		Iterator<ComponentItem> children = item.iterator();
+		ComponentItem child; 
 		while(children.hasNext()){
-			ComponentItem child = children.next();
+			child = children.next();
 			String childName = child.getName().toLowerCase();
 			String addStmt = "";
 			if(layoutType.equals("border")){
@@ -156,22 +177,26 @@ public class Generator {
 	//code for the entire tree
 	public StringBuilder getComponentCode(ComponentItem item){
 		StringBuilder res = new StringBuilder();
-		res.append(getDeclaration(item));	
-		res.append("\t" + "\t");
-		res.append(getSizeStmt(item));		
-		res.append("\t" + "\t");
 		ContainerItem parent = item.getParent();
-		if(parent != null){
-			res.append(getContainerCode(parent));			
-		}			
-		/*Iterator<ComponentItem> children = parent.iterator();
-		ComponentItem child;
-		while(children.hasNext()){
-			child = children.next();
-			res.append(getComponentCode(child));			
-		}*/
-		res.append(getContainerCode((ContainerItem) item));		
-		res.append("\t" + "\t");
+		if(parent == null){			
+			res.append(getDeclarationPanel(item));
+		}
+		else{
+			res.append(getDeclaration(item));			
+			res.append("\t" + "\t");
+			res.append(getBoundStmt(item));
+		}
+		res.append(getSizeStmt(item));		
+		res.append("\t" + "\t");			
+		if(item instanceof ContainerItem){
+			Iterator<ComponentItem> children = ((ContainerItem) item).iterator();
+			ComponentItem child;
+			while(children.hasNext()){
+				child = children.next();
+				res.append(getComponentCode(child));
+			}
+			res.append(getContainerCode((ContainerItem) item));
+		}
 		return res;
 	}
 	
@@ -179,13 +204,15 @@ public class Generator {
 	public void addToFrame(ComponentItem item){
 		String name = item.getName().toLowerCase();
 		String setFrameVisible = "frame.setVisible(true);\n";
-		String setFrameSize = "frame.setSize(800,800);\n";
+		String setFrameSize = "frame.setSize(650,700);\n";
 		String codeToFrame = "frame" + ".add"+"("+name+");\n";
 		String exit = "frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n";
 		codeOntoFrame.append(codeToFrame);
+		codeOntoFrame.append("\t" + "\t");
 		codeOntoFrame.append(setFrameSize);
+		codeOntoFrame.append("\t" + "\t");
 		codeOntoFrame.append(setFrameVisible);
+		codeOntoFrame.append("\t" + "\t");
 		codeOntoFrame.append(exit);
-	}
-	
+	}	
 }

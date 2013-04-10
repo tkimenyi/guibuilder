@@ -3,6 +3,7 @@ import gui.ComponentsPanel;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
@@ -34,55 +35,57 @@ public class ComponentItem {
 	
 	private int instanceCounter;
 	
-	public ComponentItem(JComponent component,String type, Dimension size){
-		this.component = component;
-		this.type = type;
+	public ComponentItem(JComponent comp,String t, Dimension s){
+		component = comp;
+		type = t;
 		gridSpan = new Point(1, 1);
 		gridLocation = new Point(-1, -1);
-		this.parent = null;
+		parent = null;
 		int currentNumInstance = varNames.get(type);
 		currentNumInstance += 1;
-		this.instanceCounter= currentNumInstance;
+		instanceCounter= currentNumInstance;
 		varNames.put(type, currentNumInstance);
-		this.setPreferredSize(size);
+		setPreferredSize(s);
 
 	}
 	
 	public String getName(){
-		return this.type + this.instanceCounter;
+		return type + instanceCounter;
 	}
 	
 
 
-	public String getType(){return this.type;}
-	public String getBorderLocation(){return this.borderLocation;}
+	public String getType(){return type;}
+	public String getBorderLocation(){return borderLocation;}
 	
-	public Point getGridLocation(){return this.gridLocation;}
+	public Point getGridLocation(){return gridLocation;}
 
-	public Point getGridSpan(){return this.gridSpan;}
+	public Point getGridSpan(){return gridSpan;}
 
-	public ContainerItem getParent(){return this.parent;}
+	public ContainerItem getParent(){return parent;}
 
-	public void setGridLocation(int x, int y){this.gridLocation.setLocation(x, y);}
+	public void setGridLocation(int x, int y){gridLocation.setLocation(x, y);}
 
-	public void setGridSpan(int rows, int cols){this.gridSpan.setLocation(rows, cols);}
+	public void setGridSpan(int rows, int cols){gridSpan.setLocation(rows, cols);}
 
 	public void setParent(ContainerItem container){
-		this.parent = container;
+		parent = container;
 	}
 	
-	public void setType(String type){
-		this.type = type;
+	public void setType(String t){
+		type = t;
 	}
 	
-	public JComponent getComponent(){return this.component;}
+	public JComponent getComponent(){return component;}
 
-	public void setBorderLocation(String location){this.borderLocation = location;}
+	public void setBorderLocation(String location){borderLocation = location;}
 
-	public void setPreferredSize(Dimension size){
-		this.component.setPreferredSize(size);
+	public void setPreferredSize(Dimension s){
+		component.setPreferredSize(s);
 	}
 
-	public Dimension getPreferredSize(){return this.component.getPreferredSize();}
+	public Dimension getPreferredSize(){return component.getPreferredSize();}
+	
+	public Rectangle getBounds(){return component.getBounds();}
 
 }
