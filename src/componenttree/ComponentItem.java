@@ -1,6 +1,7 @@
 package componenttree;
 import gui.ComponentsPanel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -87,5 +88,7 @@ public class ComponentItem {
 	public Dimension getPreferredSize(){return component.getPreferredSize();}
 	
 	public Rectangle getBounds(){return component.getBounds();}
+	
+	public float[] getBackground() {return component.getBackground().getRGBColorComponents(null);}		
 
 }

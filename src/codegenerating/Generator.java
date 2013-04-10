@@ -138,6 +138,10 @@ public class Generator {
 		return item.getType() + " "+ item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "(null);\n";
 	}
 	
+	public String getBackgroundCode(ComponentItem item){
+		return item.getName().toLowerCase() + ".setBackground(Color.white);\n";
+	}
+	
 	//handles containers
 	public StringBuilder getContainerCode(ContainerItem item){
 		LayoutManager layout= ((ContainerItem)item).getLayout();
@@ -179,12 +183,16 @@ public class Generator {
 		StringBuilder res = new StringBuilder();
 		ContainerItem parent = item.getParent();
 		if(parent == null){			
-			res.append(getDeclarationPanel(item));
+			res.append(getDeclarationPanel(item));			
+			res.append("\t" + "\t");
+			res.append(getBackgroundCode(item));
+			res.append("\t" + "\t");
 		}
 		else{
 			res.append(getDeclaration(item));			
 			res.append("\t" + "\t");
-			res.append(getBoundStmt(item));
+			res.append(getBoundStmt(item));			
+			res.append("\t" + "\t");
 		}
 		res.append(getSizeStmt(item));		
 		res.append("\t" + "\t");			
