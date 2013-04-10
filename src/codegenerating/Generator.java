@@ -1,6 +1,8 @@
 package codegenerating;
 import componenttree.ComponentItem;
 import componenttree.ContainerItem;
+import gui.ResizableBorder;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -9,6 +11,8 @@ import java.awt.Rectangle;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.swing.border.Border;
 
 
 public class Generator {
@@ -20,6 +24,7 @@ public class Generator {
 	private final String closingBracket="}";
 	private final String mainMethod = "public static void main(String[] args){"; 
 	private final String mainFrameDeclaration = "JFrame frame = new JFrame(\"user gui\");";
+	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
 	private ArrayList<String> generatedLines; 
 	private StringBuilder codeToDeclare;
 	private StringBuilder codeToAdd;
@@ -129,6 +134,26 @@ public class Generator {
 		}
 		return "";
 	}
+	
+	public String getBorderStmt(ComponentItem item){
+		Border dim = item.getBorder();		
+		if(dim instanceof ResizableBorder){
+			String setBoundsCode = item.getName().toLowerCase() + ".setBorder(" + blackline + ");\n";
+			return setBoundsCode;
+		}
+		return "";
+	} 
+	
+	public String getTextStmt(ComponentItem item){
+		String text = item.getText();
+		if(text.equals("")){
+			return "";
+		}
+		else {
+			String setTextCode = item.getName().toLowerCase() +".setText(" + '"' + text + '"' + ");\n";
+			return String.format(setTextCode, text);
+		}
+	}
 
 	public String getDeclaration(ComponentItem item){
 		return item.getType() + " "+ item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "();\n";
@@ -192,6 +217,10 @@ public class Generator {
 			res.append(getDeclaration(item));			
 			res.append("\t" + "\t");
 			res.append(getBoundStmt(item));			
+			res.append("\t" + "\t");
+			res.append(getBorderStmt(item));			
+			res.append("\t" + "\t");
+			res.append(getTextStmt(item));			
 			res.append("\t" + "\t");
 		}
 		res.append(getSizeStmt(item));		

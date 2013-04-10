@@ -7,7 +7,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
@@ -16,6 +20,7 @@ import javax.swing.event.MouseInputListener;
 @SuppressWarnings("serial")
 public class Resizable extends JComponent {
 	private Component c;
+	
   public Resizable(Component comp) {
     this(comp, new ResizableBorder(8));
   }
@@ -31,6 +36,24 @@ public class Resizable extends JComponent {
   public Component getComp(){
 	  return c;
   }
+	  
+	  @SuppressWarnings("deprecation")
+	public String getTextForGen(){
+		if(c instanceof JButton){
+			return ((JButton) c).getText();
+		}
+		if(c instanceof JTextField){
+			return ((JTextField) c).getText();
+		}
+		if(c instanceof JTextArea){
+			return ((JTextArea) c).getText();
+		}
+		if(c instanceof JPasswordField){
+			return ((JPasswordField) c).getText();
+		}
+		return "";
+	  }
+  
 
   private void resize() {
       if (getParent() != null) {
@@ -149,4 +172,8 @@ public class Resizable extends JComponent {
      startPos = null;
     }
   };
+  
+  public void getText(){
+	  this.getTextForGen();
+  }
 }

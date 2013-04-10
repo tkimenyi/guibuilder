@@ -38,7 +38,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private static final long serialVersionUID = 1L;  
         private JMenuBar MenuBar;
         private JMenu File,Layout;
-        private JMenuItem Open,Save,SaveAs,New,Close,Border,Grid;
+        private JMenuItem Open,Save,SaveAs,New,Close,Border,Grid,Flow,Absolute;
         protected JPanel trashBin;
         protected ComponentsPanel compPanel;
         protected UserGUI userFrame, curFrame;
@@ -122,9 +122,11 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         Layout = new JMenu("Layout Select");
         Border = new JMenuItem("BorderLayout");
         Grid = new JMenuItem("GridLayout");
+        Flow = new JMenuItem("FlowLayout");
+        Absolute = new JMenuItem("Absolute Positioning");
         Layout.add(new JSeparator());
-        Layout.add(Border);Layout.add(Grid);
-        Border.addActionListener(this);Grid.addActionListener(this);
+        Layout.add(Border);Layout.add(Grid);Layout.add(Flow);Layout.add(Absolute);
+        Border.addActionListener(this);Grid.addActionListener(this);Flow.addActionListener(this);Absolute.addActionListener(this);
         MenuBar.add(Layout);       
 	}
 	
@@ -157,6 +159,14 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		}
 		if(evt.getSource() == Grid){			
 			curFrame.layoutGridSetter(curFrame.getPanel(),6,6);
+			changedLayout();
+		}
+		if(evt.getSource() == Flow){
+			curFrame.layoutFlowSetter(curFrame.getPanel());
+			changedLayout();
+		}
+		if(evt.getSource() == Absolute){
+			curFrame.layoutAbsolute(curFrame.getPanel());
 			changedLayout();
 		}
 	}
@@ -194,7 +204,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				userTab.remove(userTab.getSelectedIndex());
 			}
 			else{
-				JOptionPane.showMessageDialog(this, "You only have one tab open!");
+				System.exit(0);
 			}
 			updateGUI();
 		}

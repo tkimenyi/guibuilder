@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -21,13 +22,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import componenttree.ComponentItem;
-import componenttree.ComponentManager;
+import componenttree.ComponentTreeStruct;
 import componenttree.ContainerItem;
 
 @SuppressWarnings("serial")
 public class UserGUI extends JInternalFrame{
 	private JPanel userPanel;
-	private ComponentManager tree = new ComponentManager();
+	private ComponentTreeStruct tree = new ComponentTreeStruct();
 	private Point curLocation;
 	protected ArrayList<JLabel> addedComponentsList;
 	public UserGUI(String name) {
@@ -49,7 +50,7 @@ public class UserGUI extends JInternalFrame{
 		return userPanel;
 	}	
 	
-	public ComponentManager getTreeStruct(){
+	public ComponentTreeStruct getTreeStruct(){
 		return tree;
 	}
 	
@@ -96,7 +97,6 @@ public class UserGUI extends JInternalFrame{
 		}
 		repaint();
 		validate();
-//		userPanel.setLayout(new BorderLayout());
 	}
 	
 	public void layoutGridSetter(Container parent, int x, int y){
@@ -117,6 +117,15 @@ public class UserGUI extends JInternalFrame{
 		}
 		repaint();
 		validate();
+	}
+	
+	public void layoutFlowSetter(Container parent){
+		parent.setLayout(new FlowLayout());
+	}
+	
+	public void layoutAbsolute(Container parent){
+		parent.removeAll();
+		parent.setLayout(null);
 	}
 		
 	public void changeUserFrame(final Component c, Dimension d, String type){

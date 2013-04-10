@@ -20,6 +20,7 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 	private JMenuItem resize, delete, draggabletrue, draggablefalse, chooseLayout, setText;
 	private UserGUI userGUI;
 	private GUI gui;
+
 	public RightClickMenu(Component c, Component d, UserGUI g, GUI newgui, boolean isJPanel){
 		comp = c;
 		compd = d;

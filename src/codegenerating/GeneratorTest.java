@@ -19,7 +19,7 @@ import javax.tools.ToolProvider;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import componenttree.ComponentManager;
+import componenttree.ComponentTreeStruct;
 import componenttree.ContainerItem;
 import componenttree.ControlItem;
 
@@ -74,7 +74,7 @@ public class GeneratorTest {
 	
 	@Test
 	public void testConnection(){
-		ComponentManager mng= new ComponentManager();
+		ComponentTreeStruct mng= new ComponentTreeStruct();
 		ContainerItem root = new ContainerItem(new JPanel(), "JPanel",new Dimension(400,400));
 		ControlItem button = new ControlItem(new JButton(), "JButton",new Dimension(40,40));
 		ControlItem textarea = new ControlItem(new JTextArea(), "JTextArea",new Dimension(130,40));

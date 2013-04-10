@@ -1,13 +1,14 @@
 package componenttree;
 import gui.ComponentsPanel;
+import gui.Resizable;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashMap;
 
-import javax.swing.JComponent;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 
 public class ComponentItem {
@@ -42,21 +43,15 @@ public class ComponentItem {
 		gridSpan = new Point(1, 1);
 		gridLocation = new Point(-1, -1);
 		parent = null;
-		int currentNumInstance = varNames.get(type);
-		currentNumInstance += 1;
-		instanceCounter= currentNumInstance;
-		varNames.put(type, currentNumInstance);
+		instanceCounter = varNames.get(type) + 1;
+		varNames.put(type, instanceCounter);
 		setPreferredSize(s);
-
 	}
 	
-	public String getName(){
-		return type + instanceCounter;
-	}
+	public String getName(){return type + instanceCounter;}
 	
-
-
 	public String getType(){return type;}
+	
 	public String getBorderLocation(){return borderLocation;}
 	
 	public Point getGridLocation(){return gridLocation;}
@@ -69,26 +64,25 @@ public class ComponentItem {
 
 	public void setGridSpan(int rows, int cols){gridSpan.setLocation(rows, cols);}
 
-	public void setParent(ContainerItem container){
-		parent = container;
-	}
+	public void setParent(ContainerItem container){parent = container;}
 	
-	public void setType(String t){
-		type = t;
-	}
+	public void setType(String t){type = t;}
 	
 	public JComponent getComponent(){return component;}
 
 	public void setBorderLocation(String location){borderLocation = location;}
 
-	public void setPreferredSize(Dimension s){
-		component.setPreferredSize(s);
-	}
+	public void setPreferredSize(Dimension s){component.setPreferredSize(s);}
 
 	public Dimension getPreferredSize(){return component.getPreferredSize();}
 	
 	public Rectangle getBounds(){return component.getBounds();}
 	
-	public float[] getBackground() {return component.getBackground().getRGBColorComponents(null);}		
-
+	public float[] getBackground() {return component.getBackground().getRGBColorComponents(null);}	
+	
+	public Border getBorder() {return component.getBorder();}
+	
+	public String getText(){		
+		return ((Resizable) component).getTextForGen();
+	}
 }

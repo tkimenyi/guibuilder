@@ -20,7 +20,7 @@ public class ComponentTreeTest {
 		ControlItem area1 = new ControlItem(new JTextArea(), "JTextArea",new Dimension(100,100));
 
 		ControlItem textfield1 = new ControlItem(new JTextField(), "JTextField",new Dimension(100,100));
-		ComponentManager manager = new ComponentManager();
+		ComponentTreeStruct manager = new ComponentTreeStruct();
 		
 		ControlItem button1 = new ControlItem(new JButton(), "JButton",new Dimension(100,100));
 		manager.addChild(root, panel1, "JPanel", new Dimension(34, 34));
