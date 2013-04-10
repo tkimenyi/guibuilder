@@ -17,9 +17,5 @@ public class GUIBuilderTest {
 		UserGUI ugui = new UserGUI("Brandon");
 		Main main = new Main();		
 		
-		ugui.setPanelCoordinates(50, 60);
-		Point last = ugui.getLastMouseLocation();
-		assertEquals(new Point (50,60), last);
-		
 	}
 }

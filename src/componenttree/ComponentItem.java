@@ -1,4 +1,6 @@
 package componenttree;
+import gui.ComponentsPanel;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.HashMap;
@@ -13,42 +15,26 @@ public class ComponentItem {
 	private Point gridSpan;
 	private String borderLocation = "";
 	private ContainerItem parent;
+	private static ComponentsPanel panel = new ComponentsPanel();
 
 	private static HashMap<String, Integer> varNames = new HashMap<String, Integer>();
 	static{
-		varNames.put("JPanel", 0);
+		for(int i = 0; i < panel.getCmap().getContainers().length; i++){
+			varNames.put(panel.getCmap().getContainers()[i],0);
+		}
+		for(int j = 0; j < panel.getCmap().getControls().length; j++){
+			varNames.put(panel.getCmap().getControls()[j],0);
+		}
+		for(int k = 0; k < panel.getCmap().getMenus().length; k++){
+			varNames.put(panel.getCmap().getMenus()[k],0);
+		}
 		varNames.put("JFrame", 0);
 		varNames.put("JInternalFrame", 0);
-		varNames.put("JScrollPane", 0);
-		varNames.put("JSplitPane", 0);
-		varNames.put("JTabbedPane", 0);
-		varNames.put("JTextPane", 0);
-		varNames.put("JMenu", 0);
-		varNames.put("JMenuBar", 0);
-		varNames.put("JMenuItem", 0);
-		varNames.put("JPopupMenu", 0);
-		varNames.put("JRadioButtonMenuItem", 0);
-		varNames.put("JButton", 0);
-		varNames.put("JCheckbox", 0);
-		varNames.put("JCombobox", 0);
-		varNames.put("JEditorpane", 0);
-		varNames.put("JLabel", 0);
-		varNames.put("JList", 0);
-		varNames.put("JPasswordField", 0);
-		varNames.put("JProgressBar", 0);
-		varNames.put("JSeparator", 0);
-		varNames.put("JSlider", 0);
-		varNames.put("JSpinner", 0);
-		varNames.put("JTable", 0);
-		varNames.put("JTextArea", 0);
-		varNames.put("JToggleButton", 0);  
-		varNames.put("JTextField", 0);  
-		
 	};
 	
 	private int instanceCounter;
 	
-	public ComponentItem(JComponent component,String type){
+	public ComponentItem(JComponent component,String type, Dimension size){
 		this.component = component;
 		this.type = type;
 		gridSpan = new Point(1, 1);
@@ -58,6 +44,7 @@ public class ComponentItem {
 		currentNumInstance += 1;
 		this.instanceCounter= currentNumInstance;
 		varNames.put(type, currentNumInstance);
+		this.setPreferredSize(size);
 
 	}
 	
@@ -65,35 +52,7 @@ public class ComponentItem {
 		return this.type + this.instanceCounter;
 	}
 	
-	/*add child using border layout*/
-	public void addBorderChild(ContainerItem parent, ComponentItem child, String borderLocation, String type, Dimension size){
-		ComponentItem panel = addChild(parent, child, type, size);
-		panel.setBorderLocation(borderLocation);
-		parent.addChildComponent(child);
-	}
-	public ComponentItem addChild(ContainerItem parent, ComponentItem child, String type, Dimension size){
-		parent.addChildComponent(child);
-		child.setParent(parent);
-		parent.setPreferredSize(size);
-		parent.addChildComponent(child);
-		return child;
-	}
 
-	public void addGridChild(ContainerItem parent, ComponentItem child, int xLoc, int yLoc, String type, Dimension size){
-		ComponentItem panel = addChild(parent, child, type,size);
-		panel.setGridLocation(xLoc, yLoc);
-		panel.setPreferredSize(size);	
-		parent.addChildComponent(child);
-	}
-
-	public void addGridChild(ContainerItem parent, ComponentItem child, int xLoc, int yLoc, int rowSpan, int colSpan, Dimension size){
-		parent.addChildComponent(child);
-		child.setParent(parent);
-		child.setGridLocation(xLoc, yLoc);
-		child.setGridSpan(rowSpan, colSpan);
-		child.setPreferredSize(size);
-		parent.addChildComponent(child);
-	}
 
 	public String getType(){return this.type;}
 	public String getBorderLocation(){return this.borderLocation;}
@@ -110,6 +69,10 @@ public class ComponentItem {
 
 	public void setParent(ContainerItem container){
 		this.parent = container;
+	}
+	
+	public void setType(String type){
+		this.type = type;
 	}
 	
 	public JComponent getComponent(){return this.component;}

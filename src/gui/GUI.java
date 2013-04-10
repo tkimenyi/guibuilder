@@ -1,3 +1,7 @@
+//while very hard to understand at first, this class is the backbone of the whole project. Here is where the money is! This class builds the gui that we see and 
+//the user interacts with. Also, all the drag listeners are here.  I attempted to separate them from this class but found it hard to do so.
+//If you are trying to change the overall gui and how is looks, it is done here.
+
 package gui;
 
 import java.awt.*;
@@ -30,20 +34,18 @@ import javax.swing.event.ChangeListener;
 import codegenerating.Generator;
 
 
-public class GUI extends JFrame implements ActionListener, DragGestureListener,
-DragSourceListener, DropTargetListener, Transferable, ChangeListener{
+public class GUI extends JFrame implements ActionListener, ChangeListener, DragGestureListener, DragSourceListener, DropTargetListener, Transferable{
         private static final long serialVersionUID = 1L;  
         private JMenuBar MenuBar;
-        private JMenu File,Edit,CompEdit,Layout;
-        private JMenuItem Open,Save,SaveAs,New,Close,Resize,Delete,CompResize,Border,Grid;
+        private JMenu File,Layout;
+        private JMenuItem Open,Save,SaveAs,New,Close,Border,Grid;
         protected JPanel trashBin;
         protected ComponentsPanel compPanel;
         protected UserGUI userFrame, curFrame;
         private JScrollPane compScroll;
-        public String[] componentList;
         private JSplitPane split;
         private JTabbedPane userTab;
-        private Generator gen;
+        private Generator gen;      
         String SavingDirectory = System.getProperty("desktop.dir");
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
@@ -101,8 +103,6 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
         MenuBar = new JMenuBar();
         add(MenuBar, BorderLayout.NORTH);
         createFileMenu();
-        createEditMenu();
-        createCompEditMenu();
         createLayoutMenu();
 	}
 	private void createFileMenu(){
@@ -117,23 +117,7 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
         MenuBar.add(File);        
         New.addActionListener(this);Open.addActionListener(this);Save.addActionListener(this);SaveAs.addActionListener(this);Close.addActionListener(this);
 	}
-	private void createEditMenu(){
-        Edit = new JMenu("Edit");
-        Resize = new JMenuItem("Resize");       
-        Edit.add(new JSeparator());
-        Edit.add(Resize); 
-        MenuBar.add(Edit);
-        Resize.addActionListener(this);
-	}
-	private void createCompEditMenu(){
-        CompEdit = new JMenu("Component Edit");
-        CompResize = new JMenuItem("Resize");
-        Delete = new JMenuItem("Delete");        
-        CompEdit.add(new JSeparator());
-        CompEdit.add(CompResize); CompEdit.add(Delete);
-        MenuBar.add(CompEdit);
-        CompResize.addActionListener(this);Delete.addActionListener(this);
-	}
+
 	private void createLayoutMenu(){
         Layout = new JMenu("Layout Select");
         Border = new JMenuItem("BorderLayout");
@@ -144,7 +128,7 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
         MenuBar.add(Layout);       
 	}
 	
-	public void setTabName(String name){
+	private void setTabName(String name){
 		int cur = userTab.getTabCount()-1;
 		userTab.setSelectedIndex(cur);
 		userTab.setTitleAt(cur, name);
@@ -153,99 +137,31 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == New){	
-			String name = JOptionPane.showInputDialog("What do you want to name your GUI?");
-			UserGUI newFrame = new UserGUI(name);
-			userTab.add(newFrame);
-			userTab.getComponentAt(userTab.getSelectedIndex()).setName(name);
-			curFrame = newFrame;
-			setTabName(name);
+			newAction();
 		}
 		if(evt.getSource() == Open){	
-	         JFileChooser chooser = new JFileChooser(SavingDirectory);
-	         chooser.setDialogTitle("Pick the file you wish to load");       
-	         int result = chooser.showDialog(null, "Select");
-	         if(result != JFileChooser.APPROVE_OPTION){ 
-	         }         
+	        openAction();        
 		}
 		if(evt.getSource() == Save){
-			//this should simply save what we have, not bring up the file chooser
-			/*JFileChooser fileChooser = new JFileChooser(SavingDirectory);    
-	        fileChooser.showSaveDialog(null);
-	        File f = fileChooser.getSelectedFile();
-	        if(f != null ) {
-	        	if(canSaveFile(f)) {
-	                saveFile();
-	            }
-	        } else {
-	                System.out.println("No file selected");
-	        }*/
-			System.out.println(userFrame.getTreeStruct().getRoot().getChildren());
-			gen.getTreeGenerated(userFrame.getTreeStruct().getRoot());
-			gen.addCode();
-			String code = gen.getCode();
-			gen.generateFile(code);
+			generateUserGUI();
 	    } 
 		if(evt.getSource() == SaveAs){	
-			JFileChooser fileChooser = new JFileChooser(SavingDirectory);    
-	        fileChooser.showSaveDialog(null);
-	        File f = fileChooser.getSelectedFile();
-	        if(f != null ) {
-	        	if(canSaveFile(f)) {
-	                saveFile();
-	            }
-	        } else {
-	                System.out.println("No file selected");
-	        }
-	        //thierry.generate(userFrame.getTreeStruct());
+			saveFile();
 		}
 		if(evt.getSource() == Close){
-			int answer = JOptionPane.showConfirmDialog(this, "Are you sure you wish to close?" );
-			if(answer == 0){			
-				if(userTab.getTabCount() > 1){
-					userTab.remove(userTab.getSelectedIndex());
-				}
-				else{
-					JOptionPane.showMessageDialog(this, "You only have one tab open!");
-				}
-				repaint();
-			}
-		}
-		if(evt.getSource() == Resize){
-			boolean run = true;
-			while(run){
-				String x = JOptionPane.showInputDialog(this, "Please give me the width you desire(>800)");
-				if(x != null){
-					String y = JOptionPane.showInputDialog(this, "Please give me the height you desire(>800)");
-					if(y != null){
-						if(x.length() > 0 && y.length() >0){
-							int x1 = Integer.parseInt(x);
-							int y1 = Integer.parseInt(y);
-							if(x1 < 800 || y1 < 800){	
-								JOptionPane.showMessageDialog(this, "The width or height was too small, please resize to 400x400 or above.");
-							}
-							else
-								this.setSize(new Dimension(x1,y1));				
-								run= false;
-						}
-					}
-				}
-				run = false;
-			}
+			closeAction();
 		}
 		if(evt.getSource() == Border){
 			curFrame.layoutBorderSetter(curFrame.getPanel());
-			//changedLayout();
+			changedLayout();
 		}
 		if(evt.getSource() == Grid){			
-			curFrame.layoutGridSetter(curFrame.getPanel(),4,5);
-			//changedLayout();
-		}
-		if(evt.getSource() == Delete){	
-			System.out.println("Delete pushed");
+			curFrame.layoutGridSetter(curFrame.getPanel(),6,6);
+			changedLayout();
 		}
 	}
 	
-	public Boolean rightDirectory(File f) {
+	private Boolean rightDirectory(File f) {
         if (f.getParent().equalsIgnoreCase(SavingDirectory)){
                 return true;
         } else {
@@ -253,64 +169,140 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
         }
 	}
 
-	public Boolean canSaveFile(File f) {
+	
+	private void newAction(){
+		String name = JOptionPane.showInputDialog("What do you want to name your GUI?");
+		UserGUI newFrame = new UserGUI(name);
+		userTab.add(newFrame);
+		userTab.getComponentAt(userTab.getSelectedIndex()).setName(name);
+		curFrame = newFrame;
+		setTabName(name);
+	}
+	
+	private void openAction(){
+		JFileChooser chooser = new JFileChooser(SavingDirectory);
+        chooser.setDialogTitle("Pick the file you wish to load");       
+        int result = chooser.showDialog(null, "Select");
+        if(result != JFileChooser.APPROVE_OPTION){ 
+        } 
+	}
+	
+	private void closeAction(){
+		int answer = JOptionPane.showConfirmDialog(this, "Are you sure you wish to close?" );
+		if(answer == 0){			
+			if(userTab.getTabCount() > 1){
+				userTab.remove(userTab.getSelectedIndex());
+			}
+			else{
+				JOptionPane.showMessageDialog(this, "You only have one tab open!");
+			}
+			updateGUI();
+		}
+	}
+	
+	private void generateUserGUI(){
+		gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
+		gen.addToFrame(curFrame.getTreeStruct().getRoot());
+		gen.addCode();
+		String code = gen.getCode();
+		gen.generateFile(code);
+	}
+	
+	private void saveFile(){
+		JFileChooser fileChooser = new JFileChooser(SavingDirectory);    
+        fileChooser.showSaveDialog(null);
+        File f = fileChooser.getSelectedFile();
+        if(f != null ) {
+        	if(canSaveFile(f)) {
+                saveFile();
+            }
+        } else {
+                System.out.println("No file selected");
+        }	
+        generateUserGUI();
+	}	
+
+	private Boolean canSaveFile(File f) {
         Boolean CanSave = rightDirectory(f);
         if(!CanSave) JOptionPane.showMessageDialog(this, "You can not save to that directory.", "Bad directory", JOptionPane.PLAIN_MESSAGE);
         return CanSave;
 	}
 	
-	public void saveFile(){
-		System.out.println("This method will call the method that will generate code");
-	}
-	
-	public void updateGUI(){
+	protected void updateGUI(){
 		repaint();
 		validate();
 	}
 	
-	public void changedLayout(){	 
-		System.out.println("The layout has been changed; we need to get all the Nodes from the tree and put these names in the trash bin");		
+	public boolean isInteger(String str) {
+	    int size = str.length();
+	    for (int i = 0; i < size; i++) {
+	        if (!Character.isDigit(str.charAt(i))) {
+	            return false;
+	        }
+	    }
+	    return size > 0;
 	}
 	
+	private void changedLayout(){
+		for(Component item : trashBin.getComponents()){
+			item.setVisible(false);
+		}
+		JLabel label = new JLabel("Components from GUI:");
+        trashBin.add(label);
+		for(JLabel comp : curFrame.addedComponentsList){
+			JLabel temp = new JLabel(comp.getText());
+			trashBin.add(temp);
+			addDragSourceListener(temp);
+			updateGUI();
+		}
+		curFrame.addedComponentsList.clear();
+	}
+	
+	//-------------------------------------------BELOW IS DRAG LISTENERS----------------------------------------------------------------------
+	
 	public void addDragListeners(){
-		String[] containers = compPanel.getContainerNames();
-		Component[] contComp = compPanel.getContainerComps();
-		String[] controls = compPanel.getControls();
-		Component[] controlComp = compPanel.getControlComps();
-		String[] menus = compPanel.getMenus();
-		Component[] menuComp = compPanel.getMenuComps();
+		String[] containers = compPanel.getCmap().getContainers();
+		Component[] contComp = compPanel.getCmap().getContainerComps();
+		String[] controls = compPanel.getCmap().getControls();
+		Component[] controlComp = compPanel.getCmap().getControlComps();
+		String[] menus = compPanel.getCmap().getMenus();
+		Component[] menuComp = compPanel.getCmap().getMenuComps();
 		for(int i = 0; i < containers.length; i++){
             final JLabel curLabel = new JLabel(containers[i]);
-            removeDup(curLabel);
+            addDragSourceListener(curLabel);
             compPanel.addLabelToContainers(contComp[i], curLabel);
 		} 
 		for(int i = 0; i < controls.length; i++){
             final JLabel curLabel = new JLabel(controls[i]);
-            removeDup(curLabel);
+            addDragSourceListener(curLabel);
             compPanel.addLabelToControls(controlComp[i],curLabel);
 		}
 		for(int i = 0; i < menus.length; i++){
             final JLabel curLabel = new JLabel(menus[i]);
-            removeDup(curLabel);
+            addDragSourceListener(curLabel);
             compPanel.addLabelToMenus(menuComp[i], curLabel);
 		}
 	}
-    public void removeDup(JLabel curLabel){
-            curLabel.setFocusable(true);
-            curLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            curLabel.setBorder(BorderFactory.createRaisedBevelBorder());            
+	
+	public void setDraggable(Component c){
+		addDragSourceListener((JComponent) c);		
+	}
+	
+	public void disableDraggable(Component c){
+		//c.getListeners(DragSourceListener);
+	}
+	
+    public void addDragSourceListener(JComponent comp){
+            comp.setFocusable(true);
+            comp.setAlignmentX(Component.CENTER_ALIGNMENT);
+            comp.setBorder(BorderFactory.createRaisedBevelBorder());            
             
     		DragSource dragSource = new DragSource();
     		new DropTarget(this,DnDConstants.ACTION_MOVE, this);                		
-    		dragSource.createDefaultDragGestureRecognizer(curLabel, DnDConstants.ACTION_MOVE, this);
-    		dragSource.addDragSourceListener(null);
-    		curLabel.addMouseListener(new MouseAdapter(){    			
-    			public void mouseReleased(MouseEvent e){
-    				userFrame.setPanelCoordinates(e.getX(), e.getY());
-    			}
-    		});
-		}	
-	
+    		dragSource.createDefaultDragGestureRecognizer(comp, DnDConstants.ACTION_MOVE, this);
+    		dragSource.addDragSourceListener(null);    		
+		}
+    
 	public Object getTransferData(DataFlavor flavor) {
 		if (flavor.isMimeTypeEqual(DataFlavor.javaJVMLocalObjectMimeType)) {
 			return object;
@@ -328,13 +320,19 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
 	}
 
 	// DragGestureListener method.
-	public void dragGestureRecognized(DragGestureEvent dge) {
-		dge.getDragSource().startDrag(dge, null, this, this, SystemFlavorMap.getDefaultFlavorMap());
+	public void dragGestureRecognized(DragGestureEvent dge){
+		try{
+			dge.getDragSource().startDrag(dge, null, this, this, SystemFlavorMap.getDefaultFlavorMap());
+		}
+		catch(Exception ex){
+			//this error occurs when the component already has an action listener to it, just as attempting a drag while doing the functionality of the component
+			System.out.println("Catch and Release is always the best solution");
+			System.out.println("Not really, I just can't figure out why this error gets thrown");
+		}
 	}
 
 	// DragSourceListener methods.
-	public void dragDropEnd(DragSourceDropEvent dsde) {
-		userFrame.setPanelCoordinates(dsde.getX(), dsde.getY());		
+	public void dragDropEnd(DragSourceDropEvent dsde) {		
 	}
 
 	public void dragEnter(DragSourceDragEvent dsde) {
@@ -368,24 +366,31 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
 		dropTargetDrag(dtde);
 	}
 
-	void dropTargetDrag(DropTargetDragEvent dtde) {
+	public void dropTargetDrag(DropTargetDragEvent dtde) {
 		dtde.acceptDrag(dtde.getDropAction());
 	}
-
+	//this is all the action of drag and drop right here. 
 	public void drop(DropTargetDropEvent dtde) {
 		dtde.acceptDrop(dtde.getDropAction());		
 		try {
-			Object source = dtde.getTransferable().getTransferData(
-					dataflavor[0]);
+			Object source = dtde.getTransferable().getTransferData(dataflavor[0]);
 			Component component = ((DragSourceContext) source).getComponent();
 			Container oldContainer = component.getParent();
-			curFrame.setPanelCoordinates(dtde.getLocation().x, dtde.getLocation().y);
+			curFrame.setCurLocation(dtde.getLocation().x, dtde.getLocation().y-75);	//the -75 offsets location of where we place the component			
 			if(component instanceof JLabel){
+				curFrame.addedComponentsList.add((JLabel) component);
 				String compName = ((JLabel) component).getText();
-				HashMap<String, Component> comps = compPanel.getComponentsMap();
+				ComponentsMap comp = compPanel.createNewMap();
+				HashMap<String, Component> comps = comp.getComponentsMap();
 				Component c = comps.get(compName);
 				Dimension d = compPanel.getDimension(compName);
-				curFrame.changeUserFrame(c, d, compName);
+				final Resizable resizer = new Resizable(c);
+				curFrame.changeUserFrame(resizer, d, compName);
+				updateGUI();				
+				new RightClickMenu(resizer, resizer.getComp(),curFrame, this, compName.equals("JPanel"));				
+			}
+			else if(component instanceof JComponent){			
+				curFrame.changeUserFrame(component, null, null);
 				updateGUI();
 			}
 			oldContainer.validate();
@@ -398,9 +403,12 @@ DragSourceListener, DropTargetListener, Transferable, ChangeListener{
 		}
 		dtde.dropComplete(true);
 	}
-
 	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		curFrame = (UserGUI) userTab.getComponentAt(userTab.getSelectedIndex());		
+	public void stateChanged(ChangeEvent arg0) {		
+		for(Component comp: curFrame.addedComponentsList){
+				trashBin.remove(comp);
+		}
+		curFrame = (UserGUI) userTab.getComponentAt(userTab.getSelectedIndex());	
+		updateGUI();
 	}
 }
