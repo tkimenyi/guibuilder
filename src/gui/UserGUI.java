@@ -55,6 +55,7 @@ public class UserGUI extends JInternalFrame{
 	}
 	
 	public void layoutBorderSetter(Container parent){	
+		parent.removeAll();
 		parent.setLayout(new BorderLayout());
 		String location = "";
 		parent.removeAll();
@@ -100,8 +101,8 @@ public class UserGUI extends JInternalFrame{
 	}
 	
 	public void layoutGridSetter(Container parent, int x, int y){
-		parent.setLayout(new GridLayout(x, y));
 		parent.removeAll();
+		parent.setLayout(new GridLayout(x, y));
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){
 				JPanel blankPanel = new JPanel(null);
@@ -120,6 +121,7 @@ public class UserGUI extends JInternalFrame{
 	}
 	
 	public void layoutFlowSetter(Container parent){
+		parent.removeAll();
 		parent.setLayout(new FlowLayout());
 	}
 	

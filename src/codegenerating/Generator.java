@@ -220,8 +220,10 @@ public class Generator {
 			res.append("\t" + "\t");
 			res.append(getBorderStmt(item));			
 			res.append("\t" + "\t");
-			res.append(getTextStmt(item));			
-			res.append("\t" + "\t");
+			if(getTextStmt(item).length() > 1){
+				res.append(getTextStmt(item));			
+				res.append("\t" + "\t");
+			}
 		}
 		res.append(getSizeStmt(item));		
 		res.append("\t" + "\t");			

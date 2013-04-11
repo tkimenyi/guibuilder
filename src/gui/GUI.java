@@ -394,7 +394,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				HashMap<String, Component> comps = comp.getComponentsMap();
 				Component c = comps.get(compName);
 				Dimension d = compPanel.getDimension(compName);
-				final Resizable resizer = new Resizable(c);
+				final Resizable resizer = new Resizable(c, curFrame.getSize());
 				curFrame.changeUserFrame(resizer, d, compName);
 				updateGUI();				
 				new RightClickMenu(resizer, resizer.getComp(),curFrame, this, compName.equals("JPanel"));				
