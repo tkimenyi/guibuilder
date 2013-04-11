@@ -39,7 +39,6 @@ public class UserGUI extends JInternalFrame{
         userPanel.setPreferredSize(new Dimension(550, 600));
         userPanel.setBackground(Color.white);
         add(userPanel);        
-		this.setSize(550,600);
 		ContainerItem mom = new ContainerItem(userPanel, "JPanel", userPanel.getSize());
 		tree.setRoot(mom);
 		curLocation = new Point(0,0);

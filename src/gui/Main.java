@@ -7,7 +7,7 @@ public class Main {
   
  public static void main(String[] args) throws FileNotFoundException{	 
 	 String GUIname = JOptionPane.showInputDialog("Please name your GUI");
-	 if(GUIname == null || GUIname.length() < 1){
+	 if(GUIname == null || GUIname.length() < 0){
 		 System.exit(0);
 	 }
 	 else{
