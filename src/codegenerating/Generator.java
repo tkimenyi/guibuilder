@@ -243,7 +243,7 @@ public class Generator {
 	public void addToFrame(ComponentItem item){
 		String name = item.getName().toLowerCase();
 		String setFrameVisible = "frame.setVisible(true);\n";
-		String setFrameSize = "frame.setSize(650,700);\n";
+		String setFrameSize = "frame.setSize(594,700);\n";
 		String codeToFrame = "frame" + ".add"+"("+name+");\n";
 		String exit = "frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n";
 		codeOntoFrame.append(codeToFrame);

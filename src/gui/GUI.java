@@ -259,13 +259,13 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		}
 		JLabel label = new JLabel("Components from GUI:");
         trashBin.add(label);
-		for(JLabel comp : curFrame.addedComponentsList){
+		for(JLabel comp : curFrame.getCompList()){
 			JLabel temp = new JLabel(comp.getText());
 			trashBin.add(temp);
 			addDragSourceListener(temp);
 			updateGUI();
 		}
-		curFrame.addedComponentsList.clear();
+		curFrame.getCompList().clear();
 	}
 	
 	//-------------------------------------------BELOW IS DRAG LISTENERS----------------------------------------------------------------------
@@ -388,7 +388,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			Container oldContainer = component.getParent();
 			curFrame.setCurLocation(dtde.getLocation().x, dtde.getLocation().y-75);	//the -75 offsets location of where we place the component			
 			if(component instanceof JLabel){
-				curFrame.addedComponentsList.add((JLabel) component);
+				curFrame.addToCompList(((JLabel) component));
 				String compName = ((JLabel) component).getText();
 				ComponentsMap comp = compPanel.createNewMap();
 				HashMap<String, Component> comps = comp.getComponentsMap();
@@ -397,7 +397,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				final Resizable resizer = new Resizable(c, curFrame.getSize());
 				curFrame.changeUserFrame(resizer, d, compName);
 				updateGUI();				
-				new RightClickMenu(resizer, resizer.getComp(),curFrame, this, compName.equals("JPanel"));				
+				new RightClickMenu(resizer, resizer.getComp(),curFrame, compName.equals("JPanel"));				
 			}
 			else if(component instanceof JComponent){			
 				curFrame.changeUserFrame(component, null, null);
@@ -415,7 +415,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	}
 	@Override
 	public void stateChanged(ChangeEvent arg0) {		
-		for(Component comp: curFrame.addedComponentsList){
+		for(Component comp: curFrame.getCompList()){
 				trashBin.remove(comp);
 		}
 		curFrame = (UserGUI) userTab.getComponentAt(userTab.getSelectedIndex());	

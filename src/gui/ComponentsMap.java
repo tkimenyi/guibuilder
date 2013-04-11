@@ -38,6 +38,8 @@ public class ComponentsMap extends HashMap<String, Component> {
 	private HashMap<String, Component> components;
 	 private String[] containerNames = {"JPanel", "JScrollPane", "JSplitPane", "JTabbedPane", "JToolBar"};
      private Component[] containers = {new JPanel(), new JScrollPane(), new JSplitPane(), new JTabbedPane(), new JToolBar()};
+     private Dimension[] containerDimensions = {new Dimension(100,100),new Dimension(100,100),new Dimension(100,100),
+			   new Dimension(100,100),new Dimension(100,100)};
     
      private String[] controlNames = {"JButton", "JCheckBox", "JComboBox","JEditorPane","JList", 
      								 "JPasswordField", "JProgressBar", "JRadioButton", "JScrollBar", 
@@ -106,5 +108,9 @@ public class ComponentsMap extends HashMap<String, Component> {
     
     public Dimension[] getControlsDimension(){
     	return controlDimensions;
+    }
+    
+    public Dimension[] getConatinerDimension(){
+    	return containerDimensions;
     }
 }

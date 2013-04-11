@@ -40,7 +40,7 @@ public class ComponentsPanel extends JPanel {
         	Dimension ret = new Dimension(0,0);
         	for(int i = 0; i < cmap.getContainers().length; i++){
         		if(compName.equals(cmap.getContainers()[i])){
-        			ret = new Dimension (0,0);
+        			ret = cmap.getConatinerDimension()[i];
         		}
         	}
         	for(int i = 0; i < cmap.getControls().length; i++){

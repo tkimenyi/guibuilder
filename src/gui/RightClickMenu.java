@@ -17,28 +17,21 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 	private Component comp;
 	private Component compd;
 	private JPopupMenu pop; 
-	private JMenuItem resize, delete, draggabletrue, draggablefalse, chooseLayout, setText;
+	private JMenuItem resize, delete,chooseLayout, setText;
 	private UserGUI userGUI;
-	private GUI gui;
 
-	public RightClickMenu(Component c, Component d, UserGUI g, GUI newgui, boolean isJPanel){
+	public RightClickMenu(Component c, Component d, UserGUI g, boolean isJPanel){
 		comp = c;
 		compd = d;
 		userGUI = g;
-		gui = newgui;
 		pop = new JPopupMenu();
 		resize = new JMenuItem("Resize");
 		pop.add(resize);
 		delete = new JMenuItem("Delete");
 		pop.add(delete);
-		draggabletrue = new JMenuItem("Enable Dragging");
-		pop.add(draggabletrue);
-		draggablefalse = new JMenuItem("Disable Dragging");		
 		comp.addMouseListener(this);
 		resize.addActionListener(this);
 		delete.addActionListener(this);
-		draggabletrue.addActionListener(this);
-		draggablefalse.addActionListener(this);
 		if(compd instanceof JButton){
 			setText = new JMenuItem("Set Text");
 			pop.add(setText);
@@ -90,16 +83,6 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		}		
 		if(evt.getSource() == delete){
 			deleteAction();
-		}
-		if(evt.getSource() == draggabletrue){
-			pop.remove(draggabletrue);
-			pop.add(draggablefalse);
-			gui.setDraggable(comp);			
-		}
-		if(evt.getSource() == draggablefalse){
-			pop.remove(draggablefalse);
-			pop.add(draggabletrue);
-			gui.disableDraggable(this);
 		}
 		if(evt.getSource() == chooseLayout){
 			userGUI.layoutGridSetter((Container) comp, 5,5);

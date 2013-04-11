@@ -30,7 +30,7 @@ public class UserGUI extends JInternalFrame{
 	private JPanel userPanel;
 	private ComponentTreeStruct tree = new ComponentTreeStruct();
 	private Point curLocation;
-	protected ArrayList<JLabel> addedComponentsList;
+	private ArrayList<JLabel> addedComponentsList;
 	public UserGUI(String name) {
 		super(name, false,false,false,false);
 		setSize(550, 600);
@@ -39,6 +39,7 @@ public class UserGUI extends JInternalFrame{
         userPanel.setPreferredSize(new Dimension(550, 600));
         userPanel.setBackground(Color.white);
         add(userPanel);        
+		this.setSize(550,600);
 		ContainerItem mom = new ContainerItem(userPanel, "JPanel", userPanel.getSize());
 		tree.setRoot(mom);
 		curLocation = new Point(0,0);
@@ -57,12 +58,10 @@ public class UserGUI extends JInternalFrame{
 		parent.removeAll();
 		parent.setLayout(new BorderLayout());
 		String location = "";
-		parent.removeAll();
 		for(int i = 0; i < 5; i++){
 			JPanel blankPanel = new JPanel(null);
 			blankPanel.setBackground(Color.gray);
 			blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-			
 			if(i % 2 == 0){
 				blankPanel.setPreferredSize(new Dimension(600, 100));
 			}
@@ -89,11 +88,11 @@ public class UserGUI extends JInternalFrame{
 				parent.add(blankPanel, BorderLayout.CENTER);
 				location = "center";
 			}
+			System.out.println("Added");
 			ComponentItem child = new ComponentItem(blankPanel, "JPanel",blankPanel.getSize());
 			ContainerItem p = new ContainerItem(this, "JInternalFrame", this.getSize());				
 			tree.addBorderChild(p, child, location, "JPanel", blankPanel.getSize());
-			tree.getRoot().addChildComponent(child);
-			parent.setPreferredSize(new Dimension(600,600));
+			tree.getRoot().addChildComponent(child);			
 		}
 		repaint();
 		validate();
@@ -130,7 +129,14 @@ public class UserGUI extends JInternalFrame{
 	}
 		
 	public void changeUserFrame(final Component c, Dimension d, String type){
-		JPanel parent = (JPanel) userPanel.getComponentAt(curLocation);	
+		JPanel parent = new JPanel(null);
+		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
+			Resizable res = (Resizable) userPanel.getComponentAt(curLocation);
+			parent = (JPanel) res.getComp();	
+		}
+		else{
+			parent = (JPanel) userPanel.getComponentAt(curLocation);
+		}		
 		if(parent != null){		
 			c.setBounds(curLocation.x,curLocation.y, d.width, d.height);
 			parent.add(c);
@@ -147,7 +153,8 @@ public class UserGUI extends JInternalFrame{
 			}
 			repaint();
 			validate();
-		}
+			parent.setLayout(null);
+		}		
 		else{
 			JOptionPane.showMessageDialog(this, "The place you have tried to place your component is invalid");
 		}		
@@ -173,5 +180,13 @@ public class UserGUI extends JInternalFrame{
 		c.getParent().remove(c);
 		repaint();
 		validate();
+	}
+	
+	public ArrayList<JLabel> getCompList(){
+		return addedComponentsList;
+	}
+	
+	public void addToCompList(JLabel added){
+		addedComponentsList.add(added);
 	}
 }
