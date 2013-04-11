@@ -20,10 +20,10 @@ public class Generator {
 	private String packageName = "package codegenerating;";
 	private final String import1 = "import javax.swing.*;";
 	private final String import2 = "import java.awt.*;";
-	private final String className = "public class BuiltGui extends JPanel {";
+	private String className = "public class";
 	private final String closingBracket="}";
 	private final String mainMethod = "public static void main(String[] args){"; 
-	private final String mainFrameDeclaration = "JFrame frame = new JFrame(\"user gui\");";
+	private final String mainFrameDeclaration = "JFrame frame = new JFrame(";
 	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
 	private ArrayList<String> generatedLines; 
 	private StringBuilder codeToDeclare;
@@ -41,11 +41,25 @@ public class Generator {
 	}
 	
 	//put the code in the file
-	public void generateFile(String code){
+	public void generateFile(String code, String filename){		
 		try{
-			File codeFile = new File("src/codegenerating/BuiltGui.java");			
+			File codeFile = new File("src/codegenerating/" + filename + ".java");			
 			if (!codeFile.exists()){
 				codeFile.createNewFile();
+				generatedLines= new ArrayList<String>();
+				codeToAdd= new StringBuilder();
+				codeToDeclare= new StringBuilder();
+				codeOntoFrame= new StringBuilder();
+				allCode = new StringBuilder();
+			}
+			else{
+				codeFile.delete();
+				codeFile.createNewFile();
+				generatedLines= new ArrayList<String>();
+				codeToAdd= new StringBuilder();
+				codeToDeclare= new StringBuilder();
+				codeOntoFrame= new StringBuilder();
+				allCode = new StringBuilder();
 			}
 			FileWriter fw = new FileWriter(codeFile.getAbsoluteFile());
 			writer = new BufferedWriter(fw);
@@ -76,15 +90,15 @@ public class Generator {
 		}
 	
 	// array list of generated lines of code
-	public void addCode(){
+	public void addCode(String guiname, String filename){
 		generatedLines.add(packageName);
 		generatedLines.add("");
 		generatedLines.add(import1);
 		generatedLines.add(import2);
 		generatedLines.add("");
-		generatedLines.add(className);
+		generatedLines.add(className + " " + filename + " extends JPanel {");
 		generatedLines.add("\t" + mainMethod);
-		generatedLines.add("\t" + "\t" + mainFrameDeclaration);
+		generatedLines.add("\t" + "\t" + mainFrameDeclaration + '"' + guiname  + '"' + ");");
 		generatedLines.add("\t" + "\t" + codeToDeclare.toString());
 		generatedLines.add("\t" + "\t" + codeToAdd.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());

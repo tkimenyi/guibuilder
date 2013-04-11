@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private JScrollPane compScroll;
         private JSplitPane split;
         private JTabbedPane userTab;
-        private Generator gen;      
+        private Generator gen;
         String SavingDirectory = System.getProperty("desktop.dir");
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
@@ -78,6 +78,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         split.setDividerLocation(600);
         add(split);        
         curFrame = userFrame;
+        curFrame.setName(name);
         userTab.addChangeListener(this);
 		setTabName(name);
 		setUpTrashBin();
@@ -134,6 +135,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		int cur = userTab.getTabCount()-1;
 		userTab.setSelectedIndex(cur);
 		userTab.setTitleAt(cur, name);
+		curFrame.setName(name);
 	}
 
 	@Override
@@ -211,11 +213,17 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	}
 	
 	private void generateUserGUI(){
-		gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
-		gen.addToFrame(curFrame.getTreeStruct().getRoot());		
-		gen.addCode();
-		String code = gen.getCode();
-		gen.generateFile(code);
+		String filename = JOptionPane.showInputDialog("What would you like to name your file?");		
+		if(filename == null || filename.length() < 1){
+			JOptionPane.showMessageDialog(this, "You must name your file. Please try again");
+		}	
+		else{
+			gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
+			gen.addToFrame(curFrame.getTreeStruct().getRoot());			
+			gen.addCode(curFrame.getName(), filename);
+			String code = gen.getCode();
+			gen.generateFile(code, filename);
+		}
 	}
 	
 	private void saveFile(){
@@ -418,7 +426,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		for(Component comp: curFrame.getCompList()){
 				trashBin.remove(comp);
 		}
-		curFrame = (UserGUI) userTab.getComponentAt(userTab.getSelectedIndex());	
+		curFrame = (UserGUI) userTab.getComponentAt(userTab.getSelectedIndex());
 		updateGUI();
 	}
 }

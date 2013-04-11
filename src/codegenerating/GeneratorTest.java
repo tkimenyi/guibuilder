@@ -32,9 +32,9 @@ public class GeneratorTest {
 	public void test() {
 
 		gen.addDeclarations("button", "JButton");
-		gen.addCode();
+		gen.addCode("test", "test");
 		String generatedCode = gen.getCode();
-		gen.generateFile(generatedCode);
+		gen.generateFile(generatedCode, "test");
 
 		try {
 			BufferedReader reader  = new BufferedReader(new FileReader("src/codegenerating/BuiltGui.java"));
@@ -86,9 +86,9 @@ public class GeneratorTest {
 		
 		
 		gen1.setTreeGenerated(mng.getRoot());
-		gen1.addCode();
+		gen1.addCode("testConnection", "testCon");
 		String generatedCode1 = gen1.getCode();
-		gen1.generateFile(generatedCode1);
+		gen1.generateFile(generatedCode1, "testCon");
 		assertTrue(isCompilableJava(generatedCode1, "BuiltGui"));
 		System.out.println(generatedCode1);
 	}

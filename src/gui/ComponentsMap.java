@@ -37,7 +37,7 @@ import javax.swing.JToolBar;
 public class ComponentsMap extends HashMap<String, Component> {
 	private HashMap<String, Component> components;
 	 private String[] containerNames = {"JPanel", "JScrollPane", "JSplitPane", "JTabbedPane", "JToolBar"};
-     private Component[] containers = {new JPanel(), new JScrollPane(), new JSplitPane(), new JTabbedPane(), new JToolBar()};
+     private Component[] containers = {new JPanel(), new JScrollPane(), new JSplitPane(1, new JPanel(), new JPanel()), new JTabbedPane(), new JToolBar()};
      private Dimension[] containerDimensions = {new Dimension(100,100),new Dimension(100,100),new Dimension(100,100),
 			   new Dimension(100,100),new Dimension(100,100)};
     
