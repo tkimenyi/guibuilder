@@ -46,8 +46,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private JSplitPane split;
         private JTabbedPane userTab;
         private Generator gen;
-        private String currentSaveName = "";
-        private String SavingDirectory = System.getProperty("user.dir");
+        private String SavingDirectory = System.getProperty("user.dir") + "/src/codegenerating";
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
 		static {
@@ -148,11 +147,11 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	        openAction();        
 		}
 		if(evt.getSource() == Save){
-			if(currentSaveName.equals("")){
+			if(!curFrame.isSaved()){
 				saveFile();
 			}
 			else{
-				generateUserGUI(currentSaveName, SavingDirectory);
+				generateUserGUI(curFrame.getName(), SavingDirectory);
 			}
 	    } 
 		if(evt.getSource() == SaveAs){	
@@ -237,9 +236,15 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         fileChooser.showSaveDialog(null);
         File f = fileChooser.getSelectedFile();
         if(f != null ) {
-        	if(canSaveFile(f)) {        		
-        		 generateUserGUI(f.getName(), SavingDirectory);
-        		 currentSaveName = f.getName();
+        	if(canSaveFile(f)) { 
+        		if(f.getName().length() > 0){
+        			generateUserGUI(f.getName(), SavingDirectory);
+    				curFrame.changeSaved();
+        			curFrame.setName(f.getName());
+        		}
+        		else{
+        			saveFile();
+        		}
             }
         } 
         else {

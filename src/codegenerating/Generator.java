@@ -15,8 +15,7 @@ import java.util.Iterator;
 import javax.swing.border.Border;
 
 
-public class Generator {
-	
+public class Generator {	
 	private String packageName = "package codegenerating;";
 	private final String import1 = "import javax.swing.*;";
 	private final String import2 = "import java.awt.*;";
@@ -44,23 +43,16 @@ public class Generator {
 	public void generateFile(String code, String filename, String savedir){		
 		try{
 			File codeFile = new File(savedir + '/' + filename + ".java");			
-			if (!codeFile.exists()){
-				codeFile.createNewFile();
-				generatedLines= new ArrayList<String>();
-				codeToAdd= new StringBuilder();
-				codeToDeclare= new StringBuilder();
-				codeOntoFrame= new StringBuilder();
-				allCode = new StringBuilder();
-			}
-			else{
+			if (codeFile.exists()){
 				codeFile.delete();
-				codeFile.createNewFile();
-				generatedLines= new ArrayList<String>();
-				codeToAdd= new StringBuilder();
-				codeToDeclare= new StringBuilder();
-				codeOntoFrame= new StringBuilder();
-				allCode = new StringBuilder();
 			}
+			codeFile.createNewFile();
+			generatedLines= new ArrayList<String>();
+			codeToAdd= new StringBuilder();
+			codeToDeclare= new StringBuilder();
+			codeOntoFrame= new StringBuilder();
+			allCode = new StringBuilder();
+			
 			FileWriter fw = new FileWriter(codeFile.getAbsoluteFile());
 			writer = new BufferedWriter(fw);
 			writer.append(code);

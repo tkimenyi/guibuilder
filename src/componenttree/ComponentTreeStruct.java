@@ -30,7 +30,7 @@ public class ComponentTreeStruct {
 			root = parent;
 		}
 		size++;
-		root.addChildComponent(child);
+		parent.addChildComponent(child);
 		child.setType(type);
 		child.setPreferredSize(s);
 		child.setParent(parent);

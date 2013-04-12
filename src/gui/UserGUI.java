@@ -31,6 +31,7 @@ public class UserGUI extends JInternalFrame{
 	private ComponentTreeStruct tree = new ComponentTreeStruct();
 	private Point curLocation;
 	private ArrayList<JLabel> addedComponentsList;
+	private boolean saved;
 	public UserGUI(String name) {
 		super(name, false,false,false,false);
 		setSize(550, 600);
@@ -44,6 +45,7 @@ public class UserGUI extends JInternalFrame{
 		tree.setRoot(mom);
 		curLocation = new Point(0,0);
         addedComponentsList = new ArrayList<JLabel>();
+        saved = false;
 	}
 	
 	public JPanel getPanel(){
@@ -52,6 +54,14 @@ public class UserGUI extends JInternalFrame{
 	
 	public ComponentTreeStruct getTreeStruct(){
 		return tree;
+	}
+	
+	public boolean isSaved(){
+		return saved;
+	}
+	
+	public void changeSaved(){
+		saved = true;
 	}
 	
 	public void layoutBorderSetter(Container parent){	
@@ -132,10 +142,11 @@ public class UserGUI extends JInternalFrame{
 		JPanel parent = new JPanel(null);
 		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
 			Resizable res = (Resizable) userPanel.getComponentAt(curLocation);
-			parent = (JPanel) res.getComp();	
+			parent = (JPanel) res.getComp();
+			((Resizable) c).changeSize(parent.getSize());
 		}
 		else{
-			parent = (JPanel) userPanel.getComponentAt(curLocation);
+			parent = userPanel;
 		}		
 		if(parent != null){		
 			c.setBounds(curLocation.x,curLocation.y, d.width, d.height);
