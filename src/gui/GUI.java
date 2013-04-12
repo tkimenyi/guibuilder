@@ -46,7 +46,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private JSplitPane split;
         private JTabbedPane userTab;
         private Generator gen;
-        String SavingDirectory = System.getProperty("desktop.dir");
+        private String currentSaveName = "";
+        private String SavingDirectory = System.getProperty("user.dir");
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
 		static {
@@ -147,7 +148,12 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	        openAction();        
 		}
 		if(evt.getSource() == Save){
-			generateUserGUI();
+			if(currentSaveName.equals("")){
+				saveFile();
+			}
+			else{
+				generateUserGUI(currentSaveName, SavingDirectory);
+			}
 	    } 
 		if(evt.getSource() == SaveAs){	
 			saveFile();
@@ -172,16 +178,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			changedLayout();
 		}
 	}
-	
-	private Boolean rightDirectory(File f) {
-        if (f.getParent().equalsIgnoreCase(SavingDirectory)){
-                return true;
-        } else {
-                return false;
-        }
-	}
-
-	
+		
 	private void newAction(){
 		String name = JOptionPane.showInputDialog("What do you want to name your GUI?");
 		UserGUI newFrame = new UserGUI(name);
@@ -212,17 +209,26 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		}
 	}
 	
-	private void generateUserGUI(){
-		String filename = JOptionPane.showInputDialog("What would you like to name your file?");		
-		if(filename == null || filename.length() < 1){
-			JOptionPane.showMessageDialog(this, "You must name your file. Please try again");
-		}	
-		else{
+	private void generateUserGUI(String saveasName, String saveDir){
+		if(saveasName.length() >= 1){
 			gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
 			gen.addToFrame(curFrame.getTreeStruct().getRoot());			
-			gen.addCode(curFrame.getName(), filename);
+			gen.addCode(curFrame.getName(), saveasName);
 			String code = gen.getCode();
-			gen.generateFile(code, filename);
+			gen.generateFile(code, saveasName, saveDir);
+		}
+		else{
+			String filename = JOptionPane.showInputDialog("What would you like to name your file?");		
+			if(filename == null || filename.length() < 1){
+				JOptionPane.showMessageDialog(this, "You must name your file. Please try again");
+			}	
+			else{
+				gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
+				gen.addToFrame(curFrame.getTreeStruct().getRoot());			
+				gen.addCode(curFrame.getName(), filename);
+				String code = gen.getCode();
+				gen.generateFile(code, filename, saveDir);
+			}
 		}
 	}
 	
@@ -231,19 +237,28 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         fileChooser.showSaveDialog(null);
         File f = fileChooser.getSelectedFile();
         if(f != null ) {
-        	if(canSaveFile(f)) {
-                saveFile();
+        	if(canSaveFile(f)) {        		
+        		 generateUserGUI(f.getName(), SavingDirectory);
+        		 currentSaveName = f.getName();
             }
-        } else {
+        } 
+        else {
                 System.out.println("No file selected");
-        }	
-        generateUserGUI();
+        }       
 	}	
 
 	private Boolean canSaveFile(File f) {
         Boolean CanSave = rightDirectory(f);
         if(!CanSave) JOptionPane.showMessageDialog(this, "You can not save to that directory.", "Bad directory", JOptionPane.PLAIN_MESSAGE);
         return CanSave;
+	}	
+
+	private Boolean rightDirectory(File f) {
+        if (f.getParent().equalsIgnoreCase(SavingDirectory)){
+                return true;
+        } else {
+                return false;
+        }
 	}
 	
 	protected void updateGUI(){

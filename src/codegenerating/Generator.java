@@ -41,9 +41,9 @@ public class Generator {
 	}
 	
 	//put the code in the file
-	public void generateFile(String code, String filename){		
+	public void generateFile(String code, String filename, String savedir){		
 		try{
-			File codeFile = new File("src/codegenerating/" + filename + ".java");			
+			File codeFile = new File(savedir + '/' + filename + ".java");			
 			if (!codeFile.exists()){
 				codeFile.createNewFile();
 				generatedLines= new ArrayList<String>();
