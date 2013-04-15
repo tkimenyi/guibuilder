@@ -25,6 +25,7 @@ public class ComponentTreeTest {
 
 		ControlItem textfield1 = new ControlItem(new JTextField(), "JTextField",new Dimension(100,100));
 		ComponentTreeStruct manager = new ComponentTreeStruct();
+		manager.setRoot(root);
 		
 		ControlItem button1 = new ControlItem(new JButton(), "JButton",new Dimension(100,100));
 		manager.setRoot(root);
@@ -42,7 +43,7 @@ public class ComponentTreeTest {
 		assertTrue(panel1.removeChildComponent(panel4) ==true);
 		
 		assertTrue(manager.getRoot() == root);
-		assertTrue(manager.getSize() == 7);
+		assertTrue(manager.getSize() == 6);
 		assertTrue(root.getName().equalsIgnoreCase("jpanel1"));
 		assertTrue(root.getPreferredSize().getWidth() == 100);
 		assertTrue(panel1.getParent()==root);

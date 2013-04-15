@@ -16,7 +16,6 @@ import javax.swing.JTextArea;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import componenttree.ComponentTreeStruct;
@@ -27,7 +26,7 @@ public class GeneratorTest {
 	Generator gen = new Generator();
 	Generator gen1 = new Generator();
 	
-	@Ignore
+	
 	@Test
 	public void test() {
 
@@ -37,7 +36,7 @@ public class GeneratorTest {
 		gen.generateFile(generatedCode, "test", "src/codegenerating/");
 
 		try {
-			BufferedReader reader  = new BufferedReader(new FileReader("src/codegenerating/BuiltGui.java"));
+			BufferedReader reader  = new BufferedReader(new FileReader("src/codegenerating/test.java"));
 			String line = null;
 			StringBuilder strBuilder = new StringBuilder();
 			String ls = System.getProperty("line.separator");
@@ -89,7 +88,7 @@ public class GeneratorTest {
 		gen1.addCode("testConnection", "testCon");
 		String generatedCode1 = gen1.getCode();
 		gen1.generateFile(generatedCode1, "testCon", "src/codegenerating/");
-		assertTrue(isCompilableJava(generatedCode1, "BuiltGui"));
+		assertTrue(isCompilableJava(generatedCode1, "testCon"));
 		System.out.println(generatedCode1);
 	}
 

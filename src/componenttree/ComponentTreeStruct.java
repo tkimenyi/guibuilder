@@ -22,19 +22,17 @@ public class ComponentTreeStruct {
 	public ContainerItem getRoot(){
 		return root;
 	}
-
-
 	//needs to be double-checked in brandon's code
 	public void addChild(ContainerItem parent, ComponentItem child, String type, Dimension s){
-		if(root == null){
-			root = parent;
-		}
-		size++;
+		//System.out.println(parent.getName() + " " + child.getName());
+		//put root here to make everything add to original panel
 		parent.addChildComponent(child);
+		size++;		
 		child.setType(type);
 		child.setPreferredSize(s);
 		child.setParent(parent);
 	}
+	
 	/*add child using border layout*/
 	public void addBorderChild(ContainerItem parent, ComponentItem child, String borderLocation, String type, Dimension s){
 		addChild(parent, child, type, s);
@@ -51,4 +49,5 @@ public class ComponentTreeStruct {
 		addGridChild(parent, child, xLoc, yLoc, type, size);
 		child.setGridSpan(rowSpan, colSpan);
 	}
+
 }

@@ -10,12 +10,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -98,8 +99,7 @@ public class UserGUI extends JInternalFrame{
 				parent.add(blankPanel, BorderLayout.CENTER);
 				location = "center";
 			}
-			System.out.println("Added");
-			ComponentItem child = new ComponentItem(blankPanel, "JPanel",blankPanel.getSize());
+			ContainerItem child = new ContainerItem(blankPanel, "JPanel",blankPanel.getSize());
 			ContainerItem p = new ContainerItem(this, "JInternalFrame", this.getSize());				
 			tree.addBorderChild(p, child, location, "JPanel", blankPanel.getSize());
 			tree.getRoot().addChildComponent(child);			
@@ -117,7 +117,7 @@ public class UserGUI extends JInternalFrame{
 				blankPanel.setBackground(Color.gray);
 				blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));				
 				parent.add(blankPanel);
-				ComponentItem child = new ComponentItem(blankPanel, "JPanel", blankPanel.getSize());
+				ContainerItem child = new ContainerItem(blankPanel, "JPanel", blankPanel.getSize());
 				ContainerItem p = new ContainerItem(this, "JInternalFrame", this.getSize());
 				tree.addGridChild(p, child, i, j, "JPanel", blankPanel.getSize());
 				tree.getRoot().addChildComponent(child);
@@ -138,31 +138,38 @@ public class UserGUI extends JInternalFrame{
 		parent.setLayout(null);
 	}
 		
-	public void changeUserFrame(final Component c, Dimension d, String type){
+	public void changeUserFrame(final Resizable dropped, Dimension d, String type){
 		JPanel parent = new JPanel(null);
+		Resizable target = null;
+		boolean isRoot = true;
 		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
-			Resizable res = (Resizable) userPanel.getComponentAt(curLocation);
-			parent = (JPanel) res.getComp();
-			((Resizable) c).changeSize(parent.getSize());
+			target = (Resizable) userPanel.getComponentAt(curLocation);
+			System.out.println(target.getComp());
+			parent = (JPanel) target.getComp();
+		    dropped.changeSize(parent.getSize());
+			isRoot = false;
 		}
 		else{
 			parent = userPanel;
 		}		
-		if(parent != null){		
-			c.setBounds(curLocation.x,curLocation.y, d.width, d.height);
-			parent.add(c);
+		if(parent != null){
+			dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
+			parent.add(dropped);
 			if(d != null && type != null){
 				if(d.getHeight() == 0 && d.getWidth() == 0){
-					c.setPreferredSize(parent.getSize());
+					dropped.setPreferredSize(parent.getSize());
 				}else{
-					c.setPreferredSize(d);
+					dropped.setPreferredSize(d);
 				}
-				ContainerItem p = new ContainerItem(parent, type, d);
-				ComponentItem comp1 = new ComponentItem((JComponent) c, type, d);
-				comp1.setGridLocation(c.getBounds().x, c.getBounds().y);
-				tree.addChild(p, comp1, type, c.getSize());
+			if(isRoot){
+				tree.addChild(tree.getRoot(), dropped.getItem(), type, dropped.getSize());
 			}
-			repaint();
+			else{
+				tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());
+			}
+		
+			}
+			repaint();	
 			validate();
 			parent.setLayout(null);
 		}		
@@ -172,9 +179,11 @@ public class UserGUI extends JInternalFrame{
 		addMouseListener(new MouseAdapter() {
 	        public void mousePressed(MouseEvent me) {
 	          requestFocus();
-	          c.repaint();
+	          dropped.repaint();
 	        }
 	      });
+
+
 	}
 	
 	public void setCurLocation(int x, int y){

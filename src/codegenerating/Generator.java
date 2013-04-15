@@ -1,6 +1,7 @@
 package codegenerating;
 import componenttree.ComponentItem;
 import componenttree.ContainerItem;
+import gui.Resizable;
 import gui.ResizableBorder;
 
 import java.awt.BorderLayout;
@@ -178,7 +179,7 @@ public class Generator {
 	
 	//handles containers
 	public StringBuilder getContainerCode(ContainerItem item){
-		LayoutManager layout= ((ContainerItem)item).getLayout();
+		LayoutManager layout= item.getLayout();
 		StringBuilder res = new StringBuilder();
 		String parentName = item.getName().toLowerCase();
 		String layoutType = "";
@@ -215,6 +216,7 @@ public class Generator {
 	//code for the entire tree
 	public StringBuilder getComponentCode(ComponentItem item){
 		StringBuilder res = new StringBuilder();
+		System.out.println(item.getName());
 		ContainerItem parent = item.getParent();
 		if(parent == null){			
 			res.append(getDeclarationPanel(item));			
@@ -223,6 +225,7 @@ public class Generator {
 			res.append("\t" + "\t");
 		}
 		else{
+			System.out.println("Parent" + item.getParent().getName());
 			res.append(getDeclaration(item));			
 			res.append("\t" + "\t");
 			res.append(getBoundStmt(item));			
@@ -241,7 +244,12 @@ public class Generator {
 			ComponentItem child;
 			while(children.hasNext()){
 				child = children.next();
-				res.append(getComponentCode(child));
+				if(child instanceof ContainerItem){
+					res.append(getComponentCode((ContainerItem) child));
+				}
+				else{
+					res.append(getComponentCode(child));
+				}
 			}
 			res.append(getContainerCode((ContainerItem) item));
 		}

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -16,13 +17,22 @@ import javax.swing.JTextField;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import componenttree.ComponentItem;
+import componenttree.ContainerItem;
+
 //Online Source: http://zetcode.com/tutorials/javaswingtutorial/resizablecomponent/
 
 @SuppressWarnings("serial")
 public class Resizable extends JComponent
 {
 	private int magicNumber = 27;
-	private Component c;
+	
+	//These Items wrap this resizable.
+	private ComponentItem compitem;
+	private ContainerItem contitem;
+	
+	//this resizable wraps this component.
+	private Component component;
 	private double sizex, sizey;
 
 	
@@ -31,7 +41,6 @@ public class Resizable extends JComponent
 		this(comp, new ResizableBorder(8));
 		sizex = s.getWidth();
 		sizey = s.getHeight();
-
 	}
 
 	public Resizable(Component comp, ResizableBorder border)
@@ -41,7 +50,14 @@ public class Resizable extends JComponent
 		addMouseListener(resizeListener);
 		addMouseMotionListener(resizeListener);
 		setBorder(border);
-		c = comp;
+		component = comp;
+	}
+	
+	public void setContainerItem(ContainerItem item){
+		contitem = item;
+	}
+	public void setComponentItem(ComponentItem item){
+		compitem = item;
 	}
 	
 	public void changeSize(Dimension xy){
@@ -49,29 +65,41 @@ public class Resizable extends JComponent
 		sizey = xy.getHeight();
 	}
 
-	public Component getComp()
+	//I know this is weird. One should always be null when the other is not.
+	public ComponentItem getItem(){
+		return contitem != null ? contitem : compitem;
+	}
+	public ComponentItem getCompItem()
 	{
-		return c;
+		return compitem;
+	}
+	
+	public Component getComp(){
+		return component;
+	}
+	
+	public ContainerItem getContItem(){
+		return contitem;
 	}
 
 	@SuppressWarnings("deprecation")
 	public String getTextForGen()
 	{
-		if (c instanceof JButton)
+		if (component instanceof JButton)
 		{
-			return ((JButton) c).getText();
+			return ((JButton) component).getText();
 		}
-		if (c instanceof JTextField)
+		if (component instanceof JTextField)
 		{
-			return ((JTextField) c).getText();
+			return ((JTextField) component).getText();
 		}
-		if (c instanceof JTextArea)
+		if (component instanceof JTextArea)
 		{
-			return ((JTextArea) c).getText();
+			return ((JTextArea) component).getText();
 		}
-		if (c instanceof JPasswordField)
+		if (component instanceof JPasswordField)
 		{
-			return ((JPasswordField) c).getText();
+			return ((JPasswordField) component).getText();
 		}
 		return "";
 	}

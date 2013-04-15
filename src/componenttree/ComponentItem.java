@@ -16,9 +16,10 @@ public class ComponentItem {
 	private JComponent component;
 	private Point gridLocation;
 	private Point gridSpan;
-	private String borderLocation = "";
+	private String borderLocation = "North";
 	private ContainerItem parent;
 	private static ComponentsPanel panel = new ComponentsPanel();
+	private String name;
 
 	private static HashMap<String, Integer> varNames = new HashMap<String, Integer>();
 	static{
@@ -45,10 +46,11 @@ public class ComponentItem {
 		parent = null;
 		instanceCounter = varNames.get(type) + 1;
 		varNames.put(type, instanceCounter);
+		name = type + instanceCounter;
 		setPreferredSize(s);
 	}
 	
-	public String getName(){return type + instanceCounter;}
+	public String getName(){return name;}
 	
 	public String getType(){return type;}
 	
@@ -82,7 +84,16 @@ public class ComponentItem {
 	
 	public Border getBorder() {return component.getBorder();}
 	
-	public String getText(){		
-		return ((Resizable) component).getTextForGen();
+	public String getText(){
+		if(component instanceof Resizable){
+			return  ((Resizable) component).getTextForGen();
+		}
+		return "";
+	}
+
+	public void setLoc(int x, int y)
+	{
+		component.setLocation(x, y);
+		
 	}
 }

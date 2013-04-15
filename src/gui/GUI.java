@@ -31,6 +31,9 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import componenttree.ComponentItem;
+import componenttree.ContainerItem;
+
 import codegenerating.Generator;
 
 
@@ -210,6 +213,10 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	
 	private void generateUserGUI(String saveasName, String saveDir){
 		if(saveasName.length() >= 1){
+			java.util.Iterator<ComponentItem> it = curFrame.getTreeStruct().getRoot().iterator();
+			while(it.hasNext()){
+				System.out.println(it.next().getBounds());
+			}
 			gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
 			gen.addToFrame(curFrame.getTreeStruct().getRoot());			
 			gen.addCode(curFrame.getName(), saveasName);
@@ -425,13 +432,17 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				Component c = comps.get(compName);
 				Dimension d = compPanel.getDimension(compName);
 				final Resizable resizer = new Resizable(c, curFrame.getSize());
+				if(c instanceof JPanel)
+				{
+					resizer.setContainerItem(new ContainerItem(resizer, compName, d));
+				}
+				else
+				{
+					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
+				}	
 				curFrame.changeUserFrame(resizer, d, compName);
 				updateGUI();				
 				new RightClickMenu(resizer, resizer.getComp(),curFrame, compName.equals("JPanel"));				
-			}
-			else if(component instanceof JComponent){			
-				curFrame.changeUserFrame(component, null, null);
-				updateGUI();
 			}
 			oldContainer.validate();
 			oldContainer.repaint();
