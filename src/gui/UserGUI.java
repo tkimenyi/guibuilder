@@ -32,10 +32,10 @@ public class UserGUI extends JInternalFrame{
 	private Point curLocation;
 	private ArrayList<JLabel> addedComponentsList;
 	private boolean saved;
-	public UserGUI(String name) {
+	public UserGUI(String name) { 
 		super(name, false,false,false,false);
 		setSize(550, 600);
-		setVisible(true);		
+		setVisible(true);	
 		userPanel = new JPanel(null);
         userPanel.setPreferredSize(new Dimension(550, 600));
         userPanel.setBackground(Color.white);

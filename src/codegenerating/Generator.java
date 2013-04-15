@@ -30,14 +30,16 @@ public class Generator {
 	private StringBuilder allCode;
 	private StringBuilder codeOntoFrame;
 	private BufferedWriter writer;
-	
+
 	public Generator(){
 		 generatedLines= new ArrayList<String>();
 		 codeToAdd= new StringBuilder();
 		 codeToDeclare= new StringBuilder();
 		 codeOntoFrame= new StringBuilder();
 		 allCode = new StringBuilder();
+
 	}
+	
 	
 	//put the code in the file
 	public void generateFile(String code, String filename, String savedir){		
@@ -46,6 +48,7 @@ public class Generator {
 			if (codeFile.exists()){
 				codeFile.delete();
 			}
+			 System.out.println("hello java");
 			codeFile.createNewFile();
 			generatedLines= new ArrayList<String>();
 			codeToAdd= new StringBuilder();

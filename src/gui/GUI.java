@@ -407,6 +407,8 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	public void dropTargetDrag(DropTargetDragEvent dtde) {
 		dtde.acceptDrag(dtde.getDropAction());
 	}
+	
+	
 	//this is all the action of drag and drop right here. 
 	public void drop(DropTargetDropEvent dtde) {
 		dtde.acceptDrop(dtde.getDropAction());		
@@ -436,6 +438,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			curFrame.validate();
 			curFrame.repaint();
 			updateGUI();
+			System.out.println("component name"+ component.getName()+ "the size of the component" + component.getSize() );
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

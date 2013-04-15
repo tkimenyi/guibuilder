@@ -25,6 +25,7 @@ public class Resizable extends JComponent
 	private Component c;
 	private double sizex, sizey;
 
+	
 	public Resizable(Component comp, Dimension s)
 	{
 		this(comp, new ResizableBorder(8));

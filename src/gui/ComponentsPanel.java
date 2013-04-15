@@ -9,8 +9,7 @@ import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
 public class ComponentsPanel extends JPanel {		
-       private ComponentsMap cmap;    
-        
+       	private ComponentsMap cmap;    
         protected JPanel containers, layouts, controls, menus;
         public ComponentsPanel(){
                 this.containers = new JPanel();
@@ -19,6 +18,7 @@ public class ComponentsPanel extends JPanel {
                 cmap = new ComponentsMap();  
                 layComponents();
         }
+        
         
         public ComponentsMap createNewMap(){
         	cmap = new ComponentsMap();
@@ -41,11 +41,13 @@ public class ComponentsPanel extends JPanel {
         	for(int i = 0; i < cmap.getContainers().length; i++){
         		if(compName.equals(cmap.getContainers()[i])){
         			ret = cmap.getConatinerDimension()[i];
+        			System.out.println("do we get here");
         		}
         	}
         	for(int i = 0; i < cmap.getControls().length; i++){
         		if(compName.equals(cmap.getControls()[i])){
         			ret = cmap.getControlsDimension()[i];
+        			System.out.println("or here");
         		}
         	}
 			return ret;
