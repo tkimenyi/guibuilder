@@ -49,7 +49,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private JSplitPane split;
         private JTabbedPane userTab;
         private Generator gen;
-        private String SavingDirectory = System.getProperty("user.dir") + "/src/codegenerating";
+        private String SavingDirectory = System.getProperty("user.dir") + "\\src\\codegenerating";
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
 		static {
@@ -218,10 +218,9 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				System.out.println(it.next().getBounds());
 			}
 			gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
-			gen.addToFrame(curFrame.getTreeStruct().getRoot());			
-			gen.addCode(curFrame.getName(), saveasName);
-			String code = gen.getCode();
-			gen.generateFile(code, saveasName, saveDir);
+			gen.addToFrame(curFrame.getTreeStruct().getRoot());		
+			String code = gen.getCode(curFrame.getName(), saveasName);
+			gen.putCodeInFile(code, saveasName, saveDir);
 		}
 		else{
 			String filename = JOptionPane.showInputDialog("What would you like to name your file?");		
@@ -230,10 +229,9 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			}	
 			else{
 				gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
-				gen.addToFrame(curFrame.getTreeStruct().getRoot());			
-				gen.addCode(curFrame.getName(), filename);
-				String code = gen.getCode();
-				gen.generateFile(code, filename, saveDir);
+				gen.addToFrame(curFrame.getTreeStruct().getRoot());	
+				String code = gen.getCode(curFrame.getName(), filename);
+				gen.putCodeInFile(code, filename, saveDir);
 			}
 		}
 	}

@@ -17,33 +17,30 @@ import javax.swing.border.Border;
 
 
 public class Generator {	
-	private String packageName = "package codegenerating;";
 	private final String import1 = "import javax.swing.*;";
 	private final String import2 = "import java.awt.*;";
-	private String className = "public class";
+	private final String classHeader = "public class";
 	private final String closingBracket="}";
 	private final String mainMethod = "public static void main(String[] args){"; 
 	private final String mainFrameDeclaration = "JFrame frame = new JFrame(";
 	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
-	private ArrayList<String> generatedLines; 
+	
+	private String packageName = "codegenerating;";
 	private StringBuilder codeToDeclare;
 	private StringBuilder codeToAdd;
-	private StringBuilder allCode;
 	private StringBuilder codeOntoFrame;
-	private BufferedWriter writer;
 
 	public Generator(){
-		 generatedLines= new ArrayList<String>();
 		 codeToAdd= new StringBuilder();
 		 codeToDeclare= new StringBuilder();
 		 codeOntoFrame= new StringBuilder();
-		 allCode = new StringBuilder();
-
 	}
 	
+	public void setPackage(String pack) {
+		packageName = pack;
+	}
 	
-	//put the code in the file
-	public void generateFile(String code, String filename, String savedir){		
+	public void putCodeInFile(String code, String filename, String savedir){		
 		try{
 			File codeFile = new File(savedir + '/' + filename + ".java");			
 			if (codeFile.exists()){
@@ -51,48 +48,34 @@ public class Generator {
 			}
 			 System.out.println("hello java");
 			codeFile.createNewFile();
-			generatedLines= new ArrayList<String>();
 			codeToAdd= new StringBuilder();
 			codeToDeclare= new StringBuilder();
 			codeOntoFrame= new StringBuilder();
-			allCode = new StringBuilder();
 			
 			FileWriter fw = new FileWriter(codeFile.getAbsoluteFile());
-			writer = new BufferedWriter(fw);
+			BufferedWriter writer = new BufferedWriter(fw);
 			writer.append(code);
 			writer.close();
 		}catch (IOException e){
 			e.printStackTrace();
 		}
 	}
-	
-	//check if a variable is declared
-		public boolean isDeclared(String componentName, String componentType){
-			String toAdd = componentType + " "+ componentName + "=" + "new" + " " + componentType + "();";
-			for(String s: generatedLines){
-				if((s.equals(toAdd))){
-					return true;
-				}
-			}
-			return false;
+
+	public void addVarDeclarations(String componentName, String componentType ){
+		String declare = componentType + " "+ componentName + "=" + "new" + " " + componentType + "();\n";
+		if(!codeToDeclare.toString().contains(declare)){
+			codeToDeclare.append(declare);
 		}
-	
-	// add declarations of variables
-		public void addDeclarations(String componentName, String componentType ){
-			String declare = componentType + " "+ componentName + "=" + "new" + " " + componentType + "();\n";
-			if(!(isDeclared(componentName, componentType))){
-				codeToDeclare.append(declare);
-			}
-		}
-	
-	// array list of generated lines of code
-	public void addCode(String guiname, String filename){
-		generatedLines.add(packageName);
+	}
+
+	private ArrayList<String> generateLines(String guiname, String filename){
+		ArrayList<String> generatedLines = new ArrayList<String>();
+		generatedLines.add("package " + packageName);
 		generatedLines.add("");
 		generatedLines.add(import1);
 		generatedLines.add(import2);
 		generatedLines.add("");
-		generatedLines.add(className + " " + filename + " extends JPanel {");
+		generatedLines.add(classHeader + " " + filename + " extends JPanel {");
 		generatedLines.add("\t" + mainMethod);
 		generatedLines.add("\t" + "\t" + mainFrameDeclaration + '"' + guiname  + '"' + ");");
 		generatedLines.add("\t" + "\t" + codeToDeclare.toString());
@@ -100,19 +83,20 @@ public class Generator {
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
 		generatedLines.add("\t" + closingBracket);
 		generatedLines.add(closingBracket);
+		return generatedLines;
 	}
 	
-	//get the code to put on the file
-	public String getCode(){
+	public String getCode(String guiname, String filename){
+		ArrayList<String> generatedLines = generateLines(guiname, filename);
+		StringBuilder allCode = new StringBuilder();
 		for(int i=0;i<generatedLines.size();i++){
 			allCode.append((generatedLines.get(i))+"\n");
 		}
 		return allCode.toString();
 	}
 
-	// method generator for handling event 
-	public void methodGenerator(String methodName, String returnType){
-		String methodSignature = "public " + returnType + " " + methodName + "{ \n\n\n\n" + "}";
+	public void blankMethodGenerator(String methodName, String returnType){
+		String methodSignature = "public " + returnType + " " + methodName + "{ // User code here\n\n\n\n" + "}";
 		codeToAdd.append(methodSignature);
 	}
 	

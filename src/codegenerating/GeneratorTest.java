@@ -30,10 +30,9 @@ public class GeneratorTest {
 	@Test
 	public void test() {
 
-		gen.addDeclarations("button", "JButton");
-		gen.addCode("test", "test");
-		String generatedCode = gen.getCode();
-		gen.generateFile(generatedCode, "test", "src/codegenerating/");
+		gen.addVarDeclarations("button", "JButton");
+		String generatedCode = gen.getCode("test", "test");
+		gen.putCodeInFile(generatedCode, "test", "src/codegenerating/");
 
 		try {
 			BufferedReader reader  = new BufferedReader(new FileReader("src/codegenerating/test.java"));
@@ -85,9 +84,8 @@ public class GeneratorTest {
 		
 		
 		gen1.setTreeGenerated(mng.getRoot());
-		gen1.addCode("testConnection", "testCon");
-		String generatedCode1 = gen1.getCode();
-		gen1.generateFile(generatedCode1, "testCon", "src/codegenerating/");
+		String generatedCode1 = gen1.getCode("testConnection", "testCon");
+		gen1.putCodeInFile(generatedCode1, "testCon", "src/codegenerating/");
 		assertTrue(isCompilableJava(generatedCode1, "testCon"));
 		System.out.println(generatedCode1);
 	}
