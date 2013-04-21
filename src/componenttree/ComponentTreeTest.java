@@ -18,8 +18,6 @@ public class ComponentTreeTest {
 		ContainerItem panel2 = new ContainerItem(new JPanel(), "JPanel",new Dimension(100,100));
 		ContainerItem panel3 = new ContainerItem(new JPanel(), "JPanel", new Dimension(23, 45));
 		ContainerItem panel4 = new ContainerItem(new JPanel(), "JPanel", new Dimension(45, 45));
-		ComponentItem panel5 = new ComponentItem(new JPanel(), "JPanel",new Dimension(100,100));
-		ComponentItem panel6 = new ComponentItem(new JPanel(), "JPanel",new Dimension(100,100));
 		
 		ControlItem area1 = new ControlItem(new JTextArea(), "JTextArea",new Dimension(100,100));
 
@@ -39,7 +37,6 @@ public class ComponentTreeTest {
 		manager.addBorderChild(panel1, panel4, "west", "JPanel", new Dimension(100,100));
 		assertTrue(panel4.getBorderLocation() == "west");
 		assertTrue(panel4.getParent() == panel1);
-		Point gridPoint = new Point(50, 50);
 		assertTrue(panel1.removeChildComponent(panel4) ==true);
 		
 		assertTrue(manager.getRoot() == root);

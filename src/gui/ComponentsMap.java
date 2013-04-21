@@ -58,7 +58,7 @@ public class ComponentsMap extends HashMap<String, Component> {
              
      private String[] menuNames = {"JMenuBar", "JCheckBoxMenuItem", "JMenu","JMenuItem","JPopupMenu", 
      							  "JRadioButtonMenuItem"};
-     private Component[] menus = {new JCheckBoxMenuItem(), new JMenu(), new JMenuBar(), new JMenuItem(),
+     private Component[] menus = {new JMenuBar(),new JCheckBoxMenuItem(), new JMenu(), new JMenuItem(),
 				 new JPopupMenu(), new JRadioButtonMenuItem()}; 
 	
 	public ComponentsMap(){

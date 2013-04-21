@@ -49,7 +49,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private JSplitPane split;
         private JTabbedPane userTab;
         private Generator gen;
-        private String SavingDirectory = System.getProperty("user.dir") + "\\src\\codegenerating";
+        private String SavingDirectory = System.getProperty("user.dir") + "/src/codegenerating";
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
 		static {
@@ -320,7 +320,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
             addDragSourceListener(curLabel);
             compPanel.addLabelToControls(controlComp[i],curLabel);
 		}
-		for(int i = 0; i < menus.length; i++){
+		for(int i = 0; i < 1; i++){
             final JLabel curLabel = new JLabel(menus[i]);
             addDragSourceListener(curLabel);
             compPanel.addLabelToMenus(menuComp[i], curLabel);
@@ -430,24 +430,37 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				Component c = comps.get(compName);
 				Dimension d = compPanel.getDimension(compName);
 				final Resizable resizer = new Resizable(c, curFrame.getSize());
-				if(c instanceof JPanel)
-				{
-					resizer.setContainerItem(new ContainerItem(resizer, compName, d));
-				}
-				else
-				{
+				if(c instanceof JMenuBar){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
-				}	
-				curFrame.changeUserFrame(resizer, d, compName);
-				updateGUI();				
-				new RightClickMenu(resizer, resizer.getComp(),curFrame, compName.equals("JPanel"));				
+					curFrame.addMenuBar(resizer, d, compName);
+					updateGUI();
+					String[] menus = compPanel.getCmap().getMenus();
+					Component[] menuComp = compPanel.getCmap().getMenuComps();
+					for(int i = 2; i < menus.length; i++){
+			            final JLabel curLabel = new JLabel(menus[i]);
+			            addDragSourceListener(curLabel);
+			            compPanel.addLabelToMenus(menuComp[i], curLabel);
+					}
+				}
+				else{
+					if(c instanceof JPanel)
+					{
+						resizer.setContainerItem(new ContainerItem(resizer, compName, d));
+					}
+					else
+					{
+						resizer.setComponentItem(new ComponentItem(resizer, compName, d));
+					}	
+					curFrame.changeUserFrame(resizer, d, compName);
+					updateGUI();				
+					new RightClickMenu(resizer, resizer.getComp(),curFrame, compName.equals("JPanel"));	
+				}
 			}
 			oldContainer.validate();
 			oldContainer.repaint();
 			curFrame.validate();
 			curFrame.repaint();
 			updateGUI();
-			System.out.println("component name"+ component.getName()+ "the size of the component" + component.getSize() );
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

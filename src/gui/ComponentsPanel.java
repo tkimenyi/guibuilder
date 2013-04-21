@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 @SuppressWarnings("serial")
 public class ComponentsPanel extends JPanel {		
        	private ComponentsMap cmap;    
-        protected JPanel containers, layouts, controls, menus;
+        protected JPanel containers,controls, menus;
         public ComponentsPanel(){
                 this.containers = new JPanel();
                 this.controls = new JPanel();
@@ -41,15 +41,13 @@ public class ComponentsPanel extends JPanel {
         	for(int i = 0; i < cmap.getContainers().length; i++){
         		if(compName.equals(cmap.getContainers()[i])){
         			ret = cmap.getConatinerDimension()[i];
-        			System.out.println("do we get here");
         		}
         	}
         	for(int i = 0; i < cmap.getControls().length; i++){
         		if(compName.equals(cmap.getControls()[i])){
         			ret = cmap.getControlsDimension()[i];
-        			System.out.println("or here");
         		}
-        	}
+        	}        	
 			return ret;
         }
         
@@ -67,7 +65,6 @@ public class ComponentsPanel extends JPanel {
             TitledBorder contBorder = BorderFactory.createTitledBorder("Containers");
             contBorder.setTitleJustification(TitledBorder.RIGHT);
             containers.setBorder(contBorder);
-            
             JScrollPane containerScroller = new JScrollPane(containers);
             
             menus.setLayout(new BoxLayout(menus, BoxLayout.Y_AXIS));
@@ -76,16 +73,14 @@ public class ComponentsPanel extends JPanel {
             menus.setBorder(menuBorder);
             JScrollPane menuScroller = new JScrollPane(menus);
 
-            JScrollPane layoutScroller = new JScrollPane(layouts);
             controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
-            TitledBorder controlBorder = BorderFactory.createTitledBorder("Control Components");
+            TitledBorder controlBorder = BorderFactory.createTitledBorder("Controls");
             controlBorder.setTitleJustification(TitledBorder.RIGHT);
             controls.setBorder(controlBorder);
             
             JScrollPane controlScroller = new JScrollPane(controls);
             this.add(containerScroller);
             this.add(menuScroller);
-            this.add(layoutScroller);
             this.add(controlScroller);
     }
 }

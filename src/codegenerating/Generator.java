@@ -1,7 +1,6 @@
 package codegenerating;
 import componenttree.ComponentItem;
 import componenttree.ContainerItem;
-import gui.Resizable;
 import gui.ResizableBorder;
 
 import java.awt.BorderLayout;

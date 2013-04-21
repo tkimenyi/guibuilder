@@ -10,19 +10,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import componenttree.ComponentItem;
 import componenttree.ComponentTreeStruct;
 import componenttree.ContainerItem;
 
@@ -144,13 +143,12 @@ public class UserGUI extends JInternalFrame{
 		boolean isRoot = true;
 		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
 			target = (Resizable) userPanel.getComponentAt(curLocation);
-			System.out.println(target.getComp());
 			parent = (JPanel) target.getComp();
 		    dropped.changeSize(parent.getSize());
 			isRoot = false;
 		}
 		else{
-			parent = userPanel;
+			parent = (JPanel) userPanel.getComponentAt(curLocation);
 		}		
 		if(parent != null){
 			dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
@@ -208,5 +206,15 @@ public class UserGUI extends JInternalFrame{
 	
 	public void addToCompList(JLabel added){
 		addedComponentsList.add(added);
+	}
+	
+	public void addMenuBar(Resizable comp, Dimension d, String type){
+		JMenuBar c = (JMenuBar) comp.getComp();
+		c.add(new JMenu("File"));
+		userPanel.setLayout(new BorderLayout());
+		userPanel.add(c, BorderLayout.NORTH);
+		repaint();
+		revalidate();
+		tree.addChild(tree.getRoot(), comp.getItem(), type, c.getSize());
 	}
 }
