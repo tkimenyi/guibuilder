@@ -88,8 +88,11 @@ public class Generator {
 		generatedLines.add("");
 		generatedLines.add(import1);
 		generatedLines.add(import2);
-		generatedLines.add(import3);
-		generatedLines.add(import4);
+		if(codeToAction.length() > 1){
+			codeToAction.append("}");
+			generatedLines.add(import3);
+			generatedLines.add(import4);
+		}
 		generatedLines.add("");
 		generatedLines.add(classHeader + " " + filename + extend + "{");
 		generatedLines.add(instanceVariables.toString());
@@ -99,8 +102,8 @@ public class Generator {
 		generatedLines.add("\t\t" + codeToAdd.toString());
 		generatedLines.add("\t\t" + giveActList.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
-		generatedLines.add("\t" + closingBracket);
-		generatedLines.add("\t" + codeToAction + "\n\t}");
+		generatedLines.add("\t" + closingBracket);		
+		generatedLines.add("\t" + codeToAction + "\n\t");
 		generatedLines.add("\t" + mainMethod);
 		generatedLines.add("\t\t" + filename + " run = new " + filename + "();");
 		generatedLines.add("\t\trun.setVisible(true);");
