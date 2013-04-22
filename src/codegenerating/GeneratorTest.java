@@ -80,14 +80,14 @@ public class GeneratorTest {
 		mng.setRoot(root);
 		mng.addChild(root, button, button.getType(), null);
 		mng.addChild(root,textarea,textarea.getType(),null);	
-		mng.addChild(root, textfield, textfield.getType(), null);
-		
+		mng.addChild(root, textfield, textfield.getType(), null);		
 		
 		gen1.setTreeGenerated(mng.getRoot());
 		String generatedCode1 = gen1.getCode("testConnection", "testCon");
 		gen1.putCodeInFile(generatedCode1, "testCon", "src/codegenerating/");
 		assertTrue(isCompilableJava(generatedCode1, "testCon"));
 		System.out.println(generatedCode1);
+		gen1.addToFrame(mng.getRoot());
 	}
 
 	

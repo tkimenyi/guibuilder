@@ -46,7 +46,7 @@ public class ComponentTreeTest {
 		assertTrue(root.getPreferredSize().getWidth() == 100);
 		assertTrue(panel1.getParent()==root);
 		String name = root.getName();
-		assertEquals(name, "JPanel1");
+		assertEquals(name, "jpanel1");
 		assertEquals(root.getPreferredSize(), new Dimension(100,100));
 		assertEquals(root.getType(), "JPanel");
 		root.setBorderLocation("north");

@@ -26,6 +26,7 @@ public class Generator {
 	private final String mainFrameDeclaration = "JFrame frame = new JFrame(";
 	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
 	private final String override = "@Override";
+	private String extend = " extends JPanel";
 	
 	private String packageName = "codegenerating;";
 	private StringBuilder codeToDeclare;
@@ -84,16 +85,14 @@ public class Generator {
 		generatedLines.add(import3);
 		generatedLines.add(import4);
 		generatedLines.add("");
-		generatedLines.add(classHeader + " " + filename + " extends JPanel implements ActionListener {");
+		generatedLines.add(classHeader + " " + filename + extend + "{");
 		generatedLines.add("\t" + mainMethod);
 		generatedLines.add("\t" + "\t" + mainFrameDeclaration + '"' + guiname  + '"' + ");");
 		generatedLines.add("\t" + "\t" + codeToDeclare.toString());
 		generatedLines.add("\t" + "\t" + codeToAdd.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
 		generatedLines.add("\t" + closingBracket);
-		generatedLines.add("\t" + override);
 		generatedLines.add("\t" + codeToAction);
-		generatedLines.add( "\t}");
 		generatedLines.add(closingBracket);
 		return generatedLines;
 	}
@@ -109,6 +108,8 @@ public class Generator {
 
 	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup){
 		if(yup){
+			extend += " implements ActionListener";
+			codeToAction.append("\t" + override);
 			String methodSignature = "public " + returnType + " " + methodName + usercode;
 			codeToAction.append(methodSignature);
 		}
