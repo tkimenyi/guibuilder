@@ -61,29 +61,27 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			}
 		}
         
-	public GUI(String name) throws FileNotFoundException{
+	public GUI() throws FileNotFoundException{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800,800);
         setLocation(200, 100);
         setTitle("Swing GUI Builder");
         setLayout(new BorderLayout());
         createComponentList(); 
-        createUsersGUI(name);
+        createUsersGUI();
         createMenu();
         gen = new Generator();
 	}
 	
-	private void createUsersGUI(String name){
-        userFrame = new UserGUI(name);                 
+	private void createUsersGUI(){
+        userFrame = new UserGUI();                 
         userTab = new JTabbedPane();
         userTab.add(userFrame);
         split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, userTab, compScroll);
         split.setDividerLocation(600);
         add(split);        
         curFrame = userFrame;
-        curFrame.setName(name);
         userTab.addChangeListener(this);
-		setTabName(name);
 		setUpTrashBin();
 	}
 	
@@ -183,7 +181,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		
 	private void newAction(){
 		String name = JOptionPane.showInputDialog("What do you want to name your GUI?");
-		UserGUI newFrame = new UserGUI(name);
+		UserGUI newFrame = new UserGUI();
 		userTab.add(newFrame);
 		userTab.getComponentAt(userTab.getSelectedIndex()).setName(name);
 		curFrame = newFrame;
@@ -246,6 +244,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         			generateUserGUI(f.getName(), SavingDirectory);
     				curFrame.changeSaved();
         			curFrame.setName(f.getName());
+        			setTabName(f.getName());
         		}
         		else{
         			saveFile();
@@ -320,7 +319,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
             addDragSourceListener(curLabel);
             compPanel.addLabelToControls(controlComp[i],curLabel);
 		}
-		for(int i = 0; i < 1; i++){
+		for(int i = 0; i < menus.length; i++){
             final JLabel curLabel = new JLabel(menus[i]);
             addDragSourceListener(curLabel);
             compPanel.addLabelToMenus(menuComp[i], curLabel);
@@ -422,8 +421,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			Component component = ((DragSourceContext) source).getComponent();
 			Container oldContainer = component.getParent();
 			curFrame.setCurLocation(dtde.getLocation().x, dtde.getLocation().y-75);	//the -75 offsets location of where we place the component			
-			if(component instanceof JLabel){
-				curFrame.addToCompList(((JLabel) component));
+			if(component instanceof JLabel){				
 				String compName = ((JLabel) component).getText();
 				ComponentsMap comp = compPanel.createNewMap();
 				HashMap<String, Component> comps = comp.getComponentsMap();
@@ -433,16 +431,22 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				if(c instanceof JMenuBar){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					curFrame.addMenuBar(resizer, d, compName);
+					updateGUI();					
+				}
+				if(c instanceof JMenu){
+					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
+					curFrame.addToCompList(((JLabel) component));
+					curFrame.addMenu(resizer);
+					updateGUI();					
+				}
+				if(c instanceof JMenuItem){
+					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
+					curFrame.addToCompList(((JLabel) component));
+					curFrame.addMenuItem(resizer);
 					updateGUI();
-					String[] menus = compPanel.getCmap().getMenus();
-					Component[] menuComp = compPanel.getCmap().getMenuComps();
-					for(int i = 2; i < menus.length; i++){
-			            final JLabel curLabel = new JLabel(menus[i]);
-			            addDragSourceListener(curLabel);
-			            compPanel.addLabelToMenus(menuComp[i], curLabel);
-					}
 				}
 				else{
+					curFrame.addToCompList(((JLabel) component));
 					if(c instanceof JPanel)
 					{
 						resizer.setContainerItem(new ContainerItem(resizer, compName, d));
@@ -453,7 +457,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 					}	
 					curFrame.changeUserFrame(resizer, d, compName);
 					updateGUI();				
-					new RightClickMenu(resizer, resizer.getComp(),curFrame, compName.equals("JPanel"));	
+					new RightClickMenu(resizer,curFrame, compName.equals("JPanel"));	
 				}
 			}
 			oldContainer.validate();

@@ -15,7 +15,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
@@ -56,10 +55,8 @@ public class ComponentsMap extends HashMap<String, Component> {
      										 new Dimension(100,30),new Dimension(300,200),new Dimension(100,100),
      										 new Dimension(100,30),new Dimension(50,50), new Dimension(100,30)};
              
-     private String[] menuNames = {"JMenuBar", "JCheckBoxMenuItem", "JMenu","JMenuItem","JPopupMenu", 
-     							  "JRadioButtonMenuItem"};
-     private Component[] menus = {new JMenuBar(),new JCheckBoxMenuItem(), new JMenu(), new JMenuItem(),
-				 new JPopupMenu(), new JRadioButtonMenuItem()}; 
+     private String[] menuNames = {"JMenuBar", "JCheckBoxMenuItem", "JMenu","JMenuItem","JRadioButtonMenuItem"};
+     private Component[] menus = {new JMenuBar(),new JCheckBoxMenuItem(), new JMenu(), new JMenuItem(), new JRadioButtonMenuItem()}; 
 	
 	public ComponentsMap(){
 		components = new HashMap<String, Component>();

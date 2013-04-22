@@ -12,17 +12,18 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
+
 @SuppressWarnings("serial")
 public class RightClickMenu extends JPopupMenu implements MouseListener,ActionListener {
 	private Component comp;
-	private Component compd;
+	private Resizable resizable;
 	private JPopupMenu pop; 
 	private JMenuItem resize, delete,chooseLayout, setText;
 	private UserGUI userGUI;
 
-	public RightClickMenu(Component c, Component d, UserGUI g, boolean isJPanel){
-		comp = c;
-		compd = d;
+	public RightClickMenu(Resizable c, UserGUI g, boolean isJPanel){
+		comp = c.getComp();
+		resizable = c;
 		userGUI = g;
 		pop = new JPopupMenu();
 		resize = new JMenuItem("Resize");
@@ -32,7 +33,7 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		comp.addMouseListener(this);
 		resize.addActionListener(this);
 		delete.addActionListener(this);
-		if(compd instanceof JButton){
+		if(comp instanceof JButton){
 			setText = new JMenuItem("Set Text");
 			pop.add(setText);
 			setText.addActionListener(this);
@@ -89,7 +90,7 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		}
 		if(evt.getSource() == setText){			
 			String s = JOptionPane.showInputDialog("Please give me the name");
-			((JButton) compd).setText(s);			
+			((JButton) comp).setText(s);			
 		}
 	}
 	
@@ -111,7 +112,7 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 	}
 	
 	public void deleteAction(){
-		userGUI.removeComponent(comp);
+		userGUI.removeComponent(resizable);
 	}
 	
 	

@@ -1,18 +1,12 @@
 package gui;
 import java.io.FileNotFoundException;
-import javax.swing.JOptionPane;
 
 
 public class Main {
 	
- public static void main(String[] args) throws FileNotFoundException{	 
-	 String GUIname = JOptionPane.showInputDialog("Please name your GUI");
-	 if(GUIname == null || GUIname.length() < 0){
-		 System.exit(0);
-	 }
-	 else{
-		 GUI gui = new GUI(GUIname);
-		 gui.setVisible(true);
-	 }
+ public static void main(String[] args) throws FileNotFoundException{
+		 GUI gui = new GUI();
+		 gui.setVisible(true); 
+ 
  }
 }

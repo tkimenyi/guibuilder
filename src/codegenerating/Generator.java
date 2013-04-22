@@ -18,11 +18,14 @@ import javax.swing.border.Border;
 public class Generator {	
 	private final String import1 = "import javax.swing.*;";
 	private final String import2 = "import java.awt.*;";
+	private final String import3 = "import java.awt.event.ActionEvent;";
+	private final String import4 = "import java.awt.event.ActionListener;";
 	private final String classHeader = "public class";
 	private final String closingBracket="}";
 	private final String mainMethod = "public static void main(String[] args){"; 
 	private final String mainFrameDeclaration = "JFrame frame = new JFrame(";
 	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
+	private final String override = "@Override";
 	
 	private String packageName = "codegenerating;";
 	private StringBuilder codeToDeclare;
@@ -45,7 +48,6 @@ public class Generator {
 			if (codeFile.exists()){
 				codeFile.delete();
 			}
-			 System.out.println("hello java");
 			codeFile.createNewFile();
 			codeToAdd= new StringBuilder();
 			codeToDeclare= new StringBuilder();
@@ -73,14 +75,18 @@ public class Generator {
 		generatedLines.add("");
 		generatedLines.add(import1);
 		generatedLines.add(import2);
+		generatedLines.add(import3);
+		generatedLines.add(import4);
 		generatedLines.add("");
-		generatedLines.add(classHeader + " " + filename + " extends JPanel {");
+		generatedLines.add(classHeader + " " + filename + " extends JPanel implements ActionListener {");
 		generatedLines.add("\t" + mainMethod);
 		generatedLines.add("\t" + "\t" + mainFrameDeclaration + '"' + guiname  + '"' + ");");
 		generatedLines.add("\t" + "\t" + codeToDeclare.toString());
 		generatedLines.add("\t" + "\t" + codeToAdd.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
 		generatedLines.add("\t" + closingBracket);
+		generatedLines.add("\t" + override);
+		generatedLines.add("\t" + blankMethodGenerator("actionPerformed(ActionEvent evt) ", "void"));
 		generatedLines.add(closingBracket);
 		return generatedLines;
 	}
@@ -94,9 +100,9 @@ public class Generator {
 		return allCode.toString();
 	}
 
-	public void blankMethodGenerator(String methodName, String returnType){
-		String methodSignature = "public " + returnType + " " + methodName + "{ // User code here\n\n\n\n" + "}";
-		codeToAdd.append(methodSignature);
+	public String blankMethodGenerator(String methodName, String returnType){
+		String methodSignature = "public " + returnType + " " + methodName + "{ \n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n" + "\t}";
+		return methodSignature;
 	}
 	
 	//sets the properties from the tree structure

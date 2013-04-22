@@ -19,6 +19,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -32,8 +33,8 @@ public class UserGUI extends JInternalFrame{
 	private Point curLocation;
 	private ArrayList<JLabel> addedComponentsList;
 	private boolean saved;
-	public UserGUI(String name) { 
-		super(name, false,false,false,false);
+	public UserGUI() { 
+		super("", false,false,false,false);
 		setSize(550, 600);
 		setVisible(true);	
 		userPanel = new JPanel(null);
@@ -194,8 +195,9 @@ public class UserGUI extends JInternalFrame{
 		validate();		
 	}
 	
-	public void removeComponent(Component c){
+	public void removeComponent(Resizable c){		
 		c.getParent().remove(c);
+		tree.removeChild(c.getCompItem());
 		repaint();
 		validate();
 	}
@@ -216,5 +218,29 @@ public class UserGUI extends JInternalFrame{
 		repaint();
 		revalidate();
 		tree.addChild(tree.getRoot(), comp.getItem(), type, c.getSize());
+	}
+	
+	public void addMenu(Resizable comp){		
+		if(userPanel.getComponentAt(curLocation) instanceof Resizable || userPanel.getComponentAt(curLocation) instanceof JPanel){
+			JOptionPane.showMessageDialog(this, "You cannot add that here");
+		}
+		else{
+			String name = JOptionPane.showInputDialog("What would you like to call your menu?");
+			JMenu menu = new JMenu(name);
+			JMenuBar mb = (JMenuBar) userPanel.getComponentAt(curLocation);
+			mb.add(menu);
+		}
+	}
+	
+	public void addMenuItem(Resizable comp){
+		if(userPanel.getComponentAt(curLocation) instanceof JMenu){
+			String name = JOptionPane.showInputDialog("What do you want to call your menu item?");
+			JMenuItem item = new JMenuItem(name);
+			JMenu m = (JMenu) userPanel.getComponentAt(curLocation);
+			m.add(item);
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "You cannot add that here");
+		}
 	}
 }

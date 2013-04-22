@@ -1,5 +1,7 @@
 package componenttree;
 import java.awt.Dimension;
+import java.util.Iterator;
+
 
 public class ComponentTreeStruct {
 
@@ -49,5 +51,8 @@ public class ComponentTreeStruct {
 		addGridChild(parent, child, xLoc, yLoc, type, size);
 		child.setGridSpan(rowSpan, colSpan);
 	}
-
+	
+	public void removeChild(ComponentItem c){
+		c.getParent().removeChildComponent(c);			
+	}
 }

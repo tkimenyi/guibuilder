@@ -18,9 +18,9 @@ import javax.tools.ToolProvider;
 
 import org.junit.Test;
 
+import componenttree.ComponentItem;
 import componenttree.ComponentTreeStruct;
 import componenttree.ContainerItem;
-import componenttree.ControlItem;
 
 public class GeneratorTest {
 	Generator gen = new Generator();
@@ -74,9 +74,9 @@ public class GeneratorTest {
 	public void testConnection(){
 		ComponentTreeStruct mng= new ComponentTreeStruct();
 		ContainerItem root = new ContainerItem(new JPanel(), "JPanel",new Dimension(400,400));
-		ControlItem button = new ControlItem(new JButton(), "JButton",new Dimension(40,40));
-		ControlItem textarea = new ControlItem(new JTextArea(), "JTextArea",new Dimension(130,40));
-		ControlItem textfield = new ControlItem(new JTextArea(), "JTextField",new Dimension(140,30));
+		ComponentItem button = new ComponentItem(new JButton(), "JButton",new Dimension(40,40));
+		ComponentItem textarea = new ComponentItem(new JTextArea(), "JTextArea",new Dimension(130,40));
+		ComponentItem textfield = new ComponentItem(new JTextArea(), "JTextField",new Dimension(140,30));
 		mng.setRoot(root);
 		mng.addChild(root, button, button.getType(), null);
 		mng.addChild(root,textarea,textarea.getType(),null);	
