@@ -48,9 +48,9 @@ public class ComponentsMap extends HashMap<String, Component> {
      		 new JPasswordField("TextArea1"), new JProgressBar(), new JRadioButton(), new JScrollBar(),
 				 new JSeparator(), new JSlider(), new JSpinner(), new JTable(), new JTextArea("TextArea1"), new JTextPane(),
 				 new JToggleButton(), new JTextField("TextField")};
-     private Dimension[] controlDimensions = {new Dimension(100,30),new Dimension(50,50),new Dimension(100,30),
+     private Dimension[] controlDimensions = {new Dimension(150,50),new Dimension(50,50),new Dimension(150,50),
      										 new Dimension(100,100),new Dimension(200,400),
-     										 new Dimension(100,30),new Dimension(100,30),new Dimension(50,50),
+     										new Dimension(150,50),new Dimension(150,50),new Dimension(50,50),
      										 new Dimension(30,100),new Dimension(100,30),new Dimension(100,30),
      										 new Dimension(100,30),new Dimension(300,200),new Dimension(100,100),
      										 new Dimension(100,30),new Dimension(50,50), new Dimension(100,30)};

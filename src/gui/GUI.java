@@ -241,10 +241,11 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         if(f != null ) {
         	if(canSaveFile(f)) { 
         		if(f.getName().length() > 0){
-        			generateUserGUI(f.getName(), SavingDirectory);
-    				curFrame.changeSaved();
         			curFrame.setName(f.getName());
         			setTabName(f.getName());
+        			generateUserGUI(f.getName(), SavingDirectory);
+        			curFrame.changeSaved();        			
+        			
         		}
         		else{
         			saveFile();
@@ -433,13 +434,13 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 					curFrame.addMenuBar(resizer, d, compName);
 					updateGUI();					
 				}
-				if(c instanceof JMenu){
+				else if(c instanceof JMenu){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					curFrame.addToCompList(((JLabel) component));
 					curFrame.addMenu(resizer);
 					updateGUI();					
 				}
-				if(c instanceof JMenuItem){
+				else if(c instanceof JMenuItem){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					curFrame.addToCompList(((JLabel) component));
 					curFrame.addMenuItem(resizer);
