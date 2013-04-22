@@ -21,7 +21,6 @@ public class Generator {
 	private final String import3 = "import java.awt.event.ActionEvent;";
 	private final String import4 = "import java.awt.event.ActionListener;";
 	private final String classHeader = "public class";
-	private final String closingBracket="}";
 	private final String mainMethod = "public static void main(String[] args){\n"; 
 	private final String mainFrameDeclaration = "JFrame frame = new JFrame(";
 	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
@@ -102,15 +101,17 @@ public class Generator {
 		generatedLines.add("\t\t" + codeToAdd.toString());
 		generatedLines.add("\t\t" + giveActList.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
-		generatedLines.add("\t" + closingBracket);		
+		generatedLines.add("\t" + "}");		
 		generatedLines.add("\t" + codeToAction + "\n\t");
 		generatedLines.add("\t" + mainMethod);
 		generatedLines.add("\t\t" + filename + " run = new " + filename + "();");
 		generatedLines.add("\t\trun.setVisible(true);");
-		generatedLines.add("\t" + closingBracket);
-		generatedLines.add(closingBracket);
+		generatedLines.add("\t" + "}");
+		generatedLines.add("}");
 		return generatedLines;
 	}
+	
+
 	
 	public String getCode(String guiname, String filename){
 		ArrayList<String> generatedLines = generateLines(guiname, filename);
@@ -118,7 +119,30 @@ public class Generator {
 		for(int i=0;i<generatedLines.size();i++){
 			allCode.append((generatedLines.get(i))+"\n");
 		}
+		
 		return allCode.toString();
+	}
+	
+	//This will return a correctly tab-formatted string of code.
+	private String fixTabs(String code)
+	{	code = code.replace("\t", "");
+		int tabindex = 0;
+		StringBuilder builder = new StringBuilder();
+		String[] lines =  code.split("\n");
+		for (String line: lines){
+			
+			if (line.contains("}")){
+				tabindex--;
+			}
+			String s = "";
+			for (int i = 0; i < tabindex; i++)
+				s+="\t";
+			builder.append(s+line+"\n");	
+			if(line.contains("{")){
+				tabindex++;
+			}
+		}
+		return builder.toString();		
 	}
 
 	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup, String name){
@@ -127,11 +151,11 @@ public class Generator {
 			codeToAction.append(override + "\n");
 			String methodSignature = "\tpublic " + returnType + " " + methodName + usercode;
 			codeToAction.append(methodSignature);
-			giveActList.append(name + ".addActionListener(this);");
 		}
 		else{			
 			codeToAction.append(usercode);
 		}
+		giveActList.append(name + ".addActionListener(this);\n");
 	}
 	
 	public void blankMethodGenerator(String methodName, String returnType){

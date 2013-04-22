@@ -49,7 +49,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
         private JSplitPane split;
         private JTabbedPane userTab;
         private Generator gen;
-        private String SavingDirectory = System.getProperty("user.dir") + "/src/codegenerating";
+        private String SavingDirectory = System.getProperty("user.dir") + java.io.File.separator+"src"+java.io.File.separator+"codegenerating";
         static final DataFlavor[] dataflavor = { null };
 		Object object;			
 		static {
