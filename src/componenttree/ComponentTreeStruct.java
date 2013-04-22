@@ -25,8 +25,6 @@ public class ComponentTreeStruct {
 	}
 	//needs to be double-checked in brandon's code
 	public void addChild(ContainerItem parent, ComponentItem child, String type, Dimension s){
-		//System.out.println(parent.getName() + " " + child.getName());
-		//put root here to make everything add to original panel
 		parent.addChildComponent(child);
 		size++;		
 		child.setType(type);

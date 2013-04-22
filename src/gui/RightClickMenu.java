@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.LayoutManager;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -90,7 +92,23 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 			deleteAction();
 		}
 		if(evt.getSource() == chooseLayout){
-			userGUI.layoutGridSetter((Container) comp, 5,5);
+			Object[] choices = mainGUI.getLayoutMap().keySet().toArray();
+			String selection = (String)JOptionPane.showInputDialog(userGUI, "Select a layout manager.", "Please", JOptionPane.PLAIN_MESSAGE, null, choices, choices[0]);
+			if(selection.equals("Grid Layout"))
+			{
+				userGUI.layoutGridSetter((Container)comp, 5, 5);
+			}
+			else if (selection.equals("Border Layout"))
+			{
+				userGUI.layoutBorderSetter((Container)comp);
+			}
+			else if (selection.equals("Flow Layout"))
+			{
+				userGUI.layoutFlowSetter((Container)comp);
+			}
+			else{
+				userGUI.layoutAbsolute((Container)comp);
+			}
 		}
 		if(evt.getSource() == setText){			
 			String s = JOptionPane.showInputDialog("Please give me the name");

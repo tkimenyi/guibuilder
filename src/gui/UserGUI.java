@@ -9,10 +9,12 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
@@ -28,13 +30,14 @@ import componenttree.ContainerItem;
 
 @SuppressWarnings("serial")
 public class UserGUI extends JInternalFrame{
+	
 	private JPanel userPanel;
 	private ComponentTreeStruct tree = new ComponentTreeStruct();
 	private Point curLocation;
 	private ArrayList<JLabel> addedComponentsList;
 	private boolean saved;
 	public boolean isFirstEvent;
-	public UserGUI() { 
+	public UserGUI() {
 		super("", false,false,false,false);
 		setSize(550, 600);
 		setVisible(true);	

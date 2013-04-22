@@ -38,7 +38,8 @@ import codegenerating.Generator;
 
 
 public class GUI extends JFrame implements ActionListener, ChangeListener, DragGestureListener, DragSourceListener, DropTargetListener, Transferable{
-        private static final long serialVersionUID = 1L;  
+		private HashMap<String, LayoutManager> layoutMap;
+		private static final long serialVersionUID = 1L;  
         private JMenuBar MenuBar;
         private JMenu File,Layout;
         private JMenuItem Open,Save,SaveAs,New,Close,Border,Grid,Flow,Absolute;
@@ -62,6 +63,11 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		}
         
 	public GUI() throws FileNotFoundException{
+		layoutMap = new HashMap<String, LayoutManager>();
+		layoutMap.put("Border Layout", new BorderLayout());
+		layoutMap.put("Grid Layout", new GridLayout(5,5));
+		layoutMap.put("Flow Layout", new FlowLayout());
+		layoutMap.put("Absolute Layout", null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800,800);
         setLocation(200, 100);
@@ -436,19 +442,16 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				if(c instanceof JMenuBar){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					curFrame.addMenuBar(resizer, d, compName);
-					updateGUI();					
 				}
 				else if(c instanceof JMenu){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					curFrame.addToCompList(((JLabel) component));
 					curFrame.addMenu(resizer);
-					updateGUI();					
 				}
 				else if(c instanceof JMenuItem){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					curFrame.addToCompList(((JLabel) component));
 					curFrame.addMenuItem(resizer);
-					updateGUI();
 				}
 				else{
 					curFrame.addToCompList(((JLabel) component));
@@ -461,7 +464,6 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 						resizer.setComponentItem(new ComponentItem(resizer, compName, d));
 					}	
 					curFrame.changeUserFrame(resizer, d, compName);
-					updateGUI();				
 					new RightClickMenu(resizer, curFrame, compName.equals("JPanel"), this);	
 				}
 			}
@@ -482,5 +484,9 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		}
 		curFrame = (UserGUI) userTab.getComponentAt(userTab.getSelectedIndex());
 		updateGUI();
+	}
+	
+	public HashMap<String, LayoutManager> getLayoutMap(){
+		return layoutMap;
 	}
 }
