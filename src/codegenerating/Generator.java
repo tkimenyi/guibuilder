@@ -22,25 +22,29 @@ public class Generator {
 	private final String import4 = "import java.awt.event.ActionListener;";
 	private final String classHeader = "public class";
 	private final String closingBracket="}";
-	private final String mainMethod = "public static void main(String[] args){"; 
+	private final String mainMethod = "public static void main(String[] args){\n"; 
 	private final String mainFrameDeclaration = "JFrame frame = new JFrame(";
 	private final String blackline = "BorderFactory.createLineBorder(Color.black)";
 	private final String override = "@Override";
 	private String extend = " extends JPanel";
-	
 	private String packageName = "codegenerating;";
+	
+	private StringBuilder instanceVariables;
 	private StringBuilder codeToDeclare;
 	private StringBuilder codeToAdd;
 	private StringBuilder codeOntoFrame;
 	private StringBuilder codeToMethod;
 	private StringBuilder codeToAction;
+	private StringBuilder giveActList;
 
 	public Generator(){
+		 instanceVariables = new StringBuilder();
 		 codeToAdd= new StringBuilder();
 		 codeToDeclare= new StringBuilder();
 		 codeOntoFrame= new StringBuilder();
 		 codeToMethod = new StringBuilder();
 		 codeToAction = new StringBuilder();
+		 giveActList = new StringBuilder();
 	}
 	
 	public void setPackage(String pack) {
@@ -59,6 +63,8 @@ public class Generator {
 			codeOntoFrame= new StringBuilder();
 			codeToMethod = new StringBuilder();
 			codeToAction = new StringBuilder();
+			instanceVariables = new StringBuilder();
+			giveActList = new StringBuilder();
 			
 			FileWriter fw = new FileWriter(codeFile.getAbsoluteFile());
 			BufferedWriter writer = new BufferedWriter(fw);
@@ -86,13 +92,19 @@ public class Generator {
 		generatedLines.add(import4);
 		generatedLines.add("");
 		generatedLines.add(classHeader + " " + filename + extend + "{");
-		generatedLines.add("\t" + mainMethod);
-		generatedLines.add("\t" + "\t" + mainFrameDeclaration + '"' + guiname  + '"' + ");");
-		generatedLines.add("\t" + "\t" + codeToDeclare.toString());
-		generatedLines.add("\t" + "\t" + codeToAdd.toString());
+		generatedLines.add(instanceVariables.toString());
+		generatedLines.add("\tpublic " + filename + "(){\n\t\t");
+		generatedLines.add("\t\t" + mainFrameDeclaration + '"' + guiname  + '"' + ");");
+		generatedLines.add("\t\t" + codeToDeclare.toString());
+		generatedLines.add("\t\t" + codeToAdd.toString());
+		generatedLines.add("\t\t" + giveActList.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
 		generatedLines.add("\t" + closingBracket);
 		generatedLines.add("\t" + codeToAction + "\n\t}");
+		generatedLines.add("\t" + mainMethod);
+		generatedLines.add("\t\t" + filename + " run = new " + filename + "();");
+		generatedLines.add("\t\trun.setVisible(true);");
+		generatedLines.add("\t" + closingBracket);
 		generatedLines.add(closingBracket);
 		return generatedLines;
 	}
@@ -106,12 +118,13 @@ public class Generator {
 		return allCode.toString();
 	}
 
-	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup){
+	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup, String name){
 		if(yup){
 			extend += " implements ActionListener";
-			codeToAction.append("\t" + override + "\n");
+			codeToAction.append(override + "\n");
 			String methodSignature = "\tpublic " + returnType + " " + methodName + usercode;
 			codeToAction.append(methodSignature);
+			giveActList.append(name + ".addActionListener(this);");
 		}
 		else{			
 			codeToAction.append(usercode);
@@ -119,7 +132,6 @@ public class Generator {
 	}
 	
 	public void blankMethodGenerator(String methodName, String returnType){
-		//\n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n
 		String methodSignature = "public " + returnType + " " + methodName + "\n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n\t}";
 		codeToMethod.append(methodSignature);
 	}
@@ -174,11 +186,11 @@ public class Generator {
 	}
 
 	public String getDeclaration(ComponentItem item){
-		return item.getType() + " "+ item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "();\n";
+		return item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "();\n";
 	}
 	
 	public String getDeclarationPanel(ComponentItem item){
-		return item.getType() + " "+ item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "(null);\n";
+		return item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "(null);\n";
 	}
 	
 	public String getBackgroundCode(ComponentItem item){
@@ -227,13 +239,14 @@ public class Generator {
 		System.out.println(item.getName());
 		ContainerItem parent = item.getParent();
 		if(parent == null){			
-			res.append(getDeclarationPanel(item));			
+			res.append(getDeclarationPanel(item));		
+			instanceVariables.append("\t" + item.getType() + " " + item.getName() + ";\n");
 			res.append("\t" + "\t");
 			res.append(getBackgroundCode(item));
-			res.append("\t" + "\t");
 		}
 		else{
-			System.out.println("Parent" + item.getParent().getName());
+			System.out.println("Parent " + item.getParent().getName());
+			instanceVariables.append("\t" + item.getType() + " " + item.getName() + ";\n");
 			res.append(getDeclaration(item));			
 			res.append("\t" + "\t");
 			res.append(getBoundStmt(item));			

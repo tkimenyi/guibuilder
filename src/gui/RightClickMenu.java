@@ -98,11 +98,15 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		}
 		if(evt.getSource() == addEvents){
 			if(userGUI.isFirstEvent){
-				mainGUI.getGen().actionListenerMethod("actionPerformed(ActionEvent evt) ", "void", "{ \n\t if(evt.getSource() == " + resizable.getCompItem().getName() +"){\n\t\tSystem.out.println(\"Hello\");\n\t}", true);
+				mainGUI.getGen().actionListenerMethod("actionPerformed(ActionEvent evt) ", "void", 
+						 "{ \n\t if(evt.getSource() == " + resizable.getCompItem().getName() +"){\n\t\tSystem.out.println(\"Hello\");\n\t}"
+						, true, resizable.getCompItem().getName());
 				userGUI.isFirstEvent = false;
 			}
 			else{
-				mainGUI.getGen().actionListenerMethod("", "","\n\t if(evt.getSource() == " + resizable.getCompItem().getName() +"){\n\t\tSystem.out.println(\"Hello\");\n\t}", false);
+				mainGUI.getGen().actionListenerMethod("", "",
+						"\n\t if(evt.getSource() == " + resizable.getCompItem().getName() +"){\n\t\tSystem.out.println(\"Hello\");\n\t}" 
+						,false, resizable.getCompItem().getName());
 			}
 		}
 	}
