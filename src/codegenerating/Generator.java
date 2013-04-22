@@ -92,7 +92,7 @@ public class Generator {
 		generatedLines.add("\t" + "\t" + codeToAdd.toString());
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
 		generatedLines.add("\t" + closingBracket);
-		generatedLines.add("\t" + codeToAction);
+		generatedLines.add("\t" + codeToAction + "\n\t}");
 		generatedLines.add(closingBracket);
 		return generatedLines;
 	}
@@ -109,8 +109,8 @@ public class Generator {
 	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup){
 		if(yup){
 			extend += " implements ActionListener";
-			codeToAction.append("\t" + override);
-			String methodSignature = "public " + returnType + " " + methodName + usercode;
+			codeToAction.append("\t" + override + "\n");
+			String methodSignature = "\tpublic " + returnType + " " + methodName + usercode;
 			codeToAction.append(methodSignature);
 		}
 		else{			

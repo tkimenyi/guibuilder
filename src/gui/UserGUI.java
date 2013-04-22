@@ -231,6 +231,8 @@ public class UserGUI extends JInternalFrame{
 			JMenu menu = new JMenu(name);
 			JMenuBar mb = (JMenuBar) userPanel.getComponentAt(curLocation);
 			mb.add(menu);
+			repaint();
+			revalidate();
 		}
 	}
 	
