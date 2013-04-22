@@ -33,6 +33,7 @@ public class UserGUI extends JInternalFrame{
 	private Point curLocation;
 	private ArrayList<JLabel> addedComponentsList;
 	private boolean saved;
+	public boolean isFirstEvent;
 	public UserGUI() { 
 		super("", false,false,false,false);
 		setSize(550, 600);
@@ -47,6 +48,7 @@ public class UserGUI extends JInternalFrame{
 		curLocation = new Point(0,0);
         addedComponentsList = new ArrayList<JLabel>();
         saved = false;
+        isFirstEvent = true;
 	}
 	
 	public JPanel getPanel(){

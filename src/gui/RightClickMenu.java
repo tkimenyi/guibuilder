@@ -18,21 +18,25 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 	private Component comp;
 	private Resizable resizable;
 	private JPopupMenu pop; 
-	private JMenuItem resize, delete,chooseLayout, setText;
+	private JMenuItem resize, delete, chooseLayout, setText, addEvents;
 	private UserGUI userGUI;
-
-	public RightClickMenu(Resizable c, UserGUI g, boolean isJPanel){
+	private GUI mainGUI;
+	public RightClickMenu(Resizable c, UserGUI g, boolean isJPanel, GUI gui){
 		comp = c.getComp();
 		resizable = c;
 		userGUI = g;
+		mainGUI = gui;
 		pop = new JPopupMenu();
 		resize = new JMenuItem("Resize");
 		pop.add(resize);
 		delete = new JMenuItem("Delete");
 		pop.add(delete);
+		addEvents = new JMenuItem("Add Events");
+		pop.add(addEvents);
 		comp.addMouseListener(this);
 		resize.addActionListener(this);
 		delete.addActionListener(this);
+		addEvents.addActionListener(this);
 		if(comp instanceof JButton){
 			setText = new JMenuItem("Set Text");
 			pop.add(setText);
@@ -91,6 +95,15 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		if(evt.getSource() == setText){			
 			String s = JOptionPane.showInputDialog("Please give me the name");
 			((JButton) comp).setText(s);			
+		}
+		if(evt.getSource() == addEvents){
+			if(userGUI.isFirstEvent){
+				mainGUI.getGen().actionListenerMethod("actionPerformed(ActionEvent evt) ", "void", "{ \n\t if(evt.getSource() == " + resizable.getCompItem().getName() +"){\n\t\tSystem.out.println(\"Hello\");\n\t}", true);
+				userGUI.isFirstEvent = false;
+			}
+			else{
+				mainGUI.getGen().actionListenerMethod("", "","\n\t if(evt.getSource() == " + resizable.getCompItem().getName() +"){\n\t\tSystem.out.println(\"Hello\");\n\t}", false);
+			}
 		}
 	}
 	

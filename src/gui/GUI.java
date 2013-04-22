@@ -301,6 +301,10 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		curFrame.getCompList().clear();
 	}
 	
+	public Generator getGen(){
+		return gen;
+	}
+	
 	//-------------------------------------------BELOW IS DRAG LISTENERS----------------------------------------------------------------------
 	
 	public void addDragListeners(){
@@ -458,7 +462,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 					}	
 					curFrame.changeUserFrame(resizer, d, compName);
 					updateGUI();				
-					new RightClickMenu(resizer,curFrame, compName.equals("JPanel"));	
+					new RightClickMenu(resizer, curFrame, compName.equals("JPanel"), this);	
 				}
 			}
 			oldContainer.validate();

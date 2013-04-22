@@ -31,11 +31,15 @@ public class Generator {
 	private StringBuilder codeToDeclare;
 	private StringBuilder codeToAdd;
 	private StringBuilder codeOntoFrame;
+	private StringBuilder codeToMethod;
+	private StringBuilder codeToAction;
 
 	public Generator(){
 		 codeToAdd= new StringBuilder();
 		 codeToDeclare= new StringBuilder();
 		 codeOntoFrame= new StringBuilder();
+		 codeToMethod = new StringBuilder();
+		 codeToAction = new StringBuilder();
 	}
 	
 	public void setPackage(String pack) {
@@ -52,6 +56,8 @@ public class Generator {
 			codeToAdd= new StringBuilder();
 			codeToDeclare= new StringBuilder();
 			codeOntoFrame= new StringBuilder();
+			codeToMethod = new StringBuilder();
+			codeToAction = new StringBuilder();
 			
 			FileWriter fw = new FileWriter(codeFile.getAbsoluteFile());
 			BufferedWriter writer = new BufferedWriter(fw);
@@ -86,7 +92,8 @@ public class Generator {
 		generatedLines.add("\t" + "\t" + codeOntoFrame.toString());
 		generatedLines.add("\t" + closingBracket);
 		generatedLines.add("\t" + override);
-		generatedLines.add("\t" + blankMethodGenerator("actionPerformed(ActionEvent evt) ", "void"));
+		generatedLines.add("\t" + codeToAction);
+		generatedLines.add( "\t}");
 		generatedLines.add(closingBracket);
 		return generatedLines;
 	}
@@ -100,9 +107,20 @@ public class Generator {
 		return allCode.toString();
 	}
 
-	public String blankMethodGenerator(String methodName, String returnType){
-		String methodSignature = "public " + returnType + " " + methodName + "{ \n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n" + "\t}";
-		return methodSignature;
+	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup){
+		if(yup){
+			String methodSignature = "public " + returnType + " " + methodName + usercode;
+			codeToAction.append(methodSignature);
+		}
+		else{			
+			codeToAction.append(usercode);
+		}
+	}
+	
+	public void blankMethodGenerator(String methodName, String returnType){
+		//\n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n
+		String methodSignature = "public " + returnType + " " + methodName + "\n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n\t}";
+		codeToMethod.append(methodSignature);
 	}
 	
 	//sets the properties from the tree structure

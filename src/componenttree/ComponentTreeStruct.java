@@ -1,6 +1,5 @@
 package componenttree;
 import java.awt.Dimension;
-import java.util.Iterator;
 
 
 public class ComponentTreeStruct {

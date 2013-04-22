@@ -47,6 +47,7 @@ public class ComponentItem {
 		instanceCounter = varNames.get(type) + 1;
 		varNames.put(type, instanceCounter);
 		name = type + instanceCounter;
+		name = name.toLowerCase();
 		setPreferredSize(s);
 	}
 	
