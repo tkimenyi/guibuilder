@@ -120,7 +120,7 @@ public class Generator {
 			allCode.append((generatedLines.get(i))+"\n");
 		}
 		
-		return allCode.toString();
+		return fixTabs(allCode.toString());
 	}
 	
 	//This will return a correctly tab-formatted string of code.
