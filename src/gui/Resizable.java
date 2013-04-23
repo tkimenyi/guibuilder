@@ -70,7 +70,7 @@ public class Resizable extends JComponent
 	}
 	public ComponentItem getCompItem()
 	{
-		return compitem;
+		return getItem();
 	}
 	
 	public Component getComp(){

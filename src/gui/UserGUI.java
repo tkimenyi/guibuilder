@@ -200,9 +200,16 @@ public class UserGUI extends JInternalFrame{
 		validate();		
 	}
 	
-	public void removeComponent(Resizable c){		
+	public void removeComponent(Resizable c){
 		c.getParent().remove(c);
+		if(c.getCompItem()!=null)
+		{
 		tree.removeChild(c.getCompItem());
+		}
+		else
+		{
+			tree.removeChild(c.getContItem());
+		}
 		repaint();
 		validate();
 	}
