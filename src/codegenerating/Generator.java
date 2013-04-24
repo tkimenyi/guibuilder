@@ -145,8 +145,8 @@ public class Generator {
 		return builder.toString();		
 	}
 
-	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean yup, String name){
-		if(yup){
+	public void actionListenerMethod(String methodName, String returnType, String usercode, boolean isFirstEvent, String name){
+		if(isFirstEvent){
 			extend += " implements ActionListener";
 			codeToAction.append(override + "\n");
 			String methodSignature = "\tpublic " + returnType + " " + methodName + usercode;
