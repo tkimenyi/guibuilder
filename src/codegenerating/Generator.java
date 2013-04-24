@@ -3,10 +3,7 @@ import componenttree.ComponentItem;
 import componenttree.ContainerItem;
 import gui.ResizableBorder;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.io.*;
 import java.util.ArrayList;
@@ -230,14 +227,13 @@ public class Generator {
 		StringBuilder res = new StringBuilder();
 		String parentName = item.getName().toLowerCase();
 		String layoutType = "";
-		if(item.iterator().hasNext()){			
+		if(item.iterator().hasNext() || item.getName().equals("jpanel1")){			
 			if(layout.equals("border")){
 				res.append(parentName + "." + "setLayout(new BorderLayout());\n");
 				layoutType = "border";
 			}else if(layout.equals("grid")){
 				int rows = 6;
 				int cols = 6;
-				System.out.println("HERE BITCH");
 				res.append(parentName + "." + "setLayout(new GridLayout( " + rows + ", " + cols +"));\n");
 				layoutType = "grid";
 			}

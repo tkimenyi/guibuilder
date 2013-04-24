@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -82,46 +81,42 @@ public class UserGUI extends JInternalFrame{
 		parent.getComponent().setLayout(new BorderLayout());
 		String location = "";	
 		for(int i = 0; i < 5; i++){
-			JPanel blankPanel = new JPanel(null);
+			JPanel blankPanel = new JPanel(null);				
 			blankPanel.setBackground(Color.gray);
 			blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));			
 			if(i % 2 == 0){
-				blankPanel.setPreferredSize(new Dimension(600, 100));
+				blankPanel.setSize(new Dimension(600, 100));
 			}
 			else{
-				blankPanel.setPreferredSize(new Dimension(100, 600));
+				blankPanel.setSize(new Dimension(100, 600));
 			}
 			if(i == 0){
 				parent.getComponent().add(blankPanel, BorderLayout.NORTH);
 				location = "north";
-				System.out.println("added1");
 			}
 			else if(i == 1){
 				parent.getComponent().add(blankPanel, BorderLayout.EAST);
 				location = "east";
 				blankPanel.setBackground(Color.GREEN);
-				System.out.println("added2");
 			}
 			else if(i == 2){
 				parent.getComponent().add(blankPanel, BorderLayout.SOUTH);
 				location = "south";
-				System.out.println("added3");
 			}
 			else if(i == 3){
 				parent.getComponent().add(blankPanel, BorderLayout.WEST);
 				location = "west";
-				System.out.println("added4");
 				blankPanel.setBackground(Color.magenta);
 			}
 			else{
 			    parent.getComponent().add(blankPanel, BorderLayout.CENTER);
 				location = "center";
-				System.out.println("added5");
-				blankPanel.setPreferredSize(new Dimension(300,300));
+				//blankPanel.setPreferredSize(new Dimension(300,300));
 			}			
 			ContainerItem blank = new ContainerItem(blankPanel, "JPanel", parent.getComponent().getSize());
 			tree.addBorderChild(parent, blank, location, "JPanel", blankPanel.getSize());
-			blank.setLayout("border");
+			parent.setLayout("border");
+			blankPanel.setName(location);
 		}
 		repaint();
 		validate();
@@ -138,7 +133,8 @@ public class UserGUI extends JInternalFrame{
 				parent.getComponent().add(blankPanel);
 				ContainerItem blank = new ContainerItem(blankPanel, "JPanel", parent.getComponent().getSize());
 				tree.addGridChild(parent, blank, i, j, "JPanel", blankPanel.getSize());
-				blank.setLayout("grid");
+				parent.setLayout("grid");
+				blankPanel.setName("grid" + i + j);
 			}
 		}
 		repaint();
@@ -162,14 +158,23 @@ public class UserGUI extends JInternalFrame{
 		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
 			target = (Resizable) userPanel.getComponentAt(curLocation);
 			parent = (JPanel) target.getComp();
+			System.out.println(parent.getName());
 		    dropped.changeSize(parent.getSize());
 			isRoot = false;
 		}
 		else{
+			//this is either root or the Layout's Jpanels.
 			parent = (JPanel) userPanel.getComponentAt(curLocation);
+			System.out.println(parent.getName());
 		}		
 		if(parent != null){
-			dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
+			//if parent is not the root, then we put the component into the corner of the selected container
+			if(parent != mom.getComponent()){
+				dropped.setBounds(parent.getX(), parent.getY(), d.width, d.height);
+			}
+			else {
+				dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
+			}
 			parent.add(dropped);
 			if(d != null && type != null){
 				if(d.getHeight() == 0 && d.getWidth() == 0){
