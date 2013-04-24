@@ -98,7 +98,6 @@ public class UserGUI extends JInternalFrame{
 			else if(i == 1){
 				parent.getComponent().add(resizer, BorderLayout.EAST);
 				location = "east";
-				blankPanel.setBackground(Color.GREEN);
 			}
 			else if(i == 2){
 				parent.getComponent().add(resizer, BorderLayout.SOUTH);
@@ -107,12 +106,10 @@ public class UserGUI extends JInternalFrame{
 			else if(i == 3){
 				parent.getComponent().add(resizer, BorderLayout.WEST);
 				location = "west";
-				blankPanel.setBackground(Color.magenta);
 			}
 			else{
 			    parent.getComponent().add(resizer, BorderLayout.CENTER);
 				location = "center";
-				//blankPanel.setPreferredSize(new Dimension(300,300));
 			}			
 			ContainerItem blank = new ContainerItem(resizer, "JPanel", parent.getComponent().getSize());
 			resizer.setContainerItem(blank);
@@ -133,10 +130,10 @@ public class UserGUI extends JInternalFrame{
 				final Resizable resizer = new Resizable(blankPanel, parent.getComponent().getSize(), 0);
 				blankPanel.setBackground(Color.gray);
 				blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));				
-				parent.getComponent().add(resizer);
+				parent.getComponent().add(resizer, i, j);
 				ContainerItem blank = new ContainerItem(resizer, "JPanel", parent.getComponent().getSize());
 				resizer.setContainerItem(blank);
-				tree.addGridChild(parent, blank, i, j, "JPanel", blankPanel.getSize());
+				tree.addGridChild(parent, blank, i, j , "JPanel", blankPanel.getSize());
 				parent.setLayout("grid");
 				blankPanel.setName("grid" + i + j);
 			}
@@ -158,18 +155,18 @@ public class UserGUI extends JInternalFrame{
 	public void changeUserFrame(final Resizable dropped, Dimension d, String type){
 		JPanel parent = new JPanel(null);
 		Resizable target = null;
-		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
+		if(userPanel.getComponentAt(curLocation) instanceof Resizable){
 			target = (Resizable) userPanel.getComponentAt(curLocation);
 			parent = (JPanel) target.getComp();
 		    dropped.changeSize(parent.getSize());
-			tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());		
+			tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());
+			System.out.println(parent.getName());
 		}
 		else if(userPanel.getComponentAt(curLocation) instanceof JPanel){			
 			parent = (JPanel) userPanel.getComponentAt(curLocation);
 			tree.addChild(mom, dropped.getItem(), type, dropped.getSize());
 		}		
 		if(parent != null){
-			//if parent is not the root, then we put the component into the corner of the selected container
 			if(parent != mom.getComponent()){
 				dropped.setBounds(parent.getX(), parent.getY(), d.width, d.height);
 			}

@@ -240,8 +240,12 @@ public class Generator {
 		}
 		Iterator<ComponentItem> children = item.iterator();
 		ComponentItem child; 
+		ArrayList<ComponentItem> reversedChildren = new ArrayList<ComponentItem>();
 		while(children.hasNext()){
-			child = children.next();
+		//	reversedChildren.add(children.next());
+		//}
+		//for(int i = reversedChildren.size()-1; i > -1; i--){
+			child = children.next();//reversedChildren.get(i);
 			String childName = child.getName().toLowerCase();
 			String addStmt = "";
 			if(layoutType.equals("border")){
@@ -249,7 +253,7 @@ public class Generator {
 			}else if(layoutType.equals("grid")){
 				int rowLoc = (int)(child.getGridLocation().getX());
 				int colLoc = (int)(child.getGridLocation().getY());
-				addStmt = parentName + ".add("+childName + "," + rowLoc + ", " + colLoc + ");\n";
+				addStmt = parentName + ".add("+childName + "," + (rowLoc) + ", " + (colLoc) + ");\n";
 			}else{
 				addStmt = parentName + ".add(" + childName + ");\n";
 			}
