@@ -226,18 +226,21 @@ public class Generator {
 	
 	//handles containers
 	public StringBuilder getContainerCode(ContainerItem item){
-		LayoutManager layout= item.getLayout();
+		String layout= item.getLayoutType();
 		StringBuilder res = new StringBuilder();
 		String parentName = item.getName().toLowerCase();
 		String layoutType = "";
-		if(layout instanceof BorderLayout){
-			res.append(parentName + "." + "setLayout(new BorderLayout());\n");
-			layoutType = "border";
-		}else if(layout instanceof GridLayout){
-			int rows = ((GridLayout) layout).getRows();
-			int cols = ((GridLayout) layout).getColumns();
-			res.append(parentName + "." + "setLayout(new GridLayout( " + rows + ", " + cols +"));\n");
-			layoutType = "grid";
+		if(item.iterator().hasNext()){			
+			if(layout.equals("border")){
+				res.append(parentName + "." + "setLayout(new BorderLayout());\n");
+				layoutType = "border";
+			}else if(layout.equals("grid")){
+				int rows = 6;
+				int cols = 6;
+				System.out.println("HERE BITCH");
+				res.append(parentName + "." + "setLayout(new GridLayout( " + rows + ", " + cols +"));\n");
+				layoutType = "grid";
+			}
 		}
 		Iterator<ComponentItem> children = item.iterator();
 		ComponentItem child; 

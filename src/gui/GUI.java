@@ -168,11 +168,11 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			closeAction();
 		}
 		if(evt.getSource() == Border){
-			curFrame.layoutBorderSetter(curFrame.getPanel());
+			curFrame.layoutBorderSetter(curFrame.getMomPanel());
 			changedLayout();
 		}
 		if(evt.getSource() == Grid){			
-			curFrame.layoutGridSetter(curFrame.getPanel(),6,6);
+			curFrame.layoutGridSetter(curFrame.getMomPanel(),6,6);
 			changedLayout();
 		}
 		if(evt.getSource() == Flow){

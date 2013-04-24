@@ -11,12 +11,14 @@ import javax.swing.JComponent;
 
 public class ContainerItem extends ComponentItem implements Iterable<ComponentItem>
 {
-	private ArrayList<ComponentItem> children;
+	private ArrayList<ComponentItem> children; 
+	private String layout;
 
 	public ContainerItem(JComponent value, String type, Dimension size)
 	{
 		super(value, type, size);
 		children = new ArrayList<ComponentItem>();
+		layout = "";
 	}
 
 	public LayoutManager getLayout()
@@ -27,6 +29,10 @@ public class ContainerItem extends ComponentItem implements Iterable<ComponentIt
 		{
 			return getComponent().getLayout();
 		}
+	}
+	
+	public String getLayoutType(){
+		return layout;
 	}
 
 	public void addChildComponent(ComponentItem child)
@@ -42,6 +48,10 @@ public class ContainerItem extends ComponentItem implements Iterable<ComponentIt
 	public Iterator<ComponentItem> iterator()
 	{
 		return children.iterator();
+	}
+	
+	public void setLayout(String that){
+		layout = that;
 	}
 
 }

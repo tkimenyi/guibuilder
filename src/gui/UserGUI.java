@@ -9,14 +9,13 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -24,6 +23,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 import componenttree.ComponentTreeStruct;
 import componenttree.ContainerItem;
@@ -37,6 +39,7 @@ public class UserGUI extends JInternalFrame{
 	private ArrayList<JLabel> addedComponentsList;
 	private boolean saved;
 	public boolean isFirstEvent;
+	private ContainerItem mom;
 	public UserGUI() {
 		super("", false,false,false,false);
 		setSize(550, 600);
@@ -46,7 +49,7 @@ public class UserGUI extends JInternalFrame{
         userPanel.setBackground(Color.white);
         add(userPanel);        
 		this.setSize(550,600);
-		ContainerItem mom = new ContainerItem(userPanel, "JPanel", userPanel.getSize());
+		mom = new ContainerItem(userPanel, "JPanel", userPanel.getSize());
 		tree.setRoot(mom);
 		curLocation = new Point(0,0);
         addedComponentsList = new ArrayList<JLabel>();
@@ -57,6 +60,10 @@ public class UserGUI extends JInternalFrame{
 	public JPanel getPanel(){
 		return userPanel;
 	}	
+	
+	public ContainerItem getMomPanel(){
+		return mom;
+	}
 	
 	public ComponentTreeStruct getTreeStruct(){
 		return tree;
@@ -70,14 +77,14 @@ public class UserGUI extends JInternalFrame{
 		saved = true;
 	}
 	
-	public void layoutBorderSetter(Container parent){	
-		parent.removeAll();
-		parent.setLayout(new BorderLayout());
-		String location = "";
+	public void layoutBorderSetter(ContainerItem parent){	
+		parent.getComponent().removeAll();
+		parent.getComponent().setLayout(new BorderLayout());
+		String location = "";	
 		for(int i = 0; i < 5; i++){
 			JPanel blankPanel = new JPanel(null);
 			blankPanel.setBackground(Color.gray);
-			blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+			blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));			
 			if(i % 2 == 0){
 				blankPanel.setPreferredSize(new Dimension(600, 100));
 			}
@@ -85,48 +92,53 @@ public class UserGUI extends JInternalFrame{
 				blankPanel.setPreferredSize(new Dimension(100, 600));
 			}
 			if(i == 0){
-				parent.add(blankPanel, BorderLayout.NORTH);
+				parent.getComponent().add(blankPanel, BorderLayout.NORTH);
 				location = "north";
+				System.out.println("added1");
 			}
 			else if(i == 1){
-				parent.add(blankPanel, BorderLayout.EAST);
+				parent.getComponent().add(blankPanel, BorderLayout.EAST);
 				location = "east";
+				blankPanel.setBackground(Color.GREEN);
+				System.out.println("added2");
 			}
 			else if(i == 2){
-				parent.add(blankPanel, BorderLayout.SOUTH);
+				parent.getComponent().add(blankPanel, BorderLayout.SOUTH);
 				location = "south";
+				System.out.println("added3");
 			}
 			else if(i == 3){
-				parent.add(blankPanel, BorderLayout.WEST);
+				parent.getComponent().add(blankPanel, BorderLayout.WEST);
 				location = "west";
+				System.out.println("added4");
+				blankPanel.setBackground(Color.magenta);
 			}
 			else{
-				parent.add(blankPanel, BorderLayout.CENTER);
+			    parent.getComponent().add(blankPanel, BorderLayout.CENTER);
 				location = "center";
-			}
-			ContainerItem child = new ContainerItem(blankPanel, "JPanel",blankPanel.getSize());
-			ContainerItem p = new ContainerItem(this, "JInternalFrame", this.getSize());				
-			tree.addBorderChild(p, child, location, "JPanel", blankPanel.getSize());
-			tree.getRoot().addChildComponent(child);			
+				System.out.println("added5");
+				blankPanel.setPreferredSize(new Dimension(300,300));
+			}			
+			ContainerItem blank = new ContainerItem(blankPanel, "JPanel", parent.getComponent().getSize());
+			tree.addBorderChild(parent, blank, location, "JPanel", blankPanel.getSize());
+			blank.setLayout("border");
 		}
 		repaint();
 		validate();
 	}
 	
-	public void layoutGridSetter(Container parent, int x, int y){
-		parent.removeAll();
-		parent.setLayout(new GridLayout(x, y));
+	public void layoutGridSetter(ContainerItem parent, int x, int y){
+		parent.getComponent().removeAll();
+		parent.getComponent().setLayout(new GridLayout(x, y));
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){
-				JPanel blankPanel = new JPanel(null);
+				JPanel blankPanel = new JPanel(null);				
 				blankPanel.setBackground(Color.gray);
 				blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));				
-				parent.add(blankPanel);
-				ContainerItem child = new ContainerItem(blankPanel, "JPanel", blankPanel.getSize());
-				ContainerItem p = new ContainerItem(this, "JInternalFrame", this.getSize());
-				tree.addGridChild(p, child, i, j, "JPanel", blankPanel.getSize());
-				tree.getRoot().addChildComponent(child);
-				child.setGridLocation(i, j);
+				parent.getComponent().add(blankPanel);
+				ContainerItem blank = new ContainerItem(blankPanel, "JPanel", parent.getComponent().getSize());
+				tree.addGridChild(parent, blank, i, j, "JPanel", blankPanel.getSize());
+				blank.setLayout("grid");
 			}
 		}
 		repaint();
@@ -180,12 +192,7 @@ public class UserGUI extends JInternalFrame{
 		else{
 			JOptionPane.showMessageDialog(this, "The place you have tried to place your component is invalid");
 		}		
-		addMouseListener(new MouseAdapter() {
-	        public void mousePressed(MouseEvent me) {
-	          requestFocus();
-	          dropped.repaint();
-	        }
-	      });
+		addMouseListener(new MouseAdapter(){public void mousePressed(MouseEvent me) {requestFocus();dropped.repaint();}});
 
 
 	}
@@ -255,6 +262,33 @@ public class UserGUI extends JInternalFrame{
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "You cannot add that here");
+		}
+	}
+	
+	public Component getParentType(Resizable target, Resizable dropped){
+		if(target.getComp() instanceof JPanel){
+			System.out.println("JPanel");
+			((JPanel) target.getComp()).add(dropped);
+			return ((JPanel)target.getComp());
+		}
+		else if(target.getComp() instanceof JScrollPane){
+			System.out.println("JScrollPane");
+			((JScrollPane) target.getComp()).add(dropped);
+			return ((JScrollPane)target.getComp());
+		}
+		else if(target.getComp() instanceof JSplitPane){
+			System.out.println("JSplitPane");
+			((JSplitPane) target.getComp()).add(dropped, 1);
+			return ((JSplitPane)target.getComp());
+		}
+		else if(target.getComp() instanceof JTabbedPane){
+			System.out.println("JTabbed");
+			((JTabbedPane) target.getComp()).add(dropped);
+			return ((JTabbedPane)target.getComp());
+		}
+		else{
+			System.out.println("Whoops");
+			return target;
 		}
 	}
 }

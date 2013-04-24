@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.LayoutManager;
-import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -96,11 +94,13 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 			String selection = (String)JOptionPane.showInputDialog(userGUI, "Select a layout manager.", "Please", JOptionPane.PLAIN_MESSAGE, null, choices, choices[0]);
 			if(selection.equals("Grid Layout"))
 			{
-				userGUI.layoutGridSetter((Container)comp, 5, 5);
+				userGUI.layoutGridSetter(resizable.getContItem(), 5, 5);
+				resizable.getContItem().setLayout("grid");
 			}
 			else if (selection.equals("Border Layout"))
 			{
-				userGUI.layoutBorderSetter((Container)comp);
+				userGUI.layoutBorderSetter(resizable.getContItem());
+				resizable.getContItem().setLayout("border");
 			}
 			else if (selection.equals("Flow Layout"))
 			{
