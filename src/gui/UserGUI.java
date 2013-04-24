@@ -81,7 +81,8 @@ public class UserGUI extends JInternalFrame{
 		parent.getComponent().setLayout(new BorderLayout());
 		String location = "";	
 		for(int i = 0; i < 5; i++){
-			JPanel blankPanel = new JPanel(null);				
+			JPanel blankPanel = new JPanel(null);
+			final Resizable resizer = new Resizable(blankPanel, parent.getComponent().getSize(), 0);
 			blankPanel.setBackground(Color.gray);
 			blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));			
 			if(i % 2 == 0){
@@ -91,29 +92,30 @@ public class UserGUI extends JInternalFrame{
 				blankPanel.setSize(new Dimension(100, 600));
 			}
 			if(i == 0){
-				parent.getComponent().add(blankPanel, BorderLayout.NORTH);
+				parent.getComponent().add(resizer, BorderLayout.NORTH);
 				location = "north";
 			}
 			else if(i == 1){
-				parent.getComponent().add(blankPanel, BorderLayout.EAST);
+				parent.getComponent().add(resizer, BorderLayout.EAST);
 				location = "east";
 				blankPanel.setBackground(Color.GREEN);
 			}
 			else if(i == 2){
-				parent.getComponent().add(blankPanel, BorderLayout.SOUTH);
+				parent.getComponent().add(resizer, BorderLayout.SOUTH);
 				location = "south";
 			}
 			else if(i == 3){
-				parent.getComponent().add(blankPanel, BorderLayout.WEST);
+				parent.getComponent().add(resizer, BorderLayout.WEST);
 				location = "west";
 				blankPanel.setBackground(Color.magenta);
 			}
 			else{
-			    parent.getComponent().add(blankPanel, BorderLayout.CENTER);
+			    parent.getComponent().add(resizer, BorderLayout.CENTER);
 				location = "center";
 				//blankPanel.setPreferredSize(new Dimension(300,300));
 			}			
-			ContainerItem blank = new ContainerItem(blankPanel, "JPanel", parent.getComponent().getSize());
+			ContainerItem blank = new ContainerItem(resizer, "JPanel", parent.getComponent().getSize());
+			resizer.setContainerItem(blank);
 			tree.addBorderChild(parent, blank, location, "JPanel", blankPanel.getSize());
 			parent.setLayout("border");
 			blankPanel.setName(location);
@@ -127,11 +129,13 @@ public class UserGUI extends JInternalFrame{
 		parent.getComponent().setLayout(new GridLayout(x, y));
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){
-				JPanel blankPanel = new JPanel(null);				
+				JPanel blankPanel = new JPanel(null);
+				final Resizable resizer = new Resizable(blankPanel, parent.getComponent().getSize(), 0);
 				blankPanel.setBackground(Color.gray);
 				blankPanel.setBorder(BorderFactory.createLineBorder(Color.black));				
-				parent.getComponent().add(blankPanel);
-				ContainerItem blank = new ContainerItem(blankPanel, "JPanel", parent.getComponent().getSize());
+				parent.getComponent().add(resizer);
+				ContainerItem blank = new ContainerItem(resizer, "JPanel", parent.getComponent().getSize());
+				resizer.setContainerItem(blank);
 				tree.addGridChild(parent, blank, i, j, "JPanel", blankPanel.getSize());
 				parent.setLayout("grid");
 				blankPanel.setName("grid" + i + j);
@@ -154,18 +158,15 @@ public class UserGUI extends JInternalFrame{
 	public void changeUserFrame(final Resizable dropped, Dimension d, String type){
 		JPanel parent = new JPanel(null);
 		Resizable target = null;
-		boolean isRoot = true;
 		if(userPanel.getComponentAt(curLocation) instanceof Resizable){			
 			target = (Resizable) userPanel.getComponentAt(curLocation);
 			parent = (JPanel) target.getComp();
-			System.out.println(parent.getName());
 		    dropped.changeSize(parent.getSize());
-			isRoot = false;
+			tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());		
 		}
-		else{
-			//this is either root or the Layout's Jpanels.
+		else if(userPanel.getComponentAt(curLocation) instanceof JPanel){			
 			parent = (JPanel) userPanel.getComponentAt(curLocation);
-			System.out.println(parent.getName());
+			tree.addChild(mom, dropped.getItem(), type, dropped.getSize());
 		}		
 		if(parent != null){
 			//if parent is not the root, then we put the component into the corner of the selected container
@@ -182,13 +183,6 @@ public class UserGUI extends JInternalFrame{
 				}else{
 					dropped.setPreferredSize(d);
 				}
-			if(isRoot){
-				tree.addChild(tree.getRoot(), dropped.getItem(), type, dropped.getSize());
-			}
-			else{
-				tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());
-			}
-		
 			}
 			repaint();	
 			validate();

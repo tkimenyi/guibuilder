@@ -41,6 +41,13 @@ public class Resizable extends JComponent
 		sizex = s.getWidth();
 		sizey = s.getHeight();
 	}
+	
+	public Resizable(Component comp, Dimension s, int size)
+	{
+		this(comp, new ResizableBorder(size));
+		sizex = s.getWidth();
+		sizey = s.getHeight();
+	}
 
 	public Resizable(Component comp, ResizableBorder border)
 	{
