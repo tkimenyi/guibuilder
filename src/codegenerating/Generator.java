@@ -240,12 +240,8 @@ public class Generator {
 		}
 		Iterator<ComponentItem> children = item.iterator();
 		ComponentItem child; 
-		ArrayList<ComponentItem> reversedChildren = new ArrayList<ComponentItem>();
 		while(children.hasNext()){
-		//	reversedChildren.add(children.next());
-		//}
-		//for(int i = reversedChildren.size()-1; i > -1; i--){
-			child = children.next();//reversedChildren.get(i);
+			child = children.next();
 			String childName = child.getName().toLowerCase();
 			String addStmt = "";
 			if(layoutType.equals("border")){

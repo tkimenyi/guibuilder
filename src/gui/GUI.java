@@ -337,14 +337,6 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 		}
 	}
 	
-	public void setDraggable(Component c){
-		addDragSourceListener((JComponent) c);		
-	}
-	
-	public void disableDraggable(Component c){
-		//c.getListeners(DragSourceListener);
-	}
-	
     public void addDragSourceListener(JComponent comp){
             comp.setFocusable(true);
             comp.setAlignmentX(Component.CENTER_ALIGNMENT);

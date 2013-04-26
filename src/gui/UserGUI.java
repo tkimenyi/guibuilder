@@ -76,7 +76,8 @@ public class UserGUI extends JInternalFrame{
 		saved = true;
 	}
 	
-	public void layoutBorderSetter(ContainerItem parent){	
+	public void layoutBorderSetter(ContainerItem parent){
+		removeLayoutPanelsFromTree(parent.getComponent().getComponents());
 		parent.getComponent().removeAll();
 		parent.getComponent().setLayout(new BorderLayout());
 		String location = "";	
@@ -122,6 +123,7 @@ public class UserGUI extends JInternalFrame{
 	}
 	
 	public void layoutGridSetter(ContainerItem parent, int x, int y){
+		removeLayoutPanelsFromTree(parent.getComponent().getComponents());
 		parent.getComponent().removeAll();
 		parent.getComponent().setLayout(new GridLayout(x, y));
 		for(int i = 0; i < x; i++){
@@ -285,6 +287,12 @@ public class UserGUI extends JInternalFrame{
 		else{
 			System.out.println("Whoops");
 			return target;
+		}
+	}
+	
+	private void removeLayoutPanelsFromTree(Component[] list){
+		for(int i = 0; i < list.length; i++){
+			removeComponent((Resizable) list[i]);
 		}
 	}
 }
