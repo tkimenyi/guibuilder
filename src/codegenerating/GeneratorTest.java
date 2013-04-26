@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Dimension;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,9 +43,9 @@ public class GeneratorTest {
                                 strBuilder.append(line);
                                 strBuilder.append(ls);
                         }
-                    String codeFromFile = strBuilder.toString();
-                    assertTrue(generatedCode.equals(codeFromFile));
-                    System.out.println("code from file:\n" + codeFromFile);
+                        String codeFromFile = strBuilder.toString();
+                        assertTrue(generatedCode.equals(codeFromFile));
+                        System.out.println("code from file:\n" + codeFromFile);
         }
 
         public static boolean isCompilableJava(String program, String className) throws IOException{
@@ -77,4 +78,6 @@ public class GeneratorTest {
                 System.out.println(generatedCode1);
                 gen1.addToFrame(mng.getRoot());
         }
+
+        
 }
