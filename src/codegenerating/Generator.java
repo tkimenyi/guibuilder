@@ -29,7 +29,7 @@ public class Generator {
 	private StringBuilder codeToDeclare;
 	private StringBuilder codeToAdd;
 	private StringBuilder codeOntoFrame;
-	private StringBuilder codeToMethod;
+	//private StringBuilder codeToMethod; this line goes along with the commented out method, useful but not for what we have working
 	private StringBuilder codeToAction;
 	private StringBuilder giveActList;
 
@@ -38,7 +38,7 @@ public class Generator {
 		 codeToAdd= new StringBuilder();
 		 codeToDeclare= new StringBuilder();
 		 codeOntoFrame= new StringBuilder();
-		 codeToMethod = new StringBuilder();
+		// codeToMethod = new StringBuilder();
 		 codeToAction = new StringBuilder();
 		 giveActList = new StringBuilder();
 	}
@@ -57,7 +57,7 @@ public class Generator {
 			codeToAdd= new StringBuilder();
 			codeToDeclare= new StringBuilder();
 			codeOntoFrame= new StringBuilder();
-			codeToMethod = new StringBuilder();
+			//codeToMethod = new StringBuilder();
 			codeToAction = new StringBuilder();
 			instanceVariables = new StringBuilder();
 			giveActList = new StringBuilder();
@@ -68,13 +68,6 @@ public class Generator {
 			writer.close();
 		}catch (IOException e){
 			e.printStackTrace();
-		}
-	}
-
-	public void addVarDeclarations(String componentName, String componentType ){
-		String declare = componentType + " "+ componentName + "=" + "new" + " " + componentType + "();\n";
-		if(!codeToDeclare.toString().contains(declare)){
-			codeToDeclare.append(declare);
 		}
 	}
 
@@ -155,10 +148,11 @@ public class Generator {
 		giveActList.append(name + ".addActionListener(this);\n");
 	}
 	
-	public void blankMethodGenerator(String methodName, String returnType){
-		String methodSignature = "public " + returnType + " " + methodName + "\n\t// User code here. Be sure to add actionListener to your component first!\n\n\n\n\t}";
+	//could be very useful, but we are not acutally using it for what we have now. 	
+	/*public void blankMethodGenerator(String methodName, String returnType){
+		String methodSignature = "public " + returnType + " " + methodName + "\n\t// User code here.\n\n\n\n\t}";
 		codeToMethod.append(methodSignature);
-	}
+	}*/
 	
 	//sets the properties from the tree structure
 	public void setTreeGenerated(ComponentItem item){	

@@ -26,7 +26,7 @@ public class ComponentTreeTest {
          panel6 = new ContainerItem(new JPanel(), "JPanel", new Dimension(49, 45));
          area1 = new ComponentItem(new JTextArea(), "JTextArea",new Dimension(100,100));
          textfield1  = new ComponentItem(new JTextField(), "JTextField",new Dimension(100,100));
-         button1 = new ComponentItem(new JButton(), "JButton",new Dimension(100,100));
+         button1 = new ComponentItem(new JButton("Button"), "JButton",new Dimension(100,100));
          manager = new ComponentTreeStruct();
         }
         
@@ -41,6 +41,8 @@ public class ComponentTreeTest {
         
         public void testAddBorderLayout(){
                 manager.addBorderChild(panel1, panel4, "west", "JPanel", new Dimension(100,100));
+                root.setLayout("border");               
+                assertTrue(root.getLayoutType().equals("border"));
                 assertTrue(panel4.getBorderLocation() == "west");
                 assertTrue(panel4.getParent() == panel1);
                 assertTrue(panel1.removeChildComponent(panel4) ==true);
