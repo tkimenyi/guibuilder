@@ -433,7 +433,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 				final Resizable resizer = new Resizable(c, curFrame.getSize());
 				if(c instanceof JMenuBar){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));
-					curFrame.addMenuBar(resizer, d, compName);
+					curFrame.addMenuBar(resizer,compName);
 				}
 				else if(c instanceof JMenu){
 					resizer.setComponentItem(new ComponentItem(resizer, compName, d));

@@ -148,7 +148,7 @@ public class Generator {
 		giveActList.append(name + ".addActionListener(this);\n");
 	}
 	
-	//could be very useful, but we are not acutally using it for what we have now. 	
+	//could be very useful, but we are not actually using it for what we have now. 	
 	/*public void blankMethodGenerator(String methodName, String returnType){
 		String methodSignature = "public " + returnType + " " + methodName + "\n\t// User code here.\n\n\n\n\t}";
 		codeToMethod.append(methodSignature);

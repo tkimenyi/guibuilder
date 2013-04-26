@@ -227,14 +227,14 @@ public class UserGUI extends JInternalFrame{
 		addedComponentsList.add(added);
 	}
 	
-	public void addMenuBar(Resizable comp, Dimension d, String type){
-		JMenuBar c = (JMenuBar) comp.getComp();
-		c.add(new JMenu("File"));
-		userPanel.setLayout(new BorderLayout());
-		userPanel.add(c, BorderLayout.NORTH);
+	public void addMenuBar(Resizable comp, String type){		
+		((JMenuBar)comp.getComp()).add(new JMenu("File"));
+		comp.changeBorder(0);
+		userPanel.setLayout(new BorderLayout());		
+		userPanel.add(comp.getComp(), BorderLayout.NORTH);
 		repaint();
 		revalidate();
-		tree.addChild(tree.getRoot(), comp.getItem(), type, c.getSize());
+		tree.addChild(tree.getRoot(), comp.getItem(), type, comp.getSize());
 	}
 	
 	public void addMenu(Resizable comp){		
@@ -292,7 +292,7 @@ public class UserGUI extends JInternalFrame{
 	
 	private void removeLayoutPanelsFromTree(Component[] list){
 		for(int i = 0; i < list.length; i++){
-			removeComponent((Resizable) list[i]);
+			if(list[i] instanceof Resizable)removeComponent((Resizable) list[i]);
 		}
 	}
 }

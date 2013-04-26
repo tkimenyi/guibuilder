@@ -24,7 +24,8 @@ import componenttree.ContainerItem;
 @SuppressWarnings("serial")
 public class Resizable extends JComponent
 {
-	private int magicNumber = 27;
+	private int offsetForBounds = 27;
+	private int minCompSize = 30;
 	
 	//These Items wrap this resizable.
 	private ComponentItem compitem;
@@ -57,6 +58,11 @@ public class Resizable extends JComponent
 		addMouseMotionListener(resizeListener);
 		setBorder(border);
 		component = comp;
+	}
+	
+	public void changeBorder(int size){
+		ResizableBorder bord = new ResizableBorder(size);
+		setBorder(bord);
 	}
 	
 	public void setContainerItem(ContainerItem item){
@@ -149,7 +155,7 @@ public class Resizable extends JComponent
 
 		private boolean boundsCheckin(Rectangle bounds, double dx, double dy)
 		{
-			return !(bounds.x + bounds.width + dx > sizex || bounds.x + dx < 0 || bounds.y + bounds.height + dy + magicNumber >= sizey || bounds.y + dy < 0);
+			return !(bounds.x + bounds.width + dx > sizex || bounds.x + dx < 0 || bounds.y + bounds.height + dy + offsetForBounds >= sizey || bounds.y + dy < 0);
 		}
 
 		public void mouseDragged(MouseEvent me)
@@ -165,14 +171,14 @@ public class Resizable extends JComponent
 				int dx = me.getX() - startPos.x;
 				int dy = me.getY() - startPos.y;
 
-				int sbound = y + h + dy + magicNumber;
+				int sbound = y + h + dy + offsetForBounds;
 				int nbound = y + dy;
 				int wbound = x + dx;
 				int ebound = x + w + dx + 2;
 				switch (cursor)
 				{
 				case Cursor.N_RESIZE_CURSOR:
-					if (!(h - dy < 30))
+					if (!(h - dy < minCompSize))
 					{
 						if (!(nbound < 0))
 						{
@@ -183,7 +189,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.S_RESIZE_CURSOR:
-					if (!(h + dy < 30))
+					if (!(h + dy < minCompSize))
 					{
 						if (!(sbound > sizey))
 						{
@@ -195,7 +201,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.W_RESIZE_CURSOR:
-					if (!(w - dx < 30))
+					if (!(w - dx < minCompSize))
 					{
 						if (!(wbound < 0))
 							setBounds(x + dx, y, w - dx, h);
@@ -204,7 +210,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.E_RESIZE_CURSOR:
-					if (!(w + dx < 30))
+					if (!(w + dx < minCompSize))
 					{
 						if (!(ebound > sizex))
 						{
@@ -216,7 +222,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.NW_RESIZE_CURSOR:
-					if (!(w - dx < 30) && !(h - dy < 30))
+					if (!(w - dx < minCompSize) && !(h - dy < minCompSize))
 					{
 						if (!(nbound < 0 || wbound < 0))
 						{
@@ -227,7 +233,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.NE_RESIZE_CURSOR:
-					if (!(w + dx < 30) && !(h - dy < 30))
+					if (!(w + dx < minCompSize) && !(h - dy < minCompSize))
 					{
 						if (!(nbound < 0 || ebound > sizex))
 						{
@@ -239,7 +245,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.SW_RESIZE_CURSOR:
-					if (!(w - dx < 30) && !(h + dy < 30))
+					if (!(w - dx < minCompSize) && !(h + dy < minCompSize))
 					{
 						if (!(wbound < 0 || sbound > sizey))
 						{
@@ -251,7 +257,7 @@ public class Resizable extends JComponent
 					break;
 
 				case Cursor.SE_RESIZE_CURSOR:
-					if (!(w + dx < 30) && !(h + dy < 30))
+					if (!(w + dx < minCompSize) && !(h + dy < minCompSize))
 					{
 						if (!(ebound > sizex || sbound > sizey))
 							setBounds(x, y, w + dx, h + dy);
