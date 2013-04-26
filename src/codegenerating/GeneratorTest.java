@@ -35,7 +35,7 @@ public class GeneratorTest {
         }
         
         @Test
-        public void testConnection() throws IOException{
+        public void testCompilableCode() throws IOException{
                 ComponentTreeStruct mng= new ComponentTreeStruct();
                 ContainerItem root = new ContainerItem(new JPanel(), "JPanel",new Dimension(400,400));
                 ComponentItem button = new ComponentItem(new JButton(), "JButton",new Dimension(40,40));
@@ -51,9 +51,11 @@ public class GeneratorTest {
 						, true, "jbutton1");             
                 
                 gen1.setTreeGenerated(mng.getRoot());
-                String generatedCode1 = gen1.getCode("testConnection", "testCon");
-                gen1.putCodeInFile(generatedCode1, "testCon", "src/codegenerating/");
                 gen1.addToFrame(mng.getRoot());
+                String generatedCode1 = gen1.getCode("testConnection", "testCon");
+                
+                gen1.putCodeInFile(generatedCode1, "testCon", "src\\codegenerating");
+                
                 assertTrue(isCompilableJava(generatedCode1, "testCon"));
         }
 

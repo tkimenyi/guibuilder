@@ -148,6 +148,7 @@ public class Generator {
 		giveActList.append(name + ".addActionListener(this);\n");
 	}
 	
+	//write a unit test for this
 	//could be very useful, but we are not actually using it for what we have now. 	
 	/*public void blankMethodGenerator(String methodName, String returnType){
 		String methodSignature = "public " + returnType + " " + methodName + "\n\t// User code here.\n\n\n\n\t}";

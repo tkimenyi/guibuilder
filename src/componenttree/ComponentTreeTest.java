@@ -17,7 +17,9 @@ public class ComponentTreeTest {
         
         @Before
         public void runvariables(){
-         root = new ContainerItem(new JPanel(), "JPanel",new Dimension(100,100));
+         JPanel rootPanel = new JPanel();
+         root = new ContainerItem(rootPanel, "JPanel",new Dimension(100,100));
+         assertEquals(root.getComponent(), rootPanel);
          panel1 = new ContainerItem(new JPanel(), "JPanel",new Dimension(100,100));
          panel2 = new ContainerItem(new JPanel(), "JPanel",new Dimension(100,100));
          panel3 = new ContainerItem(new JPanel(), "JPanel", new Dimension(23, 45));
@@ -43,24 +45,24 @@ public class ComponentTreeTest {
                 manager.addBorderChild(panel1, panel4, "west", "JPanel", new Dimension(100,100));
                 root.setLayout("border");               
                 assertTrue(root.getLayoutType().equals("border"));
-                assertTrue(panel4.getBorderLocation() == "west");
-                assertTrue(panel4.getParent() == panel1);
+                assertTrue(panel4.getBorderLocation().equals("west"));
+                assertEquals(panel4.getParent(), panel1);
                 assertTrue(panel1.removeChildComponent(panel4) ==true);
         }
         
         public void testAddGridChild(){
                 manager.addGridChild(panel1, panel5, 50, 50, "JPanel", new Dimension(100,100));
-                assertTrue(panel5.getParent() ==panel1);
+                assertEquals(panel5.getParent(), panel1);
                 System.out.println(panel5.getGridLocation());
-                assertTrue(panel5.getGridLocation().x == 50);
-                assertTrue(panel5.getGridLocation().y == 50);
+                assertEquals(panel5.getGridLocation().x,50);
+                assertEquals(panel5.getGridLocation().y, 50);
         }
         
         public void testAddGridChildSpan(){
                 manager.addGridChild(panel1, panel6, 50, 50, 15, 15, "JPanel", new Dimension(100,100));
-                assertTrue(panel6.getParent() == panel1);
-                assertTrue(panel6.getGridSpan().x == 15);
-                assertTrue(panel6.getGridSpan().y == 15);
+                assertEquals(panel6.getParent(), panel1);
+                assertEquals(panel6.getGridSpan().x, 15);
+                assertEquals(panel6.getGridSpan().y, 15);
         }
         
         
@@ -68,14 +70,14 @@ public class ComponentTreeTest {
         public void testComponentTree(){
                 
                 manager.setRoot(root);
-                assertTrue(manager.getRoot() ==root);
+                assertEquals(manager.getRoot(),root);
                 
                 addChildren();
-                assertTrue(manager.getRoot() == root);  
+                assertEquals(manager.getRoot(), root);  
                 assertTrue(root.getName().equalsIgnoreCase("jpanel1"));
                 assertEquals(root.getType(), "JPanel");
-                assertTrue(root.getPreferredSize().getWidth() == 100);
-                assertTrue(panel1.getParent()==root);
+                assertEquals(root.getPreferredSize().getWidth(), 100, 0.01);
+                assertEquals(panel1.getParent(),root);
                 assertEquals(root.getPreferredSize(), new Dimension(100,100));
                 
                 testAddBorderLayout();

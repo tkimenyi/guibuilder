@@ -29,6 +29,10 @@ public class testCon extends JPanel implements ActionListener{
 		
 		jbutton1.addActionListener(this);
 		
+		frame.add(jpanel1);
+		frame.setSize(594,700);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	@Override
