@@ -206,6 +206,9 @@ public class Generator {
 	}
 
 	public String getDeclaration(ComponentItem item){
+		if (item.getType().equals("JPanel")){
+			return getDeclarationPanel(item);
+		}
 		return item.getName().toLowerCase() + " = " + "new" + " " + item.getType() + "();\n";
 	}
 	

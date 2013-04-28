@@ -237,8 +237,10 @@ public class UserGUI extends JInternalFrame
 			{
 				Point newloc = (Point)targetAndLoc[1];
 				dropped.setBounds(newloc.x, newloc.y, d.width, d.height);
+				System.out.println(target.getItem().getName());
 			} else
 			{
+				System.out.println("Or here!");
 				dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
 			}
 

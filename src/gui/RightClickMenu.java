@@ -94,7 +94,11 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 			String selection = (String)JOptionPane.showInputDialog(userGUI, "Select a layout manager.", "Please", JOptionPane.PLAIN_MESSAGE, null, choices, choices[0]);
 			if(selection.equals("Grid Layout"))
 			{
-				userGUI.layoutGridSetter(resizable.getContItem(), 5, 5);
+				String result = JOptionPane.showInputDialog(this, "Enter the grid dimensions in the form x y ");
+				result = result.trim();
+				String[] numbers = result.split(" ");
+				if(numbers.length!=2) return;
+				userGUI.layoutGridSetter(resizable.getContItem(), Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1]));
 				resizable.getContItem().setLayout("grid");
 			}
 			else if (selection.equals("Border Layout"))
