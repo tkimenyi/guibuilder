@@ -4,6 +4,7 @@ import componenttree.ContainerItem;
 import gui.ResizableBorder;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.io.*;
 import java.util.ArrayList;
@@ -227,9 +228,8 @@ public class Generator {
 				res.append(parentName + "." + "setLayout(new BorderLayout());\n");
 				layoutType = "border";
 			}else if(layout.equals("grid")){
-				int rows = 6;
-				int cols = 6;
-				res.append(parentName + "." + "setLayout(new GridLayout( " + rows + ", " + cols +"));\n");
+				GridLayout grid = ((GridLayout)item.getComponent().getLayout());
+				res.append(parentName + "." + "setLayout(new GridLayout( " + grid.getRows() + ", " + grid.getColumns() +"));\n");
 				layoutType = "grid";
 			}
 		}

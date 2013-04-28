@@ -157,32 +157,38 @@ public class UserGUI extends JInternalFrame{
 	public void changeUserFrame(final Resizable dropped, Dimension d, String type){
 		JPanel parent = new JPanel(null);
 		Resizable target = null;
-		if(userPanel.getComponentAt(curLocation) instanceof Resizable){
-			target = (Resizable) userPanel.getComponentAt(curLocation);
+		Component targetComp = userPanel.getComponentAt(curLocation);
+		if(targetComp instanceof Resizable){
+			target = (Resizable)targetComp;
 			parent = (JPanel) target.getComp();
 		    dropped.changeSize(parent.getSize());
 			tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());
 			System.out.println(parent.getName());
 		}
-		else if(userPanel.getComponentAt(curLocation) instanceof JPanel){			
-			parent = (JPanel) userPanel.getComponentAt(curLocation);
+		else if(targetComp instanceof JPanel){			
+			parent = (JPanel) targetComp;
 			tree.addChild(mom, dropped.getItem(), type, dropped.getSize());
 		}		
 		if(parent != null){
-			if(parent != mom.getComponent()){
-				dropped.setBounds(parent.getX(), parent.getY(), d.width, d.height);
+			if(parent != mom.getComponent())
+			{
+				System.out.println("Talk to ducks");
+				int X = curLocation.x - target.getX();
+				int Y = curLocation.y - target.getY();
+				dropped.setBounds(X, Y, d.width, d.height);
 			}
 			else {
 				dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
 			}
+			
 			parent.add(dropped);
-			if(d != null && type != null){
-				if(d.getHeight() == 0 && d.getWidth() == 0){
-					dropped.setPreferredSize(parent.getSize());
-				}else{
-					dropped.setPreferredSize(d);
-				}
-			}
+//			if(d != null && type != null){
+//				if(d.getHeight() == 0 && d.getWidth() == 0){
+//					dropped.setPreferredSize(parent.getSize());
+//				}else{
+//					dropped.setPreferredSize(d);
+//				}
+//			}
 			repaint();	
 			validate();
 			parent.setLayout(null);

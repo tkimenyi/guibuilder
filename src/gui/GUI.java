@@ -171,8 +171,13 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			curFrame.layoutBorderSetter(curFrame.getMomPanel());
 			changedLayout();
 		}
-		if(evt.getSource() == Grid){			
-			curFrame.layoutGridSetter(curFrame.getMomPanel(),6,6);
+		if(evt.getSource() == Grid)
+		{
+			String result = JOptionPane.showInputDialog(this, "Enter the grid dimensions in the form x y ");
+			result = result.trim();
+			String[] numbers = result.split(" ");
+			if(numbers.length!=2) return;
+			curFrame.layoutGridSetter(curFrame.getMomPanel(),Integer.parseInt(numbers[0]),Integer.parseInt(numbers[1]));
 			changedLayout();
 		}
 		if(evt.getSource() == Flow){
@@ -423,7 +428,10 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			Object source = dtde.getTransferable().getTransferData(dataflavor[0]);
 			Component component = ((DragSourceContext) source).getComponent();
 			Container oldContainer = component.getParent();
-			curFrame.setCurLocation(dtde.getLocation().x, dtde.getLocation().y-75);	//the -75 offsets location of where we place the component			
+			int X = (int) ( (dtde.getLocation().getX() + this.getLocationOnScreen().getX()) - (curFrame.getLocationOnScreen().getX()) );
+			int Y = (int) (dtde.getLocation().getY() + this.getLocationOnScreen().getY() - (curFrame.getLocationOnScreen().getY()));
+			
+			curFrame.setCurLocation(X, Y-30);	//The -30 offsets the location of where we place the component.			
 			if(component instanceof JLabel){				
 				String compName = ((JLabel) component).getText();
 				ComponentsMap comp = compPanel.createNewMap();
@@ -449,6 +457,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 					curFrame.addToCompList(((JLabel) component));
 					if(c instanceof JPanel)
 					{
+						((JPanel) c).setLayout(null);
 						resizer.setContainerItem(new ContainerItem(resizer, compName, d));
 					}
 					else
