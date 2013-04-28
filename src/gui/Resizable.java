@@ -76,6 +76,11 @@ public class Resizable extends JComponent
 		sizex = xy.getWidth();
 		sizey = xy.getHeight();
 	}
+	
+	public boolean wrapsJPanel()
+	{
+		return (getComp().getClass().getSimpleName().equals("JPanel"));
+	}
 
 	//I know this is weird. One should always be null when the other is not.
 	public ComponentItem getItem(){
