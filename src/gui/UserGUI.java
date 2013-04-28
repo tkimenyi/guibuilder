@@ -182,6 +182,8 @@ public class UserGUI extends JInternalFrame
 	private Object[] getDeepestTarget(Resizable target, Point loc)
 	{
 		Point relativeLoc = getRelativeLocation(loc, target);
+		int offset = target.getComp().getLocation().x;
+		relativeLoc.x -= offset; relativeLoc.y-=offset;
 		if (!target.wrapsJPanel())
 		{
 			return new Object[]{target, relativeLoc};
