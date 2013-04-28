@@ -177,13 +177,14 @@ public class UserGUI extends JInternalFrame
 		return new Point(absolute.x - comp.getLocation().x, absolute.y - comp.getLocation().y);
 	}
 
-	// Precondition: target.getComp() is a JPanel.
-	private Resizable getDeepestTarget(Resizable target, Point loc)
+	
+	
+	private Object[] getDeepestTarget(Resizable target, Point loc)
 	{
 		Point relativeLoc = getRelativeLocation(loc, target);
 		if (!target.wrapsJPanel())
 		{
-			return target;
+			return new Object[]{target, relativeLoc};
 		} else
 		{
 			JPanel panel = (JPanel) target.getComp();
@@ -193,7 +194,7 @@ public class UserGUI extends JInternalFrame
 			//Otherwise, dig more.
 			if (newTarget.equals(panel))
 			{
-				return target;
+				return new Object[]{target, relativeLoc};
 			} else
 			{
 				return getDeepestTarget((Resizable) newTarget, relativeLoc);
@@ -206,10 +207,12 @@ public class UserGUI extends JInternalFrame
 	{
 		JPanel parent = new JPanel(null);
 		Resizable target = null;
+		Object[] targetAndLoc = null;
 		Component targetComp = userPanel.getComponentAt(curLocation);
 		if (targetComp instanceof Resizable)
 		{
-			target = getDeepestTarget((Resizable) targetComp, curLocation);
+			targetAndLoc = getDeepestTarget((Resizable) targetComp, curLocation);
+			target = (Resizable)targetAndLoc[0];
 
 			if (!(target.getComp() instanceof JPanel))
 			{
@@ -230,9 +233,8 @@ public class UserGUI extends JInternalFrame
 		{
 			if (parent != mom.getComponent())
 			{
-				int X = curLocation.x - target.getX();
-				int Y = curLocation.y - target.getY();
-				dropped.setBounds(X, Y, d.width, d.height);
+				Point newloc = (Point)targetAndLoc[1];
+				dropped.setBounds(newloc.x, newloc.y, d.width, d.height);
 			} else
 			{
 				dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
