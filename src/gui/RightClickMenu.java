@@ -154,7 +154,8 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		}
 		if(evt.getSource() == setText){			
 			String s = JOptionPane.showInputDialog("Please give me the name");
-			((JButton) comp).setText(s);			
+			s =s.replace("\\", "\\\\");
+			((JButton) comp).setText(s.replace("\"", "\\\""));			
 		}
 		if(evt.getSource() == addEvents){
 			if(userGUI.isFirstEvent){
