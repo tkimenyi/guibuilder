@@ -11,8 +11,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -23,6 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -225,7 +229,6 @@ public class UserGUI extends JInternalFrame
 			parent = (JPanel) target.getComp();
 			dropped.changeSize(parent.getSize());
 			tree.addChild(target.getContItem(), dropped.getItem(), type, dropped.getSize());
-			// System.out.println(parent.getName());
 		} else if (targetComp instanceof JPanel)
 		{
 			parent = (JPanel) targetComp;
@@ -237,10 +240,8 @@ public class UserGUI extends JInternalFrame
 			{
 				Point newloc = (Point)targetAndLoc[1];
 				dropped.setBounds(newloc.x, newloc.y, d.width, d.height);
-				System.out.println(target.getItem().getName());
 			} else
 			{
-				System.out.println("Or here!");
 				dropped.setBounds(curLocation.x, curLocation.y, d.width, d.height);
 			}
 
@@ -311,7 +312,7 @@ public class UserGUI extends JInternalFrame
 
 	public void addMenuBar(Resizable comp, String type)
 	{
-		((JMenuBar) comp.getComp()).add(new JMenu("File"));
+		addMenuToBar(((JMenuBar) comp.getComp()),(new JMenu("File")));
 		comp.changeBorder(0);
 		userPanel.setLayout(new BorderLayout());
 		userPanel.add(comp.getComp(), BorderLayout.NORTH);
@@ -322,17 +323,18 @@ public class UserGUI extends JInternalFrame
 
 	public void addMenu(Resizable comp)
 	{
-		if (userPanel.getComponentAt(curLocation) instanceof Resizable || userPanel.getComponentAt(curLocation) instanceof JPanel)
-		{
-			JOptionPane.showMessageDialog(this, "You cannot add that here");
-		} else
+		if (userPanel.getComponentAt(curLocation) instanceof JMenuBar)
 		{
 			String name = JOptionPane.showInputDialog("What would you like to call your menu?");
-			JMenu menu = new JMenu(name);
+			final JMenu menu = new JMenu(name);
 			JMenuBar mb = (JMenuBar) userPanel.getComponentAt(curLocation);
-			mb.add(menu);
+			addMenuToBar(mb, menu);
 			repaint();
 			revalidate();
+			
+		} else
+		{
+			JOptionPane.showMessageDialog(this, "You cannot add that here");
 		}
 	}
 
@@ -386,5 +388,10 @@ public class UserGUI extends JInternalFrame
 			if (list[i] instanceof Resizable)
 				removeComponent((Resizable) list[i]);
 		}
+	}
+	
+	private void addMenuToBar(JMenuBar mb, final JMenu menu){
+		mb.add(menu);
+		new RightClickMenu(menu);	
 	}
 }

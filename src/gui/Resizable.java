@@ -24,7 +24,7 @@ import componenttree.ContainerItem;
 @SuppressWarnings("serial")
 public class Resizable extends JComponent
 {
-	private int offsetForBounds = 27;
+	private int offsetForBounds = 10;
 	private int minCompSize = 30;
 	
 	//These Items wrap this resizable.
@@ -33,21 +33,18 @@ public class Resizable extends JComponent
 	
 	//this resizable wraps this component.
 	private Component component;
-	private double sizex, sizey;
 
 	
 	public Resizable(Component comp, Dimension s)
 	{
 		this(comp, new ResizableBorder(10));
-		sizex = s.getWidth();
-		sizey = s.getHeight();
+	
 	}
 	
 	public Resizable(Component comp, Dimension s, int size)
 	{
 		this(comp, new ResizableBorder(size));
-		sizex = s.getWidth();
-		sizey = s.getHeight();
+
 	}
 
 	public Resizable(Component comp, ResizableBorder border)
@@ -73,8 +70,6 @@ public class Resizable extends JComponent
 	}
 	
 	public void changeSize(Dimension xy){
-		sizex = xy.getWidth();
-		sizey = xy.getHeight();
 	}
 	
 	public boolean wrapsJPanel()
@@ -160,7 +155,7 @@ public class Resizable extends JComponent
 
 		private boolean boundsCheckin(Rectangle bounds, double dx, double dy)
 		{
-			return !(bounds.x + bounds.width + dx > sizex || bounds.x + dx < 0 || bounds.y + bounds.height + dy + offsetForBounds >= sizey || bounds.y + dy < 0);
+			return !(bounds.x + bounds.width + dx > getParent().getWidth() || bounds.x + dx < 0 || bounds.y + bounds.height + dy + offsetForBounds >= getParent().getHeight() || bounds.y + dy < 0);
 		}
 
 		public void mouseDragged(MouseEvent me)
@@ -196,7 +191,7 @@ public class Resizable extends JComponent
 				case Cursor.S_RESIZE_CURSOR:
 					if (!(h + dy < minCompSize))
 					{
-						if (!(sbound > sizey))
+						if (!(sbound > getParent().getHeight()))
 						{
 							setBounds(x, y, w, h + dy);
 							startPos = me.getPoint();
@@ -217,7 +212,7 @@ public class Resizable extends JComponent
 				case Cursor.E_RESIZE_CURSOR:
 					if (!(w + dx < minCompSize))
 					{
-						if (!(ebound > sizex))
+						if (!(ebound > getParent().getWidth()))
 						{
 							setBounds(x, y, w + dx, h);
 							startPos = me.getPoint();
@@ -240,7 +235,7 @@ public class Resizable extends JComponent
 				case Cursor.NE_RESIZE_CURSOR:
 					if (!(w + dx < minCompSize) && !(h - dy < minCompSize))
 					{
-						if (!(nbound < 0 || ebound > sizex))
+						if (!(nbound < 0 || ebound > getParent().getWidth()))
 						{
 							setBounds(x, y + dy, w + dx, h - dy);
 							startPos = new Point(me.getX(), startPos.y);
@@ -252,7 +247,7 @@ public class Resizable extends JComponent
 				case Cursor.SW_RESIZE_CURSOR:
 					if (!(w - dx < minCompSize) && !(h + dy < minCompSize))
 					{
-						if (!(wbound < 0 || sbound > sizey))
+						if (!(wbound < 0 || sbound > getParent().getHeight()))
 						{
 							setBounds(x + dx, y, w - dx, h + dy);
 							startPos = new Point(startPos.x, me.getY());
@@ -264,7 +259,7 @@ public class Resizable extends JComponent
 				case Cursor.SE_RESIZE_CURSOR:
 					if (!(w + dx < minCompSize) && !(h + dy < minCompSize))
 					{
-						if (!(ebound > sizex || sbound > sizey))
+						if (!(ebound > getParent().getWidth() || sbound > getParent().getHeight()))
 							setBounds(x, y, w + dx, h + dy);
 						startPos = me.getPoint();
 						resize();

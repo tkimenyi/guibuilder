@@ -18,9 +18,12 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 	private Component comp;
 	private Resizable resizable;
 	private JPopupMenu pop; 
+	private JMenuItem addNewItem;
+	private JMenuItem changeName;
 	private JMenuItem resize, delete, chooseLayout, setText, addEvents;
 	private UserGUI userGUI;
 	private GUI mainGUI;
+	private JMenu menu;
 	public RightClickMenu(Resizable c, UserGUI g, boolean isJPanel, GUI gui){
 		comp = c.getComp();
 		resizable = c;
@@ -47,6 +50,18 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 			pop.add(chooseLayout);	
 			chooseLayout.addActionListener(this);
 		}
+	}
+	
+	public RightClickMenu(JMenu m){
+		pop = new JPopupMenu();
+		menu = m;
+		addNewItem = new JMenuItem("Add Menu Item");
+		changeName = new JMenuItem("Change Name");
+		pop.add(addNewItem);
+		pop.add(changeName);
+		addNewItem.addActionListener(this);
+		changeName.addActionListener(this);
+		m.addMouseListener(this);
 	}
 	
     public void mousePressed(MouseEvent e){
@@ -89,6 +104,29 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 		if(evt.getSource() == delete){
 			deleteAction();
 		}
+		
+		if(evt.getSource() == changeName){
+			String name1 = JOptionPane.showInputDialog("What would you like to rename to?");
+			if(name1 == null || name1.length() > 0){
+				menu.setText(name1);
+			}
+			else{
+				JOptionPane.showMessageDialog(changeName, "You must name your item");							
+			}
+			pop.setVisible(false);
+		}
+		
+		if(evt.getSource() == addNewItem){
+			String name1 = JOptionPane.showInputDialog("What do you want the items name to be?");
+			if(name1 == null || name1.length() > 0){
+				menu.add(name1);
+			}
+			else{
+				JOptionPane.showMessageDialog(addNewItem, "You must name your item");
+			}
+			pop.setVisible(false);
+		}
+		
 		if(evt.getSource() == chooseLayout){
 			Object[] choices = mainGUI.getLayoutMap().keySet().toArray();
 			String selection = (String)JOptionPane.showInputDialog(userGUI, "Select a layout manager.", "Please", JOptionPane.PLAIN_MESSAGE, null, choices, choices[0]);
