@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JMenu;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -112,6 +113,9 @@ public class Resizable extends JComponent
 		if (component instanceof JPasswordField)
 		{
 			return ((JPasswordField) component).getText();
+		}
+		if(component instanceof JMenu){
+			return ((JMenu) component).getText();
 		}
 		return "";
 	}

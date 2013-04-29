@@ -53,6 +53,7 @@ public class GeneratorTest {
                 while((line = read.readLine()) != null){
                 	testCode += line + "\n";
                 }
+                //gets rid of the last newline because we do not need it.
                 testCode = testCode.substring(0, testCode.length() - 2);
                 mng.setRoot(root);
                 root.setLayout("grid");

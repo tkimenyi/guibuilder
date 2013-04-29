@@ -163,11 +163,13 @@ public class Generator {
 	
 	public String getSizeStmt(ComponentItem item){
 		Dimension dim = item.getComponent().getPreferredSize();
-		int width = dim.width;
-		int height = dim.height;
-		if(height!=0 && width!=0){
-			String setSizeCode = item.getName().toLowerCase() + ".setSize(" + "new Dimension(" + width + "," + height + "));\n"; 
-			return setSizeCode;
+		if(!(dim == null)){
+			int width = dim.width;
+			int height = dim.height;
+			if(height!=0 && width!=0){
+				String setSizeCode = item.getName().toLowerCase() + ".setPreferredSize(" + "new Dimension(" + width + "," + height + "));\n"; 
+				return setSizeCode;
+			}
 		}
 		return "";
 	}

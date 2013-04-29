@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
+import componenttree.ComponentItem;
 import componenttree.ComponentTreeStruct;
 import componenttree.ContainerItem;
 
@@ -40,6 +41,7 @@ public class UserGUI extends JInternalFrame
 	private boolean saved;
 	public boolean isFirstEvent;
 	private ContainerItem mom;
+	private Resizable menuBar;
 
 	public UserGUI()
 	{
@@ -57,7 +59,8 @@ public class UserGUI extends JInternalFrame
 		addedComponentsList = new ArrayList<JLabel>();
 		saved = false;
 		isFirstEvent = true;
-	}
+		menuBar = null;
+	} 
 
 	public JPanel getPanel()
 	{
@@ -256,10 +259,7 @@ public class UserGUI extends JInternalFrame
 			repaint();
 			validate();
 			parent.setLayout(null);
-		} else
-		{
-			JOptionPane.showMessageDialog(this, "The place you have tried to place your component is invalid");
-		}
+		} 
 		addMouseListener(new MouseAdapter()
 		{
 			public void mousePressed(MouseEvent me)
@@ -270,7 +270,6 @@ public class UserGUI extends JInternalFrame
 		});
 
 	}
-
 	public void setCurLocation(int x, int y)
 	{
 		curLocation = new Point(x, y);
@@ -307,88 +306,93 @@ public class UserGUI extends JInternalFrame
 		addedComponentsList.add(added);
 	}
 
-	public void addMenuBar(Resizable comp, String type)
-	{
-		addMenuToBar(((JMenuBar) comp.getComp()),(new JMenu("File")));
-		comp.changeBorder(0);
-		userPanel.setLayout(new BorderLayout());
-		userPanel.add(comp.getComp(), BorderLayout.NORTH);
-		repaint();
-		revalidate();
-		tree.addChild(tree.getRoot(), comp.getItem(), type, comp.getSize());
-	}
+	 public void addMenuBar(Resizable comp, String type)
+     {
+		 	 menuBar = comp;
+		 	 Resizable menu = new Resizable(new JMenu("File"), null, 0);
+		 	 menu.setComponentItem(new ComponentItem(menu, "JMenu", null));
+             addMenuToBar(((JMenuBar) menuBar.getComp()),(JMenu)menu.getComp());
+             menuBar.changeBorder(0);
+             userPanel.setLayout(new BorderLayout());
+             userPanel.add(menuBar.getComp(), BorderLayout.NORTH);
+             tree.addChild(tree.getRoot(), comp.getItem(), type, comp.getSize());
+             tree.addChild(menuBar.getContItem(), menu.getItem(), "JMenu", menu.getComp().getPreferredSize());
+             repaint();
+             revalidate();
+     }
 
-	public void addMenu(Resizable comp)
-	{
-		if (userPanel.getComponentAt(curLocation) instanceof JMenuBar)
-		{
-			String name = JOptionPane.showInputDialog("What would you like to call your menu?");
-			final JMenu menu = new JMenu(name);
-			JMenuBar mb = (JMenuBar) userPanel.getComponentAt(curLocation);
-			addMenuToBar(mb, menu);
-			repaint();
-			revalidate();
-			
-		} else
-		{
-			JOptionPane.showMessageDialog(this, "You cannot add that here");
-		}
-	}
+     public void addMenu(Resizable comp)
+     {
+             if (userPanel.getComponentAt(curLocation) instanceof JMenuBar)
+             {
+                     String name = JOptionPane.showInputDialog("What would you like to call your menu?");
+                     ((JMenu) comp.getComp()).setText(name);
+                     JMenuBar mb = (JMenuBar) userPanel.getComponentAt(curLocation);
+                     addMenuToBar(mb, (JMenu)comp.getComp());                     
+                     tree.addChild(menuBar.getContItem(), comp.getItem(), "JMenu", comp.getComp().getPreferredSize());
+                     repaint();
+                     revalidate();
+                     
+             } else
+             {
+                     JOptionPane.showMessageDialog(this, "You cannot add that here");
+             }
+     }
 
-	public void addMenuItem(Resizable comp)
-	{
-		if (userPanel.getComponentAt(curLocation) instanceof JMenu)
-		{
-			String name = JOptionPane.showInputDialog("What do you want to call your menu item?");
-			JMenuItem item = new JMenuItem(name);
-			JMenu m = (JMenu) userPanel.getComponentAt(curLocation);
-			m.add(item);
-		} else
-		{
-			JOptionPane.showMessageDialog(this, "You cannot add that here");
-		}
-	}
+     public void addMenuItem(Resizable comp)
+     {
+             if (userPanel.getComponentAt(curLocation) instanceof JMenu)
+             {
+                     String name = JOptionPane.showInputDialog("What do you want to call your menu item?");
+                     JMenuItem item = new JMenuItem(name);
+                     JMenu m = (JMenu) userPanel.getComponentAt(curLocation);
+                     m.add(item);
+             } else
+             {
+                     JOptionPane.showMessageDialog(this, "You cannot add that here");
+             }
+     }
 
-	public Component getParentType(Resizable target, Resizable dropped)
-	{
-		if (target.getComp() instanceof JPanel)
-		{
-			System.out.println("JPanel");
-			((JPanel) target.getComp()).add(dropped);
-			return ((JPanel) target.getComp());
-		} else if (target.getComp() instanceof JScrollPane)
-		{
-			System.out.println("JScrollPane");
-			((JScrollPane) target.getComp()).add(dropped);
-			return ((JScrollPane) target.getComp());
-		} else if (target.getComp() instanceof JSplitPane)
-		{
-			System.out.println("JSplitPane");
-			((JSplitPane) target.getComp()).add(dropped, 1);
-			return ((JSplitPane) target.getComp());
-		} else if (target.getComp() instanceof JTabbedPane)
-		{
-			System.out.println("JTabbed");
-			((JTabbedPane) target.getComp()).add(dropped);
-			return ((JTabbedPane) target.getComp());
-		} else
-		{
-			System.out.println("Whoops");
-			return target;
-		}
-	}
+     public Component getParentType(Resizable target, Resizable dropped)
+     {
+             if (target.getComp() instanceof JPanel)
+             {
+                     System.out.println("JPanel");
+                     ((JPanel) target.getComp()).add(dropped);
+                     return ((JPanel) target.getComp());
+             } else if (target.getComp() instanceof JScrollPane)
+             {
+                     System.out.println("JScrollPane");
+                     ((JScrollPane) target.getComp()).add(dropped);
+                     return ((JScrollPane) target.getComp());
+             } else if (target.getComp() instanceof JSplitPane)
+             {
+                     System.out.println("JSplitPane");
+                     ((JSplitPane) target.getComp()).add(dropped, 1);
+                     return ((JSplitPane) target.getComp());
+             } else if (target.getComp() instanceof JTabbedPane)
+             {
+                     System.out.println("JTabbed");
+                     ((JTabbedPane) target.getComp()).add(dropped);
+                     return ((JTabbedPane) target.getComp());
+             } else
+             {
+                     System.out.println("Whoops");
+                     return target;
+             }
+     }
 
-	private void removeLayoutPanelsFromTree(Component[] list)
-	{
-		for (int i = 0; i < list.length; i++)
-		{
-			if (list[i] instanceof Resizable)
-				removeComponent((Resizable) list[i]);
-		}
-	}
-	
-	private void addMenuToBar(JMenuBar mb, final JMenu menu){
-		mb.add(menu);
-		new RightClickMenu(menu);	
-	}
+     private void removeLayoutPanelsFromTree(Component[] list)
+     {
+             for (int i = 0; i < list.length; i++)
+             {
+                     if (list[i] instanceof Resizable)
+                             removeComponent((Resizable) list[i]);
+             }
+     }
+     
+     private void addMenuToBar(JMenuBar mb, final JMenu menu){
+             mb.add(menu);
+             new RightClickMenu(menu);       
+     }
 }
