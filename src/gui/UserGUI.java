@@ -356,28 +356,23 @@ public class UserGUI extends JInternalFrame
      public Component getParentType(Resizable target, Resizable dropped)
      {
              if (target.getComp() instanceof JPanel)
-             {
-                     System.out.println("JPanel");
+             {                     
                      ((JPanel) target.getComp()).add(dropped);
                      return ((JPanel) target.getComp());
              } else if (target.getComp() instanceof JScrollPane)
-             {
-                     System.out.println("JScrollPane");
+             {                     
                      ((JScrollPane) target.getComp()).add(dropped);
                      return ((JScrollPane) target.getComp());
              } else if (target.getComp() instanceof JSplitPane)
-             {
-                     System.out.println("JSplitPane");
+             {                    
                      ((JSplitPane) target.getComp()).add(dropped, 1);
                      return ((JSplitPane) target.getComp());
              } else if (target.getComp() instanceof JTabbedPane)
-             {
-                     System.out.println("JTabbed");
+             {                     
                      ((JTabbedPane) target.getComp()).add(dropped);
                      return ((JTabbedPane) target.getComp());
              } else
              {
-                     System.out.println("Whoops");
                      return target;
              }
      }

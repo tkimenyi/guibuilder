@@ -221,11 +221,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 	}
 	
 	private void generateUserGUI(String saveasName, String saveDir){
-		if(saveasName.length() >= 1){
-			java.util.Iterator<ComponentItem> it = curFrame.getTreeStruct().getRoot().iterator();
-			while(it.hasNext()){
-				System.out.println(it.next().getBounds());
-			}
+		if(saveasName.length() >= 1){			
 			gen.setTreeGenerated(curFrame.getTreeStruct().getRoot());
 			gen.addToFrame(curFrame.getTreeStruct().getRoot());		
 			String code = gen.getCode(curFrame.getName(), saveasName);
@@ -264,7 +260,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
             }
         } 
         else {
-                System.out.println("No file selected");
+                JOptionPane.showMessageDialog(this, "No file selected");
         }       
 	}	
 
@@ -375,9 +371,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			dge.getDragSource().startDrag(dge, null, this, this, SystemFlavorMap.getDefaultFlavorMap());
 		}
 		catch(Exception ex){
-			//this error occurs when the component already has an action listener to it, just as attempting a drag while doing the functionality of the component
-			System.out.println("Catch and Release is always the best solution");
-			System.out.println("Not really, I just can't figure out why this error gets thrown");
+			
 		}
 	}
 

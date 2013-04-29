@@ -177,7 +177,6 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 			if( xy.length == 2 && isInteger(xy[0]) && isInteger(xy[1])){
 				int x = Integer.parseInt(xy[0]);		
 				int y = Integer.parseInt(xy[1]);
-				System.out.println("X: " + x + " " + "Y:" + y);
 				userGUI.resizeComponent(comp, new Dimension(x,y));
 			}
 			else{
