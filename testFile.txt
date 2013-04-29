@@ -47,3 +47,5 @@ public class testCon extends JPanel implements ActionListener{
 			run.setVisible(true);
 		}
 	}
+
+

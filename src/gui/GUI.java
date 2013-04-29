@@ -168,7 +168,7 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			closeAction();
 		}
 		if(evt.getSource() == Border){
-			curFrame.layoutBorderSetter(curFrame.getMomPanel());
+			curFrame.layoutBorderSetter(curFrame.getMomContainer());
 			changedLayout();
 		}
 		if(evt.getSource() == Grid)
@@ -177,15 +177,15 @@ public class GUI extends JFrame implements ActionListener, ChangeListener, DragG
 			result = result.trim();
 			String[] numbers = result.split(" ");
 			if(numbers.length!=2) return;
-			curFrame.layoutGridSetter(curFrame.getMomPanel(),Integer.parseInt(numbers[0]),Integer.parseInt(numbers[1]));
+			curFrame.layoutGridSetter(curFrame.getMomContainer(),Integer.parseInt(numbers[0]),Integer.parseInt(numbers[1]));
 			changedLayout();
 		}
 		if(evt.getSource() == Flow){
-			curFrame.layoutFlowSetter(curFrame.getPanel());
+			curFrame.layoutFlowSetter(curFrame.getMomContainer());
 			changedLayout();
 		}
 		if(evt.getSource() == Absolute){
-			curFrame.layoutAbsolute(curFrame.getPanel());
+			curFrame.layoutAbsolute(curFrame.getMomContainer());
 			changedLayout();
 		}
 	}

@@ -3,7 +3,6 @@
 package gui;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -146,16 +145,15 @@ public class RightClickMenu extends JPopupMenu implements MouseListener,ActionLi
 			}
 			else if (selection.equals("Flow Layout"))
 			{
-				userGUI.layoutFlowSetter((Container)comp);
+				userGUI.layoutFlowSetter(resizable.getContItem());
 			}
 			else{
-				userGUI.layoutAbsolute((Container)comp);
+				userGUI.layoutAbsolute(resizable.getContItem());
 			}
 		}
 		if(evt.getSource() == setText){			
 			String s = JOptionPane.showInputDialog("Please give me the name");
-			s =s.replace("\\", "\\\\");
-			((JButton) comp).setText(s.replace("\"", "\\\""));			
+			((JButton) comp).setText(s);			
 		}
 		if(evt.getSource() == addEvents){
 			if(userGUI.isFirstEvent){

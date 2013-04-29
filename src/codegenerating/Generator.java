@@ -115,7 +115,7 @@ public class Generator {
 	}
 	
 	//This will return a correctly tab-formatted string of code.
-	private String fixTabs(String code)
+	public String fixTabs(String code)
 	{	code = code.replace("\t", "");
 		int tabindex = 0;
 		StringBuilder builder = new StringBuilder();
@@ -162,11 +162,11 @@ public class Generator {
 	}
 	
 	public String getSizeStmt(ComponentItem item){
-		Dimension dim = item.getPreferredSize();
+		Dimension dim = item.getComponent().getPreferredSize();
 		int width = dim.width;
 		int height = dim.height;
 		if(height!=0 && width!=0){
-			String setSizeCode = item.getName().toLowerCase() + ".setPreferredSize(" + "new Dimension(" + width + "," + height + "));\n"; 
+			String setSizeCode = item.getName().toLowerCase() + ".setSize(" + "new Dimension(" + width + "," + height + "));\n"; 
 			return setSizeCode;
 		}
 		return "";
@@ -231,7 +231,7 @@ public class Generator {
 				res.append(parentName + "." + "setLayout(new BorderLayout());\n");
 				layoutType = "border";
 			}else if(layout.equals("grid")){
-				GridLayout grid = ((GridLayout)item.getComponent().getLayout());
+				GridLayout grid = (GridLayout) (item.getComponent().getLayout());
 				res.append(parentName + "." + "setLayout(new GridLayout( " + grid.getRows() + ", " + grid.getColumns() +"));\n");
 				layoutType = "grid";
 			}
@@ -260,7 +260,6 @@ public class Generator {
 	//code for the entire tree
 	public StringBuilder getComponentCode(ComponentItem item){
 		StringBuilder res = new StringBuilder();
-		System.out.println(item.getName());
 		ContainerItem parent = item.getParent();
 		if(parent == null){			
 			res.append(getDeclarationPanel(item));		
@@ -268,8 +267,7 @@ public class Generator {
 			res.append("\t" + "\t");
 			res.append(getBackgroundCode(item));
 		}
-		else{
-			System.out.println("Parent " + item.getParent().getName());
+		else{			
 			instanceVariables.append("\t" + item.getType() + " " + item.getName() + ";\n");
 			res.append(getDeclaration(item));			
 			res.append("\t" + "\t");

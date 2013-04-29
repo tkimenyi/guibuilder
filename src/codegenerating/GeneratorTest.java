@@ -3,6 +3,10 @@ package codegenerating;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,14 +39,24 @@ public class GeneratorTest {
         }
         
         @Test
-        public void testCompilableCode() throws IOException{
+        public void testCompilableCode() throws IOException{        		
                 ComponentTreeStruct mng= new ComponentTreeStruct();
                 ContainerItem root = new ContainerItem(new JPanel(), "JPanel",new Dimension(400,400));
-                ComponentItem button = new ComponentItem(new JButton(), "JButton",new Dimension(40,40));
+                ComponentItem button = new ComponentItem(new JButton(), "JButton",new Dimension(50,40));
                 ComponentItem textarea = new ComponentItem(new JTextArea(), "JTextArea",new Dimension(130,40));
                 ComponentItem textfield = new ComponentItem(new JTextArea(), "JTextField",new Dimension(140,30));
+                BufferedReader read = new BufferedReader(new FileReader(new File("testFile.txt")));
+                String testCode = "";
+                String line = "";
+                //this gives us an expected file in the form we are looking for. If this is different than what is generated, something was changed that wasn't
+                //suppose to be changed. 
+                while((line = read.readLine()) != null){
+                	testCode += line + "\n";
+                }
+                testCode = testCode.substring(0, testCode.length() - 2);
                 mng.setRoot(root);
                 root.setLayout("grid");
+                root.getComponent().setLayout(new GridLayout(6, 7));
                 mng.addChild(root, button, button.getType(), null);
                 mng.addChild(root,textarea,textarea.getType(),null);    
                 mng.addChild(root, textfield, textfield.getType(), null); 
@@ -53,8 +67,8 @@ public class GeneratorTest {
                 gen1.setTreeGenerated(mng.getRoot());
                 gen1.addToFrame(mng.getRoot());
                 String generatedCode1 = gen1.getCode("testConnection", "testCon");
-                
-                gen1.putCodeInFile(generatedCode1, "testCon", "src\\codegenerating");
+                assertEquals(testCode, generatedCode1);
+                gen1.putCodeInFile(generatedCode1, "testCon", "src" + File.separator + "codegenerating");
                 
                 assertTrue(isCompilableJava(generatedCode1, "testCon"));
         }
