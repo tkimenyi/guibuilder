@@ -6,14 +6,14 @@ This was an assignment for CS350 in Spring 2013 taught by Dr. Ferrer at Hendrix 
 
 # Contributors
 
-Brandon
-Jeanette
-Thierry
-Safari
-John
-Michael
+* Brandon
+* Jeanette
+* Thierry
+* Safari
+* John
+* Michael
 
-# Assignment Overview #
+# Project Overview #
 
 The goal of this project is to create a GUI builder for Swing interfaces. The following features are to be included:
 * It will itself present a graphical user interface.
