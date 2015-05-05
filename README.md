@@ -2,7 +2,7 @@
 
 # Introduction #
 
-This was an assignment for CS350 in Spring 2013 taught by Dr. Ferrer at Hendrix College. Several people commited on the initial repository at code.google.com on this project including Brandon, Safari, John, Jeanette and Thierry
+This was an assignment for CS350 in Spring 2013 taught by Dr. Ferrer at Hendrix College. Several people commited on the initial repository at https://code.google.com/p/guibuilder/ on this project including Brandon, Safari, John, Jeanette and Thierry
 
 # Assignment Overview #
 
